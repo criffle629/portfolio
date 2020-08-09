@@ -1,22 +1,23 @@
 'use strict';
+import { Clock } from "three";
 
-export default class Time{
+class TimeManager{
  
     constructor(){
-        this.lastTime = performance.now();
-        this.dT = 0.0;
+        this.clock = new Clock(true);
+        this.deltaTime = 0;
     }
 
-    update(){
-        let currentTime = performance.now();
-     
-        this.dT = currentTime - this.lastTime;
-
-        this.lastTime = currentTime;         
+    Update(){
+        this.deltaTime = this.clock.getDelta();  
     }
 
-    deltaTime()
+    DeltaTime()
     {
-        return ((this.dT * 0.001) + 0.00000000001);
+        return this.deltaTime;
     }
 }
+
+const Time = new TimeManager();
+
+export default Time;

@@ -2,23 +2,27 @@
 
 class InputManager{
     constructor(){
-        this.inputQueue = {};
+        this.inputQueue = new Map();
     }
 
     addKey(key){
-        this.inputQueue[key] = 1;
+  
+        this.inputQueue.set(key, 1);
+
+        console.log(this.inputQueue);
     }
 
     removeKey(key){
-        delete this.inputQueue[key];
+   
+       this.inputQueue.delete(key);
     }
 
     isPressed(key){
-        return key in this.inputQueue;
+        return this.inputQueue.has(key);
     }
 
     clearKeys(){
-        this.inputQueue = {};
+        this.inputQueue.clear();
     }
 }
 

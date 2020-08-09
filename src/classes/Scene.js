@@ -5,10 +5,7 @@ class SceneManager{
     constructor(){
         this.scene = new THREE.Scene();
     }
-
-    createScene(){
-       
-    }
+    
     add(obj){
         this.scene.add(obj);
     }

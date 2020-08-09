@@ -6,11 +6,9 @@ import GameObject from "./GameObject";
 import Scene from '../classes/Scene';
 
 export default class Mesh extends GameObject{
-    constructor(path, clock) {
+    constructor(path) {
         super();
         this.mixer = null;
-
-        this.clock = clock;
         this.action = null;
         this.LoadMesh(path);
     }

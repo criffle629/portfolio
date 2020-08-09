@@ -8,21 +8,19 @@ import Mesh from '../classes/Mesh';
 import Input from '../classes/Input';
 import Scene from '../classes/Scene';
 import Camera from '../classes/Camera';
+import Time from '../classes/Time';
 
 export default class Game extends React.Component {
     constructor(props) {
         super(props);
         this.mixer = null;
         this.renderer = null;
-        this.clock = null;
         this.light = null;
         this.skinnedMesh = null;
         this.building = null;
     }
 
     Load = () => {
-        this.clock = new Clock(true);
-        
         this.renderer = new THREE.WebGLRenderer({canvas:this.canvas, alpha: false, antialias: true});
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
@@ -55,9 +53,9 @@ export default class Game extends React.Component {
         Scene.add( this.ambientLight );
         
         this.dir = 1;
-        this.skinnedMesh = new SkinnedMesh('./assets/models/chris.glb', this.clock, Scene);
+        this.skinnedMesh = new SkinnedMesh('./assets/models/chris.glb');
 
-        this.building = new Mesh('./assets/models/garage.glb', this.clock, Scene);
+        this.building = new Mesh('./assets/models/garage.glb');
       
 
         this.lightDir = new THREE.Vector3(0,0, -1);
@@ -69,37 +67,54 @@ export default class Game extends React.Component {
 
     Animate = () => {  
 
-        let move = new THREE.Vector3(0,0,0);
-
+        Time.Update();
+        console.log(Time.deltaTime)
+        let zMove = 0;
+        let xMove = 0;
+        
         if (Input.isPressed('w'))
-            move.z = -1 * 5.0 * this.clock.getDelta();
-            if (Input.isPressed('s'))
-            move.z = 1 * 5.0 * this.clock.getDelta();
-            if (Input.isPressed('a'))
-            move.x = -1 * 5.0 * this.clock.getDelta();   
-            if (Input.isPressed('d'))
-            move.x = 1 * 5.0 * this.clock.getDelta();
-        Camera.Move(move);
-        console.log(Input.isPressed('w'));
-        this.skinnedMesh.Animate(this.clock.getDelta());
+            zMove = -1;
+        
+        if (Input.isPressed('s'))
+            zMove= 1;
+
+        if (Input.isPressed('a'))
+            xMove = -1;   
+        
+        if (Input.isPressed('d'))
+            xMove = 1;
+    
+        let moveDir = new THREE.Vector3(xMove, 0, zMove);
+        moveDir.normalize();
+    
+      
+        moveDir = new THREE.Vector3(    moveDir.x * 20 * Time.deltaTime, 0,   moveDir.z * 20 * Time.deltaTime);
+        Camera.Move(moveDir);
+     
+        this.skinnedMesh.Animate(Time.deltaTime);
         this.renderer.render(Scene.getScene(), Camera.mainCamera);
         requestAnimationFrame(this.Animate);
+        
 
     }
 
     HandleKeyPress(e) {
-        //  console.log(e.key);
+        e.preventDefault();
+        e.stopPropagation();
+        console.log(e.key);
         Input.addKey(e.key);
     }
 
     HandleKeyUp(e) {
+        e.preventDefault(); 
+        e.stopPropagation();
         Input.removeKey(e.key);
-        console.log(e.key);
+       
     }
 
     render() {
         return (
-            <canvas tabIndex="0" onKeyPress={this.HandleKeyPress} onKeyUp={this.HandleKeyUp} ref={(c) => {this.canvas = c; this.Load();}}/>
+            <canvas tabIndex="0" onKeyDown={this.HandleKeyPress} onKeyUp={this.HandleKeyUp} ref={(c) => {this.canvas = c; this.Load();}}/>
         )
     }
 }

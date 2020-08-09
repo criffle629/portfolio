@@ -1,16 +1,14 @@
 'use strict';
 import * as THREE from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { Clock } from 'three';
 import GameObject from "./GameObject";
 import Scene from '../classes/Scene';
+import Time from '../classes/Time';
 
 export default class SkinnedMesh extends GameObject{
-    constructor(path, clock) {
+    constructor(path) {
         super();
         this.mixer = null;
-
-        this.clock = clock;
         this.action = null;
         this.LoadMesh(path);
     }
@@ -46,7 +44,7 @@ export default class SkinnedMesh extends GameObject{
     Animate (deltaTime) { 
        
         if (this.mixer !== null){
-            this.mixer.update(this.clock.getDelta());
+            this.mixer.update(Time.deltaTime / 50);
           
         }
     }
