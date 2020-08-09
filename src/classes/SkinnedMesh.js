@@ -44,7 +44,7 @@ export default class SkinnedMesh extends GameObject{
     Animate (deltaTime) { 
        
         if (this.mixer !== null){
-            this.mixer.update(Time.deltaTime / 50);
+            this.mixer.update(Time.deltaTime);
           
         }
     }
