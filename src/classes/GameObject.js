@@ -27,11 +27,11 @@ export default class GameObject{
         this.rotation.z += degrees * axis.z;
     }
 
-    translate(newPosition){
+    setPostion(newPosition){
         this.position = newPosition;
 
         if (this.mesh !== null)
-            this.mesh.translate.position = new THREE.Vector3(this.position.x, this.position.y, this.position.z);
+            this.mesh.translate.position.set(new THREE.Vector3(this.position.x, this.position.y, this.position.z));
     }
 
     setScale(newScale){

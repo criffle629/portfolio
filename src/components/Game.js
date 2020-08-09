@@ -7,12 +7,12 @@ import SkinnedMesh from '../classes/SkinnedMesh';
 import Mesh from '../classes/Mesh';
 import Input from '../classes/Input';
 import Scene from '../classes/Scene';
+import Camera from '../classes/Camera';
 
 export default class Game extends React.Component {
     constructor(props) {
         super(props);
         this.mixer = null;
-        this.camera = null;
         this.renderer = null;
         this.clock = null;
         this.light = null;
@@ -22,7 +22,7 @@ export default class Game extends React.Component {
 
     Load = () => {
         this.clock = new Clock(true);
-        this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        
         this.renderer = new THREE.WebGLRenderer({canvas:this.canvas, alpha: false, antialias: true});
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
@@ -54,7 +54,6 @@ export default class Game extends React.Component {
         this.ambientLight = new THREE.AmbientLight( 0xffffff, .5 ); // soft white light
         Scene.add( this.ambientLight );
         
-        this.camera.position.z = 5;
         this.dir = 1;
         this.skinnedMesh = new SkinnedMesh('./assets/models/chris.glb', this.clock, Scene);
 
@@ -69,9 +68,21 @@ export default class Game extends React.Component {
     }
 
     Animate = () => {  
+
+        let move = new THREE.Vector3(0,0,0);
+
+        if (Input.isPressed('w'))
+            move.z = -1 * 5.0 * this.clock.getDelta();
+            if (Input.isPressed('s'))
+            move.z = 1 * 5.0 * this.clock.getDelta();
+            if (Input.isPressed('a'))
+            move.x = -1 * 5.0 * this.clock.getDelta();   
+            if (Input.isPressed('d'))
+            move.x = 1 * 5.0 * this.clock.getDelta();
+        Camera.Move(move);
         console.log(Input.isPressed('w'));
         this.skinnedMesh.Animate(this.clock.getDelta());
-        this.renderer.render(Scene.getScene(), this.camera);
+        this.renderer.render(Scene.getScene(), Camera.mainCamera);
         requestAnimationFrame(this.Animate);
 
     }
