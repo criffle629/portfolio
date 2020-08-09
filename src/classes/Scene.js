@@ -3,11 +3,11 @@ import * as THREE from "three";
 
 class SceneManager{
     constructor(){
-        this.scene = null;
+        this.scene = new THREE.Scene();
     }
 
     createScene(){
-        this.scene = new THREE.Scene();
+       
     }
     add(obj){
         this.scene.add(obj);
@@ -19,5 +19,6 @@ class SceneManager{
 }
 
 const Scene =  new SceneManager();
+Object.freeze(Scene);
 
 export default Scene;

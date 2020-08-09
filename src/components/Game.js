@@ -22,8 +22,6 @@ export default class Game extends React.Component {
 
     Load = () => {
         this.clock = new Clock(true);
-
-        Scene.createScene();
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.renderer = new THREE.WebGLRenderer({canvas:this.canvas, alpha: false, antialias: true});
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -32,8 +30,6 @@ export default class Game extends React.Component {
         this.light = new THREE.DirectionalLight(0xffffff, 3);
  
         var d = 5;
-  
-
         this.light.castShadow = true;
 		this.light.shadow.camera.left = - d;
 		this.light.shadow.camera.right = d;
