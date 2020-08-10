@@ -4,7 +4,7 @@ import MathTools from './MathTools';
 
 export default class Vector3{
     
-     constructor(x = 0.0, y = 0.0 ,z = 0.0){
+    constructor(x = 0.0, y = 0.0 ,z = 0.0){
         this.x = x;
         this.y = y;
         this.z = z;
@@ -128,8 +128,12 @@ export default class Vector3{
         this.z *= -1.0;
     }
 
-    to3jsV3(){
+    to3jsV3 = () =>{
         return new THREE.Vector3(this.x, this.y, this.z);
+    }
+
+    static toJSV3(v){
+        return new THREE.Vector3(v.x, v.y, v.z);
     }
 
     toString()
