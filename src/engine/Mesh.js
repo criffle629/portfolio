@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Clock, WebGLGeometries } from 'three';
 import GameObject from "./GameObject";
-import Scene from '../classes/Scene';
+import Scene from './Scene';
 
 export default class Mesh extends GameObject{
     constructor(path) {

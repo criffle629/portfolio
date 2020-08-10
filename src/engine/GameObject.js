@@ -14,17 +14,18 @@ export default class GameObject{
         this.mesh = null;
     }
    
-    setRotation(degrees, axis){
-        
-        this.rotationå.x = degrees * axis.x;
-        this.rotation.y = degrees * axis.y;
-        this.rotation.z = degrees * axis.z;
+    setRotation(degrees){
+        this.rotation = degrees;
+
+        if (this.mesh !== null)
+            this.mesh.rotation.set(this.rotation.x, this.rotation.y, this.rotation.z);
     }
 
-    rotate(degrees, axis){    
-        this.rotation.x += degrees * axis.x;
-        this.rotation.y += degrees * axis.y;
-        this.rotation.z += degrees * axis.z;
+    rotate(degrees){    
+        this.rotation = Vector3.add(this.rotation, degrees);
+
+        if (this.mesh !== null)
+            this.mesh.rotation.set(this.rotation.x, this.rotation.y, this.rotation.z);
     }
 
     setPostion(newPosition){
@@ -32,6 +33,16 @@ export default class GameObject{
 
         if (this.mesh !== null)
             this.mesh.translate.position.set(new THREE.Vector3(this.position.x, this.position.y, this.position.z));
+    }
+
+    move(pos){
+        this.position = Vector3.add(this.position, newPosition);
+
+        if (this.mesh !== null){
+            this.mesh.translateX(pos.x);
+            this.mesh.translateY(pos.y);
+            this.mesh.translateZ(pos.z);
+        }
     }
 
     setScale(newScale){
@@ -42,5 +53,17 @@ export default class GameObject{
         this.scale.x += scaleVector.x;
         this.scale.y += scaleVector.y;
         this.scale.z += scaleVector.z;
+    }
+
+    update(){
+
+
+        
+    }
+
+    render(){
+        if (this.mesh === null)
+            return;
+            
     }
 }

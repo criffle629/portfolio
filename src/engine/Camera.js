@@ -16,6 +16,10 @@ class CameraManager{
         this.mainCamera.translateZ(pos.z);
     }
 
+    Rotate(rot){
+        this.mainCamera.rotation.set(rot.x, rot.y, rot.z);
+    }
+
     SetPosition(pos){
         this.mainCamera.position.set(pos.x, pos.y, pos.z);
     }

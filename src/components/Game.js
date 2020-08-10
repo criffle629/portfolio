@@ -3,12 +3,12 @@ import React from 'react';
 import * as THREE from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Clock, Vector3 } from 'three';
-import SkinnedMesh from '../classes/SkinnedMesh';
-import Mesh from '../classes/Mesh';
-import Input from '../classes/Input';
-import Scene from '../classes/Scene';
-import Camera from '../classes/Camera';
-import Time from '../classes/Time';
+import SkinnedMesh from '../engine/SkinnedMesh';
+import Mesh from '../engine/Mesh';
+import Input from '../engine/Input';
+import Scene from '../engine/Scene';
+import Camera from '../engine/Camera';
+import Time from '../engine/Time';
 
 export default class Game extends React.Component {
     constructor(props) {

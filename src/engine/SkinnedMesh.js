@@ -2,8 +2,8 @@
 import * as THREE from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import GameObject from "./GameObject";
-import Scene from '../classes/Scene';
-import Time from '../classes/Time';
+import Scene from './Scene';
+import Time from './Time';
 
 export default class SkinnedMesh extends GameObject{
     constructor(path) {

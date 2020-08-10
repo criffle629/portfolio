@@ -1,4 +1,5 @@
 'use strict';
+import * as THREE from "three";
 import MathTools from './MathTools';
 
 export default class Vector3{
@@ -125,6 +126,10 @@ export default class Vector3{
         this.x *= -1.0;
         this.y *= -1.0;
         this.z *= -1.0;
+    }
+
+    to3jsV3(){
+        return new THREE.Vector3(this.x, this.y, this.z);
     }
 
     toString()
