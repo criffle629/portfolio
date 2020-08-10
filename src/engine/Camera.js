@@ -1,13 +1,14 @@
 'use strict';
 import * as THREE from "three";
+import Scene from "./Scene";
 
 class CameraManager{
     constructor(){
-        this.mainCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.mainCamera = new THREE.PerspectiveCamera(60, 1024 / 600, 0.1, 1000);
     }
 
     Configure(fov, aspect, zNear, zFar){
-        this.mainCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.mainCamera = new THREE.PerspectiveCamera(fov, aspect, zNear, zFar);
     }
 
     Move(pos){

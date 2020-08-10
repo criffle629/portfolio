@@ -8,6 +8,9 @@ class SceneManager{
         this.scene = new THREE.Scene();
         this.enabledObjects = {};
         this.disabledObjects = {};
+        this.screenWidth = 1024;
+        this.screenHeight = 600;
+        this.aspectRatio = 1024 / 600;
     }
     
     add(obj){
@@ -52,9 +55,16 @@ class SceneManager{
             this.enabledObjects[obj].render();
         }
     }
+
+    setScreenSize(width, height){
+        this.screenWidth = width;
+        this.screenHeight = height;
+
+        this.aspectRatio = width / height;
+    }
 }
 
 const Scene =  new SceneManager();
-Object.freeze(Scene);
+ 
 
 export default Scene;
