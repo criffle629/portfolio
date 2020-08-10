@@ -24,7 +24,6 @@ class CameraManager{
     SetPosition(pos){
         this.mainCamera.position.set(pos.x, pos.y, pos.z);
     }
-    
 }
 
 const Camera = new CameraManager();

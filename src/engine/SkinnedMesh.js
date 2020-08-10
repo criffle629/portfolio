@@ -5,9 +5,13 @@ import Scene from './Scene';
 import Time from './Time';
 
 export default class SkinnedMesh{
+
     constructor(path) {
         this.mixer = null;
         this.action = null;
+        this.meshData = null;
+        this.mesh = null;
+
         this.LoadMesh(path);
     }
 
@@ -15,17 +19,15 @@ export default class SkinnedMesh{
 
         let loader = new GLTFLoader();
 
-        let mesh = null;
-
         await loader.load(path, (gltf) => {
-            mesh = new THREE.SkinnedMesh(gltf);
+            this.meshData = new THREE.SkinnedMesh(gltf);
  
             this.mixer = new THREE.AnimationMixer(gltf.scene);
             this.mixer.timeScale = 1;
             let skeleton = new THREE.SkeletonHelper( gltf.scene );
             skeleton.visible = false;
             Scene.add(skeleton);
-            let clip = THREE.AnimationClip.findByName(mesh, 'Walk');
+            let clip = THREE.AnimationClip.findByName(this.meshData, 'Walk');
             
             this.action = this.mixer.clipAction(clip);
             this.action.play();
@@ -39,6 +41,19 @@ export default class SkinnedMesh{
         });
     }
 
+    playAnimation(animation){
+
+        if (this.meshData === null)
+            return;
+
+        let clip = THREE.AnimationClip.findByName(this.meshData, animation);
+            
+        this.action = this.mixer.clipAction(clip);
+
+        if (this.action !== null)
+            this.action.play();
+    }
+
     Animate () { 
        
         if (this.mixer !== null){
@@ -46,6 +61,4 @@ export default class SkinnedMesh{
           
         }
     }
-
-
 }

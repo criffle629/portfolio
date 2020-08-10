@@ -6,9 +6,6 @@ import Game from './components/Game';
 
 class App extends React.Component {
  
-
-   
-
   render() {
     return (
       <div style={{width: '100%', display:'flex',  justifyContent:'center'}}>
@@ -16,7 +13,6 @@ class App extends React.Component {
         <Game />
      
       </div>
-
     )
   }
 }

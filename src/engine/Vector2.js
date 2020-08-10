@@ -63,8 +63,7 @@ export default  class Vector2{
        return v;
    }
 
-   static distance(v1, v2)
-   {
+   static distance(v1, v2){
     let delta = Vector2.subtract(v2 - v1);
    
     let distance = Math.sqrt(delta.x * delta.x + delta.y * delta.y);
@@ -72,8 +71,7 @@ export default  class Vector2{
        return distance;
    }
 
-   static dot(v1, v2)
-   {
+   static dot(v1, v2){
        return v1.x * v2.x + v1.y * v2.y;
    }
    
@@ -101,8 +99,7 @@ export default  class Vector2{
        this.z /= mag;
    }
    
-   toString()
-   {
+   toString(){
        return '( x: ' + this.x + '  y: ' + this.y + '  z: ' + this.z + ' )';
    }
 

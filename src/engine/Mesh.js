@@ -14,8 +14,6 @@ export default class Mesh {
         let loader = new GLTFLoader();
 
         loader.load(path, (gltf) => {
-         
-        
             gltf.scene.receiveShadow = true;
             gltf.scene.castShadow = true;
 

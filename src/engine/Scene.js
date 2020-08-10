@@ -4,6 +4,7 @@ import GameObect from './GameObject';
 import Camera from './Camera';
 
 class SceneManager{
+    
     constructor(){
         this.scene = new THREE.Scene();
         this.enabledObjects = {};
@@ -50,7 +51,6 @@ class SceneManager{
             this.enabledObjects[obj].update();
         }
 
-
         for (let obj in this.enabledObjects){
             this.enabledObjects[obj].render();
         }
@@ -65,6 +65,5 @@ class SceneManager{
 }
 
 const Scene =  new SceneManager();
- 
 
 export default Scene;

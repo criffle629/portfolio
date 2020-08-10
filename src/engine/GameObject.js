@@ -18,7 +18,7 @@ export default class GameObject{
         this.texture = null;
         this.model = null;
         this.skinnedMesh = skinnedMesh;
-
+        this.forward = Vector3.forward;
         this.objID = GameObject.id;
 
         GameObject.id++;
@@ -27,7 +27,6 @@ export default class GameObject{
             this.loadMesh(meshPath, skinnedMesh);
 
         Scene.addGameObject(this);
-
     }
    
     setEnabled(value){
@@ -45,31 +44,31 @@ export default class GameObject{
         else
             this.model = new Mesh(meshPath);
     }
+
     setRotation(degrees){
         this.rotation = degrees;
 
-        if ( this.model !== null && this.model.mesh !== 'undefined' && this.model.mixer !== null)
+        if ( this.model !== null && this.model.hasOwnProperty('mesh') && this.model.mesh !== null)
             this.model.mesh.rotation.set(this.rotation.x, this.rotation.y, this.rotation.z);
     }
 
     rotate(degrees){    
         this.rotation = Vector3.add(this.rotation, degrees);
 
-        if ( this.model !== null && this.model.mesh !== 'undefined' && this.model.mixer !== null)
+        if ( this.model !== null && this.model.hasOwnProperty('mesh') && this.model.mesh !== null)
             this.model.mesh.rotation.set(this.rotation.x, this.rotation.y, this.rotation.z);
     }
 
     setPosition(newPosition){
         this.position = newPosition;
 
-        
-      
+
     }
 
     move(pos){
         this.position = Vector3.add(this.position, pos);
 
-        if ( this.model !== null && this.model.mesh !== 'undefined' && this.model.mixer !== null){
+        if ( this.model !== null && this.model.hasOwnProperty('mesh') && this.model.mesh !== null){
             this.model.mesh.translateX(pos.x);
             this.model.mesh.translateY(pos.y);
             this.model.mesh.translateZ(pos.z);
@@ -88,19 +87,17 @@ export default class GameObject{
 
     update(){
 
-        if ( this.model === null || this.model.mesh === 'undefined' || this.model.mixer === null)
+        if ( this.model === null || !this.model.hasOwnProperty('mesh') && this.model.mesh !== null)
             return;
  
-        if ( this.model !== null && this.model.mesh !== 'undefined' && this.model.mixer !== null)
-            this.model.mesh.position.set(this.position.x, this.position.y, this.position.z);
+      
+        this.model.mesh.position.set(this.position.x, this.position.y, this.position.z);
+        
         
     }
 
     render(){
-
-        
         if (this.skinnedMesh)
             this.model.Animate();
-            
     }
 }

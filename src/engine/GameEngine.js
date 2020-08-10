@@ -6,10 +6,10 @@ import Time from '../engine/Time';
 import { Vector3 } from 'three';
 import Input from '../engine/Input';
 import Mesh from '../engine/Mesh';
+import GameObject from "./GameObject";
 
 class Engine{
     constructor(){
-
 
         this.light = new THREE.DirectionalLight(0xffffff, 3);
  
@@ -41,8 +41,8 @@ class Engine{
         this.dir = 1;
         this.player = new Player('./assets/models/chris.glb', true);
         this.player.setPosition(new Vector3(0,0,-10));
-        this.building = new Mesh('./assets/models/garage.glb');
-      
+        this.building = new GameObject('./assets/models/garage.glb');
+        this.building.setPosition(new Vector3(0.0, 5.0, 0.0));
 
         this.lightDir = new THREE.Vector3(0,0,0);
         this.lightRot = 0;
@@ -53,41 +53,17 @@ class Engine{
         this.renderer = new THREE.WebGLRenderer({canvas:canvas, alpha: false, antialias: true});
         this.renderer.setSize(width, height);
     }
+
     GetRenderer(){
         return this.renderer;
     }
 
     Animate = () => {  
-
+        
         Time.Update();
-        console.log(Time.deltaTime)
-        let zMove = 0;
-        let xMove = 0;
-        
-        if (Input.isPressed('w'))
-            zMove = -1;
-        
-        if (Input.isPressed('s'))
-            zMove= 1;
-
-        if (Input.isPressed('a'))
-            xMove = -1;   
-        
-        if (Input.isPressed('d'))
-            xMove = 1;
-    
-        let moveDir = new THREE.Vector3(xMove, 0, zMove);
-        moveDir.normalize();
-    
-      
-        moveDir = new THREE.Vector3(    moveDir.x * 20 * Time.deltaTime, 0,   moveDir.z * 20 * Time.deltaTime);
-        Camera.Move(moveDir);
-        
         Scene.update();
         this.renderer.render(Scene.getScene(), Camera.mainCamera);
         requestAnimationFrame(this.Animate);
-        
-
     }
 }
 

@@ -6,14 +6,10 @@ class InputManager{
     }
 
     addKey(key){
-  
         this.inputQueue.set(key, 1);
-
-        console.log(this.inputQueue);
     }
 
     removeKey(key){
-   
        this.inputQueue.delete(key);
     }
 

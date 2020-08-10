@@ -84,8 +84,7 @@ export default class Vector3{
         return v;
     }
 
-    static distance(v1, v2)
-    {
+    static distance(v1, v2){
         let delta = Vector3.subtract(v2 - v1);
     
         let distance = Math.sqrt(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z);
@@ -93,11 +92,37 @@ export default class Vector3{
         return distance;
     }
 
-    static dot(v1, v2)
-    {
+    static dot(v1, v2){
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
     
+    static normalize(v1){
+        v1.normalize();
+        return v1;
+    }
+
+    static equals(v1, v2){
+        return (v1.x > v2.x - Number.EPSILON && v1.x < v2.x + Number.EPSILON) &&
+               (v1.y > v2.y - Number.EPSILON && v1.y < v2.y + Number.EPSILON) &&
+               (v1.z > v2.z - Number.EPSILON && v1.z < v2.z + Number.EPSILON);
+    }
+
+    static angle(v1, v2){
+        let cp = Vector3.cross(v1, v2);
+
+        let angle = Math.atan2(cp.length(), Vector3.dot(v1, v2));
+
+        return Vector3.dot(cp, Vector3.up) < 0 ? -angle: angle;
+    }
+
+    static negate(v1){
+        let vec = v1;
+        vec.x *= -1.0;
+        vec.y *= -1.0;
+        vec.z *= -1.0;
+
+        return vec;
+    }
     length(){
         return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
@@ -128,7 +153,7 @@ export default class Vector3{
         this.z *= -1.0;
     }
 
-    to3jsV3 = () =>{
+    to3jsV3(){
         return new THREE.Vector3(this.x, this.y, this.z);
     }
 
@@ -136,9 +161,7 @@ export default class Vector3{
         return new THREE.Vector3(v.x, v.y, v.z);
     }
 
-    toString()
-    {
+    toString(){
         return '( x: ' + this.x + '  y: ' + this.y + '  z: ' + this.z + ' )';
     }
-
 }

@@ -12,8 +12,7 @@ class TimeManager{
         this.deltaTime = this.clock.getDelta();  
     }
 
-    DeltaTime()
-    {
+    DeltaTime(){
         return this.deltaTime;
     }
 }
