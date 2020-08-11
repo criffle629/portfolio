@@ -1,5 +1,3 @@
-'use strict';
-
 export default class MathTools
 {
     static get rad2Deg(){

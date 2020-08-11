@@ -1,5 +1,3 @@
-'use strict';
-
 export default  class Vector2{
     
     constructor(x = 0.0, y = 0.0){

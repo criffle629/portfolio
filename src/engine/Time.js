@@ -1,4 +1,3 @@
-'use strict';
 import { Clock } from "three";
 
 class TimeManager{

@@ -1,4 +1,3 @@
-'use strict';
 import * as THREE from "three";
 import SkinnedMesh from '../engine/SkinnedMesh';
 import GameObject from '../engine/GameObject';

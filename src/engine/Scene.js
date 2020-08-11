@@ -1,10 +1,9 @@
-'use strict';
 import * as THREE from "three";
 import GameObect from './GameObject';
 import Camera from './Camera';
 
 class SceneManager{
-    
+
     constructor(){
         this.scene = new THREE.Scene();
         this.enabledObjects = {};

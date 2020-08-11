@@ -1,4 +1,3 @@
-'use strict';
 import * as THREE from "three";
 import Vector3 from './Vector3';
 import MathTools from './MathTools';
@@ -87,7 +86,7 @@ export default class GameObject{
 
     update(){
 
-        if ( this.model === null || !this.model.hasOwnProperty('mesh') && this.model.mesh !== null)
+        if ( (this.model === null || !this.model.hasOwnProperty('mesh')) && this.model.mesh !== null)
             return;
  
       

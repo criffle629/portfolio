@@ -1,5 +1,3 @@
-'use strict';
-
 class InputManager{
     constructor(){
         this.inputQueue = new Map();

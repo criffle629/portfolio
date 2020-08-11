@@ -1,4 +1,3 @@
-'use strict';
 import * as THREE from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Scene from './Scene';
@@ -11,7 +10,7 @@ export default class SkinnedMesh{
         this.action = null;
         this.meshData = null;
         this.mesh = null;
-
+        this.currentAnimation = '';
         this.LoadMesh(path);
     }
 
@@ -27,7 +26,8 @@ export default class SkinnedMesh{
             let skeleton = new THREE.SkeletonHelper( gltf.scene );
             skeleton.visible = false;
             Scene.add(skeleton);
-            let clip = THREE.AnimationClip.findByName(this.meshData, 'Walk');
+
+            let clip = THREE.AnimationClip.findByName(this.meshData, 'Rest');
             
             this.action = this.mixer.clipAction(clip);
             this.action.play();
@@ -46,12 +46,17 @@ export default class SkinnedMesh{
         if (this.meshData === null)
             return;
 
-        let clip = THREE.AnimationClip.findByName(this.meshData, animation);
+        if (this.currentAnimation !== animation)
+        {
+            this.currentAnimation = animation;
+            this.action.stop();
+            let clip = THREE.AnimationClip.findByName(this.meshData, animation);
             
-        this.action = this.mixer.clipAction(clip);
-
-        if (this.action !== null)
-            this.action.play();
+            this.action = this.mixer.clipAction(clip);
+            
+            if (this.action !== null)
+                this.action.play();
+        }
     }
 
     Animate () { 

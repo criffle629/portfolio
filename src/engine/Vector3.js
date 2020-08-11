@@ -1,4 +1,3 @@
-'use strict';
 import * as THREE from "three";
 import MathTools from './MathTools';
 

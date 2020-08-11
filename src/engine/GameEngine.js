@@ -10,7 +10,6 @@ import GameObject from "./GameObject";
 
 class Engine{
     constructor(){
-
         this.light = new THREE.DirectionalLight(0xffffff, 3);
  
         var d = 5;
@@ -59,7 +58,6 @@ class Engine{
     }
 
     Animate = () => {  
-        
         Time.Update();
         Scene.update();
         this.renderer.render(Scene.getScene(), Camera.mainCamera);
