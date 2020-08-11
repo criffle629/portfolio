@@ -40,8 +40,6 @@ class Engine{
         this.dir = 1;
         this.player = new Player('./assets/models/chris.glb', true);
         this.player.setPosition(new Vector3(0,0,-10));
-       // this.building = new GameObject('./assets/models/garage.glb');
-       // this.building.setPosition(new Vector3(0.0, 5.0, 0.0));
 
         this.scene = new GameObject('./assets/models/scene.glb');
         this.scene.setRotation(new Vector3(0.0, 180.0, 0.0));
