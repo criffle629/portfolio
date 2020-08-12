@@ -52,10 +52,10 @@ export default class Player extends GameObject{
 
         this.setRotation(new Vector3(0.0, angle  , 0.0));
 
-        const camPos = new THREE.Vector3(this.position.x , 5, this.position.z + 15);
+        const camPos = new THREE.Vector3(this.position.x , 5, this.position.z + 5);
         Camera.SetPosition(camPos);
         Camera.Rotate(new Vector3(-40.0 * MathTools.deg2Rad , 0, 0));
     
- 
+        super.update();
     }
 }

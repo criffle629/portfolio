@@ -154,7 +154,7 @@ export default class Vector3{
 
     to3jsV3(){
         return new THREE.Vector3(this.x, this.y, this.z);
-    }
+    }                   
 
     static toJSV3(v){
         return new THREE.Vector3(v.x, v.y, v.z);

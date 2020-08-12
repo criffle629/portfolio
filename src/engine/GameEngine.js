@@ -4,8 +4,7 @@ import Scene from '../engine/Scene';
 import Camera from '../engine/Camera';
 import Time from '../engine/Time';
 import { Vector3 } from 'three';
-import Input from '../engine/Input';
-import Mesh from '../engine/Mesh';
+import Physics from '../engine/Physics';
 import GameObject from "./GameObject";
 
 class Engine{
@@ -34,17 +33,21 @@ class Engine{
         this.light.target.translateY(-1);
         this.light.target.translateZ(-1);
 
-        this.ambientLight = new THREE.AmbientLight( 0xffffff, .5 ); // soft white light
+        this.ambientLight = new THREE.AmbientLight( 0xffffff, .5 ); 
         Scene.add( this.ambientLight );
         
         this.dir = 1;
         this.player = new Player('./assets/models/chris.glb', true);
-        this.player.setPosition(new Vector3(0,0,-10));
-
+        this.player.setPosition(new Vector3(0, 100, 0));
+        this.player.addRigidBody(1, Physics.createBoxShape(new Vector3(0.5, 1.0, 0.5)), new Vector3(0,10, 0));
         this.scene = new GameObject('./assets/models/scene.glb');
         this.scene.setRotation(new Vector3(0.0, 180.0, 0.0));
         this.lightDir = new THREE.Vector3(0,0,0);
         this.lightRot = 0;
+
+        this.ground = new GameObject();
+        this.ground.addRigidBody(0,  Physics.createBoxShape(new Vector3(1000, 0.25, 1000)), Vector3.zero);
+
         requestAnimationFrame(this.Animate);  
     }
 
@@ -60,6 +63,7 @@ class Engine{
     Animate = () => {  
         Time.Update();
         Scene.update();
+        Physics.update();
         this.renderer.render(Scene.getScene(), Camera.mainCamera);
         requestAnimationFrame(this.Animate);
     }
