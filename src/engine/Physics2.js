@@ -1,76 +1,89 @@
-import CANNON from 'cannon';
-import Vector3 from './Vector3';
+import Ammo from 'ammo.js';
+import Time from './Time';
 
-class PhysicsEngine2{
+class PhysicsEngine{
 
     static PhysicShapes = {
-        SPHERE: 0,
-        BOX: 1,
-        PLANE: 2,
-        CAPSULE: 3,
+        SPHERE:   0,
+        BOX:      1,
+        PLANE:    2,
+        CAPSULE:  3,
+        CYLINDER: 4, 
+        CONE:     5,
     };
 
     constructor(){
-        this.world = new CANNON.World();
-        this.world.gravity.set(0, -2.8, 0);
-        this.world.defaultContactMaterial.friction = 0;
-        this.world.defaultContactMaterial.restitution = 0.0;
 
+        this.collisionConfig      = new Ammo.btDefaultCollisionConfiguration();
+        this.dispatcher           = new Ammo.btCollisionDispatcher(this.collisionConfig);
+        this.overlappingPairCache = new Ammo.btDbvtBroadphase();
+        this.solver               = new Ammo.btSequentialImpulseConstraintSolver();
+        this.world                = new Ammo.btDiscreteDynamicsWorld(this.dispatcher, this.overlappingPairCache, this.solver, this.collisionConfig );
+
+        this.world.setGravity(new Ammo.btVector3(0, -9.8, 0));
+        
         this.rigidBodies = [];
     }
 
     setGravity(v){
-        this.world.gravity.set(v.x, v.y, v.z);
+        this.world.setGravity(new Ammo.btVector3(v.x, v.y, v.z));
     }
  
-    addRigidBody(mass = 1, shape = null, position = Vector3.zero){
+    addRigidBody(body){
 
-        if (shape === null) return;
-
-        if (!Array.isArray(shape)){
-        let rigidBody = new CANNON.Body({
-            mass: mass,
-            position: position,
-            shape: shape,
-        });
-
-            this.rigidBodies.push(rigidBody);
-            this.world.addBody(rigidBody);
-            return this.rigidBodies[this.rigidBodies.length - 1];
-        }
-        else{
-            let rigidBody = new CANNON.Body({
-                mass: mass,
-                position: position,
-            });
-            
-            for (let i = 0; i < shape.length; i++){
-                rigidBody.addShape(shape[i]);
-            }
-
-            rigidBody.updateMassProperties();
-            rigidBody.velocity.set(0,0,0); 
-            rigidBody.angularVelocity.set(0,0,0);
-            rigidBody.type = CANNON.Body.STATIC;
-            this.rigidBodies.push(rigidBody);
-            this.world.addBody(rigidBody);
-            return this.rigidBodies[this.rigidBodies.length - 1];
-        }
+        if (body === null) return;
         
+        body.activate();
+        this.world.addRigidBody(body);
+
+   
+        this.rigidBodies.push(body);
+
+        return this.rigidBodies[this.rigidBodies.length - 1];
     }
 
     createSphereShape(radius = 1){
-        return new CANNON.Sphere(radius);
+        let shape = new Ammo.btSphereShape(radius);
+        shape.setMargin(0.05);
+
+        return shape;
     }
 
     createBoxShape(boxSize){
-        return new CANNON.Box(new CANNON.Vec3(boxSize.x, boxSize.y, boxSize.z));
+        let shape = new Ammo.btBoxShape(new Ammo.btVector3(boxSize.x * 0.5, boxSize.y * 0.5, boxSize.z * 0.5));
+        shape.setMargin(0.05);
+
+        return shape;
     }
 
-    createPlaneShape(){
-        return new CANNON.Plane();
+    createPlaneShape(normal){
+        let shape = new Ammo.btPlaneShape(new Ammo.btVector3(normal.x, normal.y, normal.z), 0);
+        shape.setMargin(0.05);
+
+        return shape;
     }
     
+    createCapsuleShape(radius, height, direction){
+        let shape = new Ammo.btCapsuleShape(radius, height, new Ammo.btVector3(direction.x, direction.y, direction.z));
+        shape.setMargin(0.05);
+
+        return shape;
+    }
+
+    createCylinderShape(radius, height, direction){
+        let shape = new Ammo.btCylinderShape(radius, height, new Ammo.btVector3(direction.x, direction.y, direction.z));
+        shape.setMargin(0.05);
+
+        return shape;
+    }
+
+    createConeShape(radius, height, direction){
+        let shape = new Ammo.btConeShape(radius, height, new Ammo.btVector3(direction.x, direction.y, direction.z));
+        shape.setMargin(0.05);
+
+        return shape;
+    }
+
     createMeshShape(mesh){
         return new Promise((resolve, reject) => {
 
@@ -86,7 +99,7 @@ class PhysicsEngine2{
     }
  
     parseMesh(mesh){
-    
+    /*
         return new Promise( (resolve, reject) => { 
             
         const shapes =  [];
@@ -135,13 +148,14 @@ class PhysicsEngine2{
             });
             resolve(shapes);
         });
+        */
     }
 
     update(){
-        this.world.step(1/60);
+        this.world.stepSimulation( Time.deltaTime, 10);
     }
 }
 
-const Physics2 = new PhysicsEngine2();
+const Physics = new PhysicsEngine();
 
-export default Physics2;
+export default Physics;

@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import MathTools from './MathTools';
+import Ammo from 'ammo.js';
 
 export default class Vector3{
     
@@ -8,7 +9,49 @@ export default class Vector3{
         this.y = y;
         this.z = z;
     }
- 
+
+    length(){
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    }
+
+    magnitude(){
+        return this.length();
+    }
+
+    normalize(){
+        let mag = this.magnitude();
+        
+        if (MathTools.approximate(mag, 0.0)){
+            this.x = 0.0;
+            this.y = 0.0;
+            this.z = 0.0;
+
+            return;
+        }
+
+        this.x /= mag;
+        this.y /= mag;
+        this.z /= mag;
+    }
+
+    negate(){
+        this.x *= -1.0;
+        this.y *= -1.0;
+        this.z *= -1.0;
+    }
+
+    to3jsV3(){
+        return new THREE.Vector3(this.x, this.y, this.z);
+    }                   
+
+    To_btVector3(){
+        return new Ammo.btVector3(this.x, this.y, this.z);
+    }
+
+    toString(){
+        return '( x: ' + this.x + '  y: ' + this.y + '  z: ' + this.z + ' )';
+    }
+    
     static get zero()    { return  new Vector3( 0.0,  0.0,  0.0); }
     static get one()     { return  new Vector3( 1.0,  1.0,  1.0); }
     static get up()      { return  new Vector3( 0.0,  1.0,  0.0); }
@@ -122,45 +165,14 @@ export default class Vector3{
 
         return vec;
     }
-    length(){
-        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+   
+    static toBTV3(v){
+        return new Ammo.btVector3(v.x, v.y, v.z);
     }
-
-    magnitude(){
-        return this.length();
-    }
-
-    normalize(){
-        let mag = this.magnitude();
-        
-        if (MathTools.approximate(mag, 0.0)){
-            this.x = 0.0;
-            this.y = 0.0;
-            this.z = 0.0;
-
-            return;
-        }
-
-        this.x /= mag;
-        this.y /= mag;
-        this.z /= mag;
-    }
-
-    negate(){
-        this.x *= -1.0;
-        this.y *= -1.0;
-        this.z *= -1.0;
-    }
-
-    to3jsV3(){
-        return new THREE.Vector3(this.x, this.y, this.z);
-    }                   
 
     static toJSV3(v){
         return new THREE.Vector3(v.x, v.y, v.z);
     }
 
-    toString(){
-        return '( x: ' + this.x + '  y: ' + this.y + '  z: ' + this.z + ' )';
-    }
+  
 }

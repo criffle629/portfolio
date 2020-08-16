@@ -4,7 +4,7 @@ import Scene from '../engine/Scene';
 import Camera from '../engine/Camera';
 import Time from '../engine/Time';
 import { Vector3 } from 'three';
-import Physics from '../engine/Physics';
+import Physics from '../engine/Physics2';
 import GameObject from "./GameObject";
 
 class Engine{
@@ -23,22 +23,22 @@ class Engine{
         this.ambientLight = new THREE.AmbientLight( 0xffffff, .5 ); 
         Scene.add( this.ambientLight );
 
-        this.player = new Player('./assets/models/player2.glb', true);
-        this.player.setPosition(new Vector3(0,12, 0));
-        this.player.addRigidBody(1, Physics.createBoxShape(new Vector3(0.5, 0.5, 0.5)), new Vector3(0,20, 0));
+        this.player = new Player('./assets/models/chris.glb', true);
+        this.player.setPosition(new Vector3(0,100, 0));
+        this.player.addRigidBody(1, Physics.createBoxShape(new Vector3(0.5, 0.5, 0.5)), new Vector3(0,100, 0));
      
         this.scene = new GameObject();
         this.scene.loadMesh('./assets/models/scene.glb')
         .then(obj => {
             this.scene.model = obj;
             this.scene.setRotation(new Vector3(0.0, 0.0, 0.0));
-            Physics.createMeshShape(this.scene.model.meshData)
+            /*Physics.createMeshShape(this.scene.model.meshData)
             .then(shape => {
                 this.scene.addRigidBody(0, shape, Vector3.zero);
             })
             .catch(e => {
                 console.log(e);
-            });
+            });*/
         })
         .catch(e => {
             console.log(e);

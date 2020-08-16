@@ -5,7 +5,6 @@ import Camera from '../engine/Camera';
 import Time from '../engine/Time';
 import Vector3 from '../engine/Vector3';
 import MathTools from '../engine/MathTools';
-import CANNON from 'cannon';
 
 export default class Player extends GameObject{
 
@@ -37,7 +36,7 @@ export default class Player extends GameObject{
         moveDir.normalize();
 
         if (!Vector3.equals(moveDir, Vector3.zero)){
-            this.rigidBody.velocity = new CANNON.Vec3(0, this.rigidBody.velocity.y, 0);
+            //this.rigidBody.setMotionState().velocity = new Ammo.btVector3(0, this.rigidBody.getMotionState().velocity.y(), 0);
             this.forward = moveDir;
             this.changeAnimation('Walking');
         }
@@ -52,9 +51,9 @@ export default class Player extends GameObject{
 
         this.setRotation(new Vector3(0.0, angle  , 0.0));
 
-        const camPos = new THREE.Vector3(this.position.x , 3, this.position.z + 2);
+        const camPos = new THREE.Vector3(this.position.x ,this.position.y + 3, this.position.z + 2);
         Camera.SetPosition(camPos);
-        Camera.Rotate(new Vector3(-40.0 * MathTools.deg2Rad , 0, 0));
+        Camera.Rotate(new Vector3(-20.0 * MathTools.deg2Rad , 0 * MathTools.deg2Rad, 0));
     
         super.update();
     }
