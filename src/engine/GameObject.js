@@ -1,6 +1,4 @@
-import * as THREE from "three";
 import Vector3 from './Vector3';
-import MathTools from './MathTools';
 import SkinnedMesh from './SkinnedMesh';
 import Mesh from './Mesh';
 import Scene from './Scene';
@@ -24,12 +22,47 @@ export default class GameObject{
         this.rigidBody = null;
         GameObject.id++;
 
-        if (meshPath !== null)
-            this.loadMesh(meshPath, skinnedMesh);
-
-        Scene.addGameObject(this);
+        this.LoadModel(meshPath);
     }
    
+    LoadModel(meshPath){
+
+        if (meshPath === null) return; 
+        
+        this.loadMesh(meshPath, this.skinnedMesh)
+        .then(data => {
+            this.model = data;
+        })
+        .catch(e => {
+            console.log(e);
+        });
+        Scene.addGameObject(this);
+    }
+
+
+    async loadMesh(meshPath, skinnedMesh){
+
+        return new Promise((resolve, reject) => {
+            if (skinnedMesh){
+            this.model =  new SkinnedMesh(meshPath);
+                resolve(this.model);
+            }
+            else
+            {
+                this.model =  new Mesh();
+                this.model.LoadMesh(meshPath)
+                .then(data => {
+                    resolve(data);
+                })
+                .catch(e => {
+                    reject(e);
+                });
+            }
+        });
+    
+    }
+
+
     setEnabled(value){
         this.isEnabled = value;
 
@@ -37,13 +70,6 @@ export default class GameObject{
             Scene.enableObject(this);
         else
             Scene.disableObject(this);
-    }
-
-    loadMesh(meshPath, skinnedMesh){
-        if (skinnedMesh)
-            this.model = new SkinnedMesh(meshPath);
-        else
-            this.model = new Mesh(meshPath);
     }
 
     setRotation(degrees){
@@ -101,7 +127,7 @@ export default class GameObject{
 
         if (this.model.mesh === null)
             return;
-
+            
         if (this.rigidBody !== null){
          
             const euler = new CANNON.Vec3(0,0,0);
@@ -120,10 +146,15 @@ export default class GameObject{
 
     addRigidBody(mass = 1, shape = null, position = Vector3.zero){
         this.rigidBody = Physics.addRigidBody(mass, shape, position);
+        this.rigidBody.addEventListener('collide', this.collision);
     }
 
     render(){
         if (this.skinnedMesh)
             this.model.Animate();
+    }
+
+    collision(col){
+        //console.log(col);
     }
 }

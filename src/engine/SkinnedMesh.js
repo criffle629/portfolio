@@ -23,16 +23,14 @@ export default class SkinnedMesh{
  
             this.mixer = new THREE.AnimationMixer(gltf.scene);
             this.mixer.timeScale = 1;
+
             let skeleton = new THREE.SkeletonHelper( gltf.scene );
             skeleton.visible = false;
             Scene.add(skeleton);
-
-            let clip = THREE.AnimationClip.findByName(this.meshData, 'Rest');
-            
-            this.action = this.mixer.clipAction(clip);
-            this.action.play();
+    
             gltf.scene.receiveShadow = true;
             gltf.scene.castShadow = true;
+            this.meshData = gltf.scene.children;
             this.mesh = gltf.scene;
             Scene.add(gltf.scene);
             
@@ -49,11 +47,13 @@ export default class SkinnedMesh{
         if (this.currentAnimation !== animation)
         {
             this.currentAnimation = animation;
-            this.action.stop();
             let clip = THREE.AnimationClip.findByName(this.meshData, animation);
             
+            if (this.action !== null)
+                this.action.stop();
+
             this.action = this.mixer.clipAction(clip);
-            
+           
             if (this.action !== null)
                 this.action.play();
         }

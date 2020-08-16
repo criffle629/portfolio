@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import Scene from "./Scene";
 
 class CameraManager{
     constructor(){

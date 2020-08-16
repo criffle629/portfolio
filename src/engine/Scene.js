@@ -1,6 +1,4 @@
 import * as THREE from "three";
-import GameObect from './GameObject';
-import Camera from './Camera';
 
 class SceneManager{
 

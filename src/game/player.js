@@ -1,12 +1,11 @@
 import * as THREE from "three";
-import SkinnedMesh from '../engine/SkinnedMesh';
 import GameObject from '../engine/GameObject';
 import Input from '../engine/Input';
 import Camera from '../engine/Camera';
 import Time from '../engine/Time';
 import Vector3 from '../engine/Vector3';
 import MathTools from '../engine/MathTools';
-import { OneMinusDstAlphaFactor } from "three";
+import CANNON from 'cannon';
 
 export default class Player extends GameObject{
 
@@ -38,11 +37,12 @@ export default class Player extends GameObject{
         moveDir.normalize();
 
         if (!Vector3.equals(moveDir, Vector3.zero)){
+            this.rigidBody.velocity = new CANNON.Vec3(0, this.rigidBody.velocity.y, 0);
             this.forward = moveDir;
-            this.changeAnimation('Walk');
+            this.changeAnimation('Walking');
         }
         else{
-            this.changeAnimation('Rest');
+            this.changeAnimation('Standing');
         }
        
         const angle = Vector3.angle(Vector3.back, this.forward); 
@@ -52,10 +52,15 @@ export default class Player extends GameObject{
 
         this.setRotation(new Vector3(0.0, angle  , 0.0));
 
-        const camPos = new THREE.Vector3(this.position.x , 5, this.position.z + 5);
+        const camPos = new THREE.Vector3(this.position.x , 3, this.position.z + 2);
         Camera.SetPosition(camPos);
         Camera.Rotate(new Vector3(-40.0 * MathTools.deg2Rad , 0, 0));
     
         super.update();
+    }
+
+    collision(col){
+  
+     //   col.body.setLinearVelocity(new CANNON.Vec3(0,0,0));
     }
 }
