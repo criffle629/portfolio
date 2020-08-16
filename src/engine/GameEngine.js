@@ -24,7 +24,7 @@ class Engine{
         Scene.add( this.ambientLight );
 
         this.player = new Player('./assets/models/player2.glb', true);
-        this.player.setPosition(new Vector3(0, 2, 0));
+        this.player.setPosition(new Vector3(0,12, 0));
         this.player.addRigidBody(1, Physics.createBoxShape(new Vector3(0.5, 0.5, 0.5)), new Vector3(0,20, 0));
      
         this.scene = new GameObject();

@@ -22,7 +22,7 @@ class PhysicsEngine{
     setGravity(v){
         this.world.gravity.set(v.x, v.y, v.z);
     }
-
+``
     addRigidBody(mass = 1, shape = null, position = Vector3.zero){
 
         if (shape === null) return;
