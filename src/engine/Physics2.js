@@ -1,4 +1,5 @@
-import Ammo from 'ammo.js';
+import Ammo from 'ammo.js'
+
 import Time from './Time';
 
 class PhysicsEngine{
@@ -33,7 +34,6 @@ class PhysicsEngine{
 
         if (body === null) return;
         
-        body.activate();
         this.world.addRigidBody(body);
 
    
@@ -57,8 +57,8 @@ class PhysicsEngine{
     }
 
     createPlaneShape(normal){
-        let shape = new Ammo.btPlaneShape(new Ammo.btVector3(normal.x, normal.y, normal.z), 0);
-        shape.setMargin(0.05);
+        let shape = new Ammo.btStaticPlaneShape(new Ammo.btVector3(normal.x, normal.y, normal.z), 5);
+       
 
         return shape;
     }

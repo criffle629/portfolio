@@ -3,7 +3,7 @@ import MathTools from './MathTools';
 
 export default class Quaternion {
 
-    Quaternion(x = 0.0, y = 0.0, z = 0.0, w = 1.0) {
+    constructor(x = 0.0, y = 0.0, z = 0.0, w = 1.0) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -28,10 +28,10 @@ export default class Quaternion {
 
     Euler() {
         let v = new Vector3();
-
-        v.y = Math.atan2(2.0 * this.w * this.y + 2.0 * this.z * this.x, 1.0 - 2.0 * (this.x * this.x + this.y * this.y)) * MathTools.rad2deg;
-        v.x = Math.asin(2.0 * (this.w * this.x - this.y * this.z)) * MathTools.rad2deg;
-        v.z = Math.atan2(2.0 * this.w * this.z + 2.0 * this.x * this.y, 1.0 - 2.0 * (this.z * this.z + this.x * this.x)) * MathTools.rad2deg;
+   
+        v.y = Math.atan2(2.0 * this.w * this.y + 2.0 * this.z * this.x, 1.0 - 2.0 * (this.x * this.x + this.y * this.y)) * MathTools.rad2Deg;
+        v.x = Math.asin(2.0 * (this.w * this.x - this.y * this.z)) * MathTools.rad2Deg;
+        v.z = Math.atan2(2.0 * this.w * this.z + 2.0 * this.x * this.y, 1.0 - 2.0 * (this.z * this.z + this.x * this.x)) * MathTools.rad2Deg;
         return v;
     }
 

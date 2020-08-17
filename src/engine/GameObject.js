@@ -9,7 +9,7 @@ export default class GameObject {
     static id = 0;
 
     constructor(meshPath = null, skinnedMesh = false) {
-        this.position = new Vector3(0.0, 0.0, 0.0);
+        this.position = new Vector3(0.0, 0.0, 0.0); 
         this.rotation = new Vector3(0.0, 0.0, 0.0);
         this.scale = new Vector3(0.0, 0.0, 0.0);
         this.isEnabled = true;
@@ -37,7 +37,6 @@ export default class GameObject {
             });
         Scene.addGameObject(this);
     }
-
 
     async loadMesh(meshPath, skinnedMesh) {
 
@@ -81,10 +80,10 @@ export default class GameObject {
     rotate(degrees) {
         if (this.rigidBody !== null) {
             const euler = Vector3.zero;
-            this.rigidBody.SetRotation(euler);
+            this.rigidBody.setRotation(euler);
 
             this.rotation = Vector3.add(degrees, new Vector3(euler.x, euler.y, euler.z));
-            this.rigidBody.SetRotation(this.rotation.x, this.rotation.y, this.rotation.z);
+            this.rigidBody.setRotation(this.rotation.x, this.rotation.y, this.rotation.z);
         }
         else
             this.rotation = Vector3.add(this.rotation, degrees);
@@ -94,7 +93,7 @@ export default class GameObject {
         this.position = newPosition;
 
         if (this.rigidBody !== null)
-            this.rigidBody.SetPosition(new Vector3(this.position.x, this.position.y, this.position.z));
+            this.rigidBody.setPosition(new Vector3(this.position.x, this.position.y, this.position.z));
     }
 
     move(pos) {
@@ -102,7 +101,7 @@ export default class GameObject {
         if (this.rigidBody !== null) {
             this.position = this.rigidBody.GetPosition();
             this.position = Vector3.add(this.position, pos);
-            this.rigidBody.SetPosition(new Vector3(this.position.x, this.position.y, this.position.z));
+            this.rigidBody.setPosition(new Vector3(this.position.x, this.position.y, this.position.z));
         }
         else {
             this.position = Vector3.add(this.position, pos);
@@ -135,16 +134,13 @@ export default class GameObject {
         if (this.model.mesh === null)
             return;
 
+        const rot = this.rotation.Euler();
         this.model.mesh.position.set(this.position.x, this.position.y, this.position.z);
-        this.model.mesh.rotation.set(this.rotation.x, this.rotation.y, this.rotation.z);
+        this.model.mesh.rotation.set(rot.x, rot.y, rot.z);
     }
 
     addRigidBody(mass = 1, shape = null, position = Vector3.zero) {
-        this.rigidBody = new RigidBody(position, Vector3.zero, mass);
-        if (shape)
-            this.rigidBody.SetCollisionShape(shape);
-
-        // this.rigidBody.addEventListener('collide', this.collision);
+        this.rigidBody = new RigidBody(position, shape, Vector3.zero, mass);
     }
 
     render() {

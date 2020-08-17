@@ -1,8 +1,5 @@
 import React from 'react';
 import Input from '../engine/Input';
-
-
-
 import GameEngine from '../engine/GameEngine';
 import Scene from '../engine/Scene';
 import Camera from '../engine/Camera';

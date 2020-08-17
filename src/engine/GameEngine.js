@@ -25,13 +25,13 @@ class Engine{
 
         this.player = new Player('./assets/models/chris.glb', true);
         this.player.setPosition(new Vector3(0,100, 0));
-        this.player.addRigidBody(1, Physics.createBoxShape(new Vector3(0.5, 0.5, 0.5)), new Vector3(0,100, 0));
+        this.player.addRigidBody(1, Physics.createBoxShape(new Vector3(0.5, 0.5, 0.5)), new Vector3(0, 100, 0));
      
         this.scene = new GameObject();
         this.scene.loadMesh('./assets/models/scene.glb')
         .then(obj => {
             this.scene.model = obj;
-            this.scene.setRotation(new Vector3(0.0, 0.0, 0.0));
+             
             /*Physics.createMeshShape(this.scene.model.meshData)
             .then(shape => {
                 this.scene.addRigidBody(0, shape, Vector3.zero);
@@ -43,7 +43,7 @@ class Engine{
         .catch(e => {
             console.log(e);
         });
-
+        this.scene.addRigidBody(0, Physics.createBoxShape(new Vector3(1000, 0.5, 1000)), new Vector3(0, 5, 0));
         requestAnimationFrame(this.Animate);  
     }
   

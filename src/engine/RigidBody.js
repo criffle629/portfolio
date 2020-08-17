@@ -5,7 +5,7 @@ import Vector3 from './Vector3';
 
 export default class RigidBody {
 
-    constructor(position = new Vector3(0, 0, 0), rotation = Quaternion.Identity(), mass = 1) {
+    constructor(position = new Vector3(0, 0, 0), shape,  rotation = Quaternion.Identity(), mass = 1) {
 
         this.isKinematic = false;
         this.active = true;
@@ -16,13 +16,12 @@ export default class RigidBody {
     
         this.motionState = new Ammo.btDefaultMotionState(this.transform);
 
-        let colShape = new Ammo.btBoxShape( new Ammo.btVector3( 1* 0.5, 1* 0.5,  1* 0.5 ) );
-        colShape.setMargin( 0.05 );
+        let localInertia = new Vector3(0.0, 0.0, 0.0);
 
-        let localInertia = new Ammo.btVector3( 0, 0, 0 );
-        colShape.calculateLocalInertia( mass, localInertia );
+        if (mass > 0)
+            shape.calculateLocalInertia(this.mass, Vector3.toBTV3(localInertia));
 
-        let ri =new Ammo.btRigidBodyConstructionInfo(this.mass, this.motionState, colShape, new Ammo.btVector3(0, 0, 0));
+        let ri =new Ammo.btRigidBodyConstructionInfo(this.mass, this.motionState, shape, Vector3.toBTV3(localInertia));
         this.body = new Ammo.btRigidBody(ri);
         
         this.SetKinematic(mass === 0);
@@ -30,7 +29,7 @@ export default class RigidBody {
         Physics.addRigidBody(this.body);
     }
 
-    SetMass(mass) {
+    setMass(mass) {
         this.mass = mass;
         this.body.setMassProps(mass, this.body.getLocalInertia());
     }
@@ -113,30 +112,29 @@ export default class RigidBody {
         this.bodysetLinearVelocity(velocity.To_btVector3());
     }
 
-    SetAngularVelocity(velocity) {
+    setAngularVelocity(velocity) {
         this.body.setAngularVelocity(velocity.To_btVector3());
     }
 
-    Translate(position) {
+    translate(position) {
         this.body.translate(position.To_btVector3());
     }
 
-    SetPosition(position) {
-        this.body.getWorldTransform().setOrigin(position.To_btVector3());
-        this.motionState.setWorldTransform(this.body.getWorldTransform());
+    setPosition(position) {
+        this.body.getMotionState().getWorldTransform(this.transform);
+        this.transform.setOrigin(position.To_btVector3());
     }
 
     Move(position) {
         this.body.translate(position.To_btVector3());
     }
 
-    SetRotation(rotation) {
+    setRotation(rotation) {
         let q = Quaternion.FromEuler(rotation.x, rotation.y, rotation.z);
 
+        this.body.getMotionState().getWorldTransform(this.transform);
         let quat = new Ammo.btQuaternion(q.x, q.y, q.z, q.w);
-
-        this.body.getWorldTransform().setRotation(quat);
-        this.motionState.setWorldTransform(this.body.getWorldTransform());
+        this.transform.setRotation(quat);
     }
 
     WantsSleep() {
@@ -216,17 +214,17 @@ export default class RigidBody {
     }
 
     GetPosition() {
-        let transBT = this.body.getWorldTransform();
-        let v = transBT.getOrigin();
+        let v = this.body.getMotionState().getWorldTransform(this.transform);
+        v = this.transform.getOrigin();
+        let v3 = new Vector3(v.x(), v.y(), v.z());
+        console.log(v3);
         return new Vector3(v.x(), v.y(), v.z());
-
     }
 
     GetRotation() {
-        let quat = this.body.getWorldTransform().getRotation();
-        let q = new Quaternion(-quat.x(), -quat.y(), -quat.z(), quat.w());
-
-        return q;
+        let quat = this.body.getMotionState().getWorldTransform(this.transform);
+        quat = this.transform.getRotation();
+        return new Quaternion(quat.x(), quat.y(), quat.z(), quat.w());;
     }
 
     SetActivationState(state) {
@@ -236,7 +234,6 @@ export default class RigidBody {
     SetBounciness(value) {
         this.body.setRestitution(value);
     }
-
 
     IsKinematic() {
         return this.isKinematic;
