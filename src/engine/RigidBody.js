@@ -1,5 +1,5 @@
 import Ammo from 'ammo.js'
-import Physics from './Physics2';
+import Physics from './Physics';
 import Quaternion from './Quaternion';
 import Vector3 from './Vector3';
 
@@ -121,8 +121,7 @@ export default class RigidBody {
     }
 
     setPosition(position) {
-        this.body.getMotionState().getWorldTransform(this.transform);
-        this.transform.setOrigin(position.To_btVector3());
+        this.body.getWorldTransform().setOrigin(Vector3.toBTV3(position));
     }
 
     Move(position) {
@@ -130,16 +129,14 @@ export default class RigidBody {
     }
 
     setRotation(rotation) {
-        let q = Quaternion.FromEuler(rotation.x, rotation.y, rotation.z);
-
-        this.body.getMotionState().getWorldTransform(this.transform);
-        let quat = new Ammo.btQuaternion(q.x, q.y, q.z, q.w);
-        this.transform.setRotation(quat);
+        let quat = new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+        this.body.getWorldTransform().setRotation(quat);
+        this.body.getMotionState().setWorldTransform(this.body.getWorldTransform());
     }
 
     WantsSleep() {
         return this.body.wantsSleeping();
-    }
+    }z
 
     GetMotionState() {
         return this.body.getMotionState();
@@ -214,16 +211,14 @@ export default class RigidBody {
     }
 
     GetPosition() {
-        let v = this.body.getMotionState().getWorldTransform(this.transform);
-        v = this.transform.getOrigin();
-        let v3 = new Vector3(v.x(), v.y(), v.z());
-        console.log(v3);
+        let v = this.body.getWorldTransform().getOrigin();
+        
         return new Vector3(v.x(), v.y(), v.z());
     }
 
     GetRotation() {
-        let quat = this.body.getMotionState().getWorldTransform(this.transform);
-        quat = this.transform.getRotation();
+        let quat = this.body.getWorldTransform().getRotation();
+ 
         return new Quaternion(quat.x(), quat.y(), quat.z(), quat.w());;
     }
 

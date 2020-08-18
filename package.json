@@ -6,12 +6,13 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "ammo-debug-drawer": "^1.0.1",
     "ammo.js": "0.0.10",
     "cannon": "^0.6.2",
     "offscreen-canvas": "^0.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^3.4.3",
     "three": "^0.118.3"
   },
   "scripts": {

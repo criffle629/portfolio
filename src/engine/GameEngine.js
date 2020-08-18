@@ -4,7 +4,7 @@ import Scene from '../engine/Scene';
 import Camera from '../engine/Camera';
 import Time from '../engine/Time';
 import { Vector3 } from 'three';
-import Physics from '../engine/Physics2';
+import Physics from './Physics';
 import GameObject from "./GameObject";
 
 class Engine{

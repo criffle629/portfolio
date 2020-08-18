@@ -49,6 +49,10 @@ class SceneManager{
         }
 
         for (let obj in this.enabledObjects){
+            this.enabledObjects[obj].lateUpdate();
+        }
+
+        for (let obj in this.enabledObjects){
             this.enabledObjects[obj].render();
         }
     }

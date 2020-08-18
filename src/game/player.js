@@ -36,7 +36,7 @@ export default class Player extends GameObject{
         moveDir.normalize();
 
         if (!Vector3.equals(moveDir, Vector3.zero)){
-            //this.rigidBody.setMotionState().velocity = new Ammo.btVector3(0, this.rigidBody.getMotionState().velocity.y(), 0);
+            this.move(new Vector3(moveDir.x * 5 * Time.deltaTime, 0.0, moveDir.z * 5 * Time.deltaTime));
             this.forward = moveDir;
             this.changeAnimation('Walking');
         }
@@ -45,17 +45,15 @@ export default class Player extends GameObject{
         }
        
         const angle = Vector3.angle(Vector3.back, this.forward); 
+        this.setRotation(new Vector3(0, angle, 0));
 
-        this.setRotation(Vector3.zero);
-        this.move(new Vector3(moveDir.x * 5 * Time.deltaTime, 0.0, moveDir.z * 5 * Time.deltaTime));
+        super.update();
+    }
 
-        this.setRotation(new Vector3(0.0, angle  , 0.0));
-
+    lateUpdate(){
         const camPos = new THREE.Vector3(this.position.x ,this.position.y + 3, this.position.z + 2);
         Camera.SetPosition(camPos);
         Camera.Rotate(new Vector3(-20.0 * MathTools.deg2Rad , 0 * MathTools.deg2Rad, 0));
-    
-        super.update();
     }
 
     collision(col){

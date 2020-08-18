@@ -3,6 +3,7 @@ import SkinnedMesh from './SkinnedMesh';
 import Mesh from './Mesh';
 import Scene from './Scene';
 import RigidBody from './RigidBody';
+import Quaternion from './Quaternion';
 
 export default class GameObject {
 
@@ -10,7 +11,7 @@ export default class GameObject {
 
     constructor(meshPath = null, skinnedMesh = false) {
         this.position = new Vector3(0.0, 0.0, 0.0); 
-        this.rotation = new Vector3(0.0, 0.0, 0.0);
+        this.rotation = new Quaternion();
         this.scale = new Vector3(0.0, 0.0, 0.0);
         this.isEnabled = true;
         this.texture = null;
@@ -70,20 +71,19 @@ export default class GameObject {
     }
 
     setRotation(degrees) {
-        this.rotation = degrees;
+        this.rotation = Quaternion.FromEuler(degrees.x, degrees.y, degrees.z);
 
-        // if (this.rigidBody !== null)
-        //     this.rigidBody.getWorldTransform.setEuler(degrees.x, degrees.y, degrees.z);
-
+        if (this.rigidBody !== null)
+            this.rigidBody.setRotation(this.rotation);
     }
 
     rotate(degrees) {
         if (this.rigidBody !== null) {
             const euler = Vector3.zero;
             this.rigidBody.setRotation(euler);
-
-            this.rotation = Vector3.add(degrees, new Vector3(euler.x, euler.y, euler.z));
-            this.rigidBody.setRotation(this.rotation.x, this.rotation.y, this.rotation.z);
+            const rot = Vector3.add(degrees, new Vector3(euler.x, euler.y, euler.z));
+            this.rotation = Quaternion.FromEuler(rot.x, rot.y, rot.z);
+            this.rigidBody.setRotation(this.rotation);
         }
         else
             this.rotation = Vector3.add(this.rotation, degrees);
@@ -135,9 +135,12 @@ export default class GameObject {
             return;
 
         const rot = this.rotation.Euler();
+
         this.model.mesh.position.set(this.position.x, this.position.y, this.position.z);
         this.model.mesh.rotation.set(rot.x, rot.y, rot.z);
     }
+
+    lateUpdate(){}
 
     addRigidBody(mass = 1, shape = null, position = Vector3.zero) {
         this.rigidBody = new RigidBody(position, shape, Vector3.zero, mass);

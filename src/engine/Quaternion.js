@@ -148,9 +148,9 @@ export default class Quaternion {
     }
 
     static FromEuler(x, y, z) {
-        let yaw = y * MathTools.deg2rad;
-        let pitch = x * MathTools.deg2rad;
-        let roll = z * MathTools.deg2rad;
+        let yaw = y * MathTools.deg2Rad;
+        let pitch = x * MathTools.deg2Rad;
+        let roll = z * MathTools.deg2Rad;
 
         let rollOver2 = roll * 0.5;
         let sinRollOver2 = Math.sin(rollOver2);
