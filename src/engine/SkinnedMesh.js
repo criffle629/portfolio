@@ -10,6 +10,7 @@ export default class SkinnedMesh{
         this.action = null;
         this.meshData = null;
         this.mesh = null;
+        this.anim = null;
         this.currentAnimation = '';
         this.LoadMesh(path);
     }
@@ -32,6 +33,7 @@ export default class SkinnedMesh{
             gltf.scene.castShadow = true;
             this.meshData = gltf.scene.children;
             this.mesh = gltf.scene;
+            this.anim = gltf;
             Scene.add(gltf.scene);
             
         }, undefined, function (error) {
@@ -47,7 +49,7 @@ export default class SkinnedMesh{
         if (this.currentAnimation !== animation)
         {
             this.currentAnimation = animation;
-            let clip = THREE.AnimationClip.findByName(this.meshData, animation);
+            let clip = THREE.AnimationClip.findByName(this.anim, animation);
             
             if (this.action !== null)
                 this.action.stop();

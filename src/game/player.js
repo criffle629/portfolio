@@ -38,10 +38,10 @@ export default class Player extends GameObject{
         if (!Vector3.equals(moveDir, Vector3.zero)){
             this.move(new Vector3(moveDir.x * 5 * Time.deltaTime, 0.0, moveDir.z * 5 * Time.deltaTime));
             this.forward = moveDir;
-            this.changeAnimation('Walking');
+            this.changeAnimation('Walk');
         }
         else{
-            this.changeAnimation('Standing');
+            this.changeAnimation('Rest');
         }
        
         const angle = Vector3.angle(Vector3.back, this.forward); 
