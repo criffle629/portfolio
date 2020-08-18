@@ -9,14 +9,17 @@ import MathTools from '../engine/MathTools';
 export default class Player extends GameObject{
 
     changeAnimation(animation){
+        this.moveSpeed       = 5.0;
+   
         if (this.model !== null)
             this.model.playAnimation(animation);
     }
     update(){
         
         if (this.model.hasOwnProperty('mixer') && this.model.mixer !== null)
-            this.model.mixer.timeScale = 2.0;
+            this.model.mixer.timeScale = 1.0;
 
+        
         let zMove = 0;
         let xMove = 0;
         
@@ -36,24 +39,25 @@ export default class Player extends GameObject{
         moveDir.normalize();
 
         if (!Vector3.equals(moveDir, Vector3.zero)){
-            this.move(new Vector3(moveDir.x * 5 * Time.deltaTime, 0.0, moveDir.z * 5 * Time.deltaTime));
-            this.forward = moveDir;
+            this.forward = moveDir.normalize();
+            this.move(new Vector3(this.forward.x * 5 * Time.deltaTime, 0.0, this.forward.z * 5 * Time.deltaTime));
+            
             this.changeAnimation('Walk');
         }
         else{
             this.changeAnimation('Rest');
         }
-       
         const angle = Vector3.angle(Vector3.back, this.forward); 
-        this.setRotation(new Vector3(0, angle, 0));
+    
+        this.setRotation(new Vector3(0, angle  , 0));
 
         super.update();
     }
 
     lateUpdate(){
-        const camPos = new THREE.Vector3(this.position.x ,this.position.y + 3, this.position.z + 2);
+        const camPos = new THREE.Vector3(this.position.x ,this.position.y + 3, this.position.z + 1.5);
         Camera.SetPosition(camPos);
-        Camera.Rotate(new Vector3(-20.0 * MathTools.deg2Rad , 0 * MathTools.deg2Rad, 0));
+        Camera.Rotate(new Vector3(-60.0 * MathTools.deg2Rad , 0 * MathTools.deg2Rad, 0));
     }
 
     collision(col){

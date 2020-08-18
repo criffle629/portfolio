@@ -9,7 +9,7 @@ export default class GameObject {
 
     static id = 0;
 
-    constructor(meshPath = null, skinnedMesh = false) {
+    constructor(meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false) {
         this.position = new Vector3(0.0, 0.0, 0.0); 
         this.rotation = new Quaternion();
         this.scale = new Vector3(0.0, 0.0, 0.0);
@@ -20,6 +20,9 @@ export default class GameObject {
         this.forward = Vector3.forward;
         this.objID = GameObject.id;
         this.rigidBody = null;
+        this.castShadow = castShadow;
+        this.recieveShadow = recieveShadow;
+        
         GameObject.id++;
 
         this.LoadModel(meshPath);
@@ -29,7 +32,7 @@ export default class GameObject {
 
         if (meshPath === null) return;
 
-        this.loadMesh(meshPath, this.skinnedMesh)
+        this.loadMesh(meshPath, this.skinnedMesh, this.castShadow, this.recieveShadow)
             .then(data => {
                 this.model = data;
             })
@@ -39,15 +42,17 @@ export default class GameObject {
         Scene.addGameObject(this);
     }
 
-    async loadMesh(meshPath, skinnedMesh) {
-
+    async loadMesh(meshPath, skinnedMesh, castShadow = false, recieveShadow = false) {
+        this.castShadow = castShadow;
+        this.recieveShadow = recieveShadow;
         return new Promise((resolve, reject) => {
             if (skinnedMesh) {
-                this.model = new SkinnedMesh(meshPath);
+                this.model = new SkinnedMesh(meshPath, castShadow, recieveShadow);
                 resolve(this.model);
             }
             else {
-                this.model = new Mesh();
+       
+                this.model = new Mesh(null, castShadow, recieveShadow);
                 this.model.LoadMesh(meshPath)
                     .then(data => {
                         resolve(data);
@@ -123,9 +128,6 @@ export default class GameObject {
         if (this.rigidBody !== null) {
             this.position = this.rigidBody.GetPosition();
             this.rotation = this.rigidBody.GetRotation();
-
-            if (this.position.y < 0.0)
-                this.position.y = 0;
         }
 
         if ((this.model === null || !this.model.hasOwnProperty('mesh')))

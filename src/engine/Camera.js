@@ -22,6 +22,10 @@ class CameraManager{
     SetPosition(pos){
         this.mainCamera.position.set(pos.x, pos.y, pos.z);
     }
+
+    GetCamera(){
+        return this.mainCamera;
+    }
 }
 
 const Camera = new CameraManager();

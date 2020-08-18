@@ -2,18 +2,43 @@ import * as THREE from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Scene from './Scene';
 import Time from './Time';
+import GameEngine from "./GameEngine";
 
 export default class SkinnedMesh{
 
-    constructor(path) {
+    constructor(path, castShadow = false, receiveShadow = false) {
         this.mixer = null;
         this.action = null;
         this.meshData = null;
         this.mesh = null;
         this.anim = null;
+        this.scene = null;
         this.currentAnimation = '';
+        this.castShadow = castShadow;
+        this.receiveShadow = receiveShadow;
         this.LoadMesh(path);
     }
+
+    setShadows(){
+        this.scene.traverse( child => { 
+            if ( child.isMesh ) {
+                child.castShadow = this.castShadow;
+                child.receiveShadow = this.receiveShadow;
+            }
+        } );
+    }
+
+    castShadow(value){
+        this.castShadow = value;
+        GameEngine.AddCallback(this.setShadows(value));
+
+    }
+
+    receiveShadow(value){
+        this.receiveShadow = value;
+        GameEngine.AddCallback(this.setShadows(value));
+    }
+
 
     async LoadMesh(path) {
 
@@ -29,11 +54,20 @@ export default class SkinnedMesh{
             skeleton.visible = false;
             Scene.add(skeleton);
     
-            gltf.scene.receiveShadow = true;
-            gltf.scene.castShadow = true;
+            gltf.scene.traverse( child => { 
+
+                if ( child.isMesh ) {
+            
+                    child.castShadow = this.castShadow;
+                    child.receiveShadow = this.receiveShadow;
+                }
+            } );
+
+            this.scene = gltf.scene;
             this.meshData = gltf.scene.children;
             this.mesh = gltf.scene;
             this.anim = gltf;
+
             Scene.add(gltf.scene);
             
         }, undefined, function (error) {
