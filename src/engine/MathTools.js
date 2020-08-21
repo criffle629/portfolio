@@ -37,6 +37,6 @@ export default class MathTools
         if (Math.abs(to - from) <= deltaTime)
             return from;
         
-        return from + Math.sin(from - to) * deltaTime;
+        return from + Math.sin(to - from) * deltaTime;
     }
 }

@@ -1,5 +1,7 @@
-import Ammo from 'ammo.js';
+ 
 import Time from './Time';
+const Ammo = require('physijs/lib/ammo.js').Ammo
+ 
 
 class PhysicsEngine{
 
@@ -13,6 +15,7 @@ class PhysicsEngine{
     };
 
     constructor(){
+        this.Ammo = Ammo
 
         this.collisionConfig      = new Ammo.btDefaultCollisionConfiguration();
         this.dispatcher           = new Ammo.btCollisionDispatcher(this.collisionConfig);
@@ -56,7 +59,7 @@ class PhysicsEngine{
     }
 
     createPlaneShape(normal){
-        let shape = new Ammo.btStaticPlaneShape(new Ammo.btVector3(normal.x, normal.y, normal.z), 5);
+        let shape = new Ammo.btStaticPlaneShape(new Ammo.btVector3(normal.x, normal.y, normal.z), 0.0001);
        
 
         return shape;

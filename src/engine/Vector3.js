@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import MathTools from './MathTools';
-import Ammo from 'ammo.js';
+import Physics from './Physics';
+const Ammo = Physics.Ammo;
 
 export default class Vector3{
     
@@ -44,7 +45,7 @@ export default class Vector3{
         return new THREE.Vector3(this.x, this.y, this.z);
     }                   
 
-    To_btVector3(){
+    to_btVector3(){
         return new Ammo.btVector3(this.x, this.y, this.z);
     }
 

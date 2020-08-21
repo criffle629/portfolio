@@ -1,7 +1,8 @@
-import Ammo from 'ammo.js'
+
 import Physics from './Physics';
 import Quaternion from './Quaternion';
 import Vector3 from './Vector3';
+const Ammo = Physics.Ammo;
 
 export default class RigidBody {
 
@@ -12,18 +13,18 @@ export default class RigidBody {
         this.mass = mass;
         this.transform = new Ammo.btTransform();
         this.transform.setIdentity();
-        this.transform.setOrigin(Vector3.toBTV3(position));
-    
+        this.transform.setOrigin(position.to_btVector3());
+        this.transform.setRotation(new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w));
         this.motionState = new Ammo.btDefaultMotionState(this.transform);
 
         let localInertia = new Vector3(0.0, 0.0, 0.0);
 
-        if (mass > 0)
-            shape.calculateLocalInertia(this.mass, Vector3.toBTV3(localInertia));
+    //    if (mass > 0)
+      //      shape.calculateLocalInertia(this.mass, localInertia.to_btVector3());
 
-        let ri =new Ammo.btRigidBodyConstructionInfo(this.mass, this.motionState, shape, Vector3.toBTV3(localInertia));
+        let ri =new Ammo.btRigidBodyConstructionInfo(this.mass, this.motionState, shape, localInertia.to_btVector3());
         this.body = new Ammo.btRigidBody(ri);
-        
+
         this.SetKinematic(mass === 0);
         
         Physics.addRigidBody(this.body);
@@ -130,6 +131,11 @@ export default class RigidBody {
 
     setRotation(rotation) {
         let quat = new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+        this.body.getWorldTransform().setRotation(quat);
+        this.body.getMotionState().setWorldTransform(this.body.getWorldTransform());
+    }
+
+    setQuaternion(quat){
         this.body.getWorldTransform().setRotation(quat);
         this.body.getMotionState().setWorldTransform(this.body.getWorldTransform());
     }

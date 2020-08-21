@@ -23,16 +23,16 @@ export default class Player extends GameObject{
         let zMove = 0;
         let xMove = 0;
         
-        if (Input.isPressed('w'))
+        if (Input.isPressed('w') || Input.isPressed('W'))
             zMove = -1;
         
-        if (Input.isPressed('s'))
+        if (Input.isPressed('s') || Input.isPressed('S'))
             zMove= 1;
 
-        if (Input.isPressed('a'))
+        if (Input.isPressed('a') || Input.isPressed('A'))
             xMove = -1;   
         
-        if (Input.isPressed('d'))
+        if (Input.isPressed('d') || Input.isPressed('D'))
             xMove = 1;
     
         let moveDir = new THREE.Vector3(xMove, 0, zMove);
@@ -40,7 +40,7 @@ export default class Player extends GameObject{
 
         if (!Vector3.equals(moveDir, Vector3.zero)){
             this.forward = moveDir.normalize();
-            this.move(new Vector3(this.forward.x * 5 * Time.deltaTime, 0.0, this.forward.z * 5 * Time.deltaTime));
+            this.move(new Vector3(this.forward.x * 3 * Time.deltaTime, 0.0, this.forward.z * 3 * Time.deltaTime));
             
             this.changeAnimation('Walk');
         }
@@ -55,9 +55,9 @@ export default class Player extends GameObject{
     }
 
     lateUpdate(){
-        const camPos = new THREE.Vector3(this.position.x ,this.position.y + 3, this.position.z + 1.5);
+        const camPos = new THREE.Vector3(this.position.x ,this.position.y + 2.0, this.position.z + 4.0);
         Camera.SetPosition(camPos);
-        Camera.Rotate(new Vector3(-60.0 * MathTools.deg2Rad , 0 * MathTools.deg2Rad, 0));
+        Camera.Rotate(new Vector3(-30.0 * MathTools.deg2Rad , 0 * MathTools.deg2Rad, 0));
     }
 
     collision(col){

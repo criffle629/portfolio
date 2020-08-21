@@ -4,7 +4,7 @@ import Mesh from './Mesh';
 import Scene from './Scene';
 import RigidBody from './RigidBody';
 import Quaternion from './Quaternion';
-
+ 
 export default class GameObject {
 
     static id = 0;
@@ -80,6 +80,13 @@ export default class GameObject {
 
         if (this.rigidBody !== null)
             this.rigidBody.setRotation(this.rotation);
+    }
+
+    setQuaternion(quat) {
+        this.rotation = new Quaternion(quat.x(), quat.y(), quat.z(), quat.w());
+
+        if (this.rigidBody !== null)
+            this.rigidBody.setQuaternion(quat);
     }
 
     rotate(degrees) {

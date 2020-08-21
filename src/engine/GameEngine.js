@@ -1,90 +1,106 @@
-import * as THREE from "three";
+import * as THREE from 'three';
 import Player from '../game/player';
 import Scene from '../engine/Scene';
 import Camera from '../engine/Camera';
 import Time from '../engine/Time';
-import { Vector3 } from 'three';
+import Vector3 from './Vector3';
 import Physics from './Physics';
-import GameObject from "./GameObject";
+import GameObject from './GameObject';
+import Renderer from './Renderer';
+import PostProcessing from './PostProcessing';
+import Vehicle from './Vehicle';
 
-class Engine{
-    constructor(){
+class Engine {
+    constructor() {
+
+
         this.light = new THREE.DirectionalLight(0xffffff, 1);
-       
+
         this.light.castShadow = true;
- 
-        this.light.shadow.mapSize.width = 2048;  
-        this.light.shadow.mapSize.height = 2048;
-        this.light.shadow.camera.near = 0.01;      
-        this.light.shadow.camera.far = 500     
-     
-        var side = 10;
+
+        this.light.shadow.mapSize.width = 8000;
+        this.light.shadow.mapSize.height = 8000;
+        this.light.shadow.camera.near = 0.01;
+        this.light.shadow.camera.far = 500;
+        this.light.shadow.bias = -0.0005;
+        var side = 100;
         this.light.shadow.camera.top = side;
         this.light.shadow.camera.bottom = -side;
-        this.light.shadow.camera.left = side;
-        this.light.shadow.camera.right = -side;
-        this.light.position.set(0, 1, 0);
-        this.light.target.position.set(-5, -5, 0);
- 
+        this.light.shadow.camera.left = -side;
+        this.light.shadow.camera.right = side;
+
+        this.light.target = new THREE.Object3D();
+        Scene.setExpoFog('skyblue', 0.025);
         Scene.add(this.light.target);
         Scene.add(this.light);
 
-        this.ambientLight = new THREE.AmbientLight( 0xffffff, 0.5 ); 
-        Scene.add( this.ambientLight );
+        this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        Scene.add(this.ambientLight);
+        //this.hotrod = new GameObject('./assets/models/hotrod.glb', false, true, true);
+       // this.hotrod.addRigidBody(100, Physics.createBoxShape(new Vector3(1.35, 0.776, 2.28)), new Vector3(0, 30, -5));
 
-        this.hotrod = new GameObject('./assets/models/hotrod.glb', false, true, true);
-        this.hotrod.addRigidBody(100, Physics.createBoxShape(new Vector3(1.35, 0.776, 2.28)), new Vector3(0, 30, -5));
+
        
-        this.player = new Player('./assets/models/chris.glb', true, true, false);
-     
-        this.player.addRigidBody(1, Physics.createBoxShape(new Vector3(0.5, 0.5, 0.5)), new Vector3(0, 10, 0));
-        
-        this.scene = new GameObject();
-        this.scene.loadMesh('./assets/models/scene.glb', false, false, true)
-        .then(obj => {
-            this.scene.model = obj;
+        this.player = new Player('./assets/models/chris.glb', true, true, true);
+        this.player.addRigidBody(1, Physics.createBoxShape(new Vector3(0.5, 0.88198, 0.5)), new Vector3(0, 10, 0));
+
+        this.ground = new GameObject('./assets/models/ground.glb', false, false, true);
+        this.ground.addRigidBody(0, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
     
-           
-            /*Physics.createMeshShape(this.scene.model.meshData)
-            .then(shape => {
-                this.scene.addRigidBody(0, shape, Vector3.zero);
-            })
-            .catch(e => {
-                console.log(e);
-            });*/
-        })
-        .catch(e => {
-            console.log(e);
-        });
-      
-        this.scene.addRigidBody(0, Physics.createBoxShape(new Vector3(20, 0.01, 20)), new Vector3(0, 0, 0));
-  
-        requestAnimationFrame(this.Animate);  
-    }
-  
-    InitRenderer(canvas, width, height){
-        this.renderer = new THREE.WebGLRenderer({canvas:canvas, alpha: false, antialias: true});
-        this.renderer.setSize(width, height);
-        this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;   
-        this.renderer.cullFace = THREE.CullFaceBack;
-        this.renderer.gammaInput = true;
-        this.renderer.gammaOutput = true;    
+
+        this.ground = new GameObject('./assets/models/garage.glb', false, true, true);
+        this.ground.addRigidBody(0, Physics.createBoxShape(new Vector3(0.5, 0.88198, 0.5)), new Vector3(5, 0, -15));
+
+        this.vehicle = new Vehicle({
+            breakForce: 100,
+            accelForce: 2000,
+            bodyWidth: 1.35,
+            bodyHeight: 1,
+            bodyLength: 2.128,
+            mass: 800,
+            position: new Vector3(0, 30, -5),
+            bodyModel: './assets/models/hotrod.glb',
+            wheelModel: './assets/models/hotrodwheel.glb',
+            stiffness: 40.0,
+            damping: 2.3,
+            compression: 2.4,
+            friction: 1000,
+            roll: 10.0,
+            radius: 0.25,
+            suspensionLen: 0.10,
+       });
+       
+        requestAnimationFrame(this.Animate);
     }
 
-    GetRenderer(){
-        return this.renderer;
-    }
+    InitRenderer(canvas, width, height) {
+        this.renderer = new Renderer();
+        this.renderer.InitRenderer(canvas, width, height, this.Animate).then(renderer => {
+            PostProcessing.init(this.renderer.renderer);
+            //PostProcessing.addBokeh();
+            PostProcessing.addBloom(); 
+        });
  
-    Animate = () => {  
+    }
+
+    GetRenderer() {
+        return this.renderer.renderer;
+    }
+
+    Animate = () => {
         Time.Update();
         Scene.update();
         Physics.update();
-        this.renderer.render(Scene.getScene(), Camera.mainCamera);
-        const camPos = Camera.GetCamera().position;
-        this.light.position.set(camPos.x + 5, 1, camPos.z + 5);
-        this.light.target.position.set( -5 + camPos.x, -5, -5 + camPos.z);
-        requestAnimationFrame(this.Animate);
+        
+        const camPos = this.player.position;// Camera.GetCamera().position;
+        this.light.position.set(camPos.x, 1, camPos.z + 5);
+        this.light.target.position.set(-5 + camPos.x, -5, -5 + camPos.z);
+
+        //if (PostProcessing.isUsingEffects())
+        //    PostProcessing.render();
+       // else
+            this.renderer.Render(Scene.getScene(), Camera.mainCamera);
+
     }
 }
 

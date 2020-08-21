@@ -2,6 +2,11 @@ import * as THREE from "three";
 
 class SceneManager{
 
+    static FOG_TYPE = {
+        LINEAR: 0,
+        EXPONENTIAL: 1,
+    };
+
     constructor(){
         this.scene = new THREE.Scene();
         this.enabledObjects = {};
@@ -62,6 +67,14 @@ class SceneManager{
         this.screenHeight = height;
 
         this.aspectRatio = width / height;
+    }
+
+    setLinearFog(color, near, far){
+        this.scene.fog = new THREE.Fog(color, near, far);
+    }
+
+    setExpoFog(color, density){
+        this.scene.fog = new THREE.FogExp2(color, density);
     }
 }
 
