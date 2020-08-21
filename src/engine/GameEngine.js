@@ -9,6 +9,7 @@ import GameObject from './GameObject';
 import Renderer from './Renderer';
 import PostProcessing from './PostProcessing';
 import Vehicle from './Vehicle';
+import Quaternion from './Quaternion';
 
 class Engine {
     constructor() {
@@ -42,8 +43,10 @@ class Engine {
 
        
         this.player = new Player('./assets/models/chris.glb', true, true, true);
-        this.player.addRigidBody(1, Physics.createBoxShape(new Vector3(0.5, 0.88198, 0.5)), new Vector3(0, 10, 0));
-
+        let quat = Quaternion.FromEuler(0, 180, 0);
+        
+        this.player.addRigidBody(1, Physics.createBoxShape(new Vector3(0.5, 0.88198, 0.5)), new Vector3(0, 10, 0), quat);
+        
         this.ground = new GameObject('./assets/models/ground.glb', false, false, true);
         this.ground.addRigidBody(0, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
     

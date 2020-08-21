@@ -151,8 +151,8 @@ export default class GameObject {
 
     lateUpdate(){}
 
-    addRigidBody(mass = 1, shape = null, position = Vector3.zero) {
-        this.rigidBody = new RigidBody(position, shape, Vector3.zero, mass);
+    addRigidBody(mass = 1, shape = null, position = Vector3.zero, rotation = Quaternion.Identity()) {
+        this.rigidBody = new RigidBody(position, shape, rotation, mass);
     }
 
     render() {

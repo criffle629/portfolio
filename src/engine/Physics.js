@@ -1,6 +1,6 @@
  
 import Time from './Time';
-const Ammo = require('physijs/lib/ammo.js').Ammo
+
  
 
 class PhysicsEngine{
@@ -15,21 +15,21 @@ class PhysicsEngine{
     };
 
     constructor(){
-        this.Ammo = Ammo
+        this.Ammo = require('physijs/lib/ammo.js').Ammo
 
-        this.collisionConfig      = new Ammo.btDefaultCollisionConfiguration();
-        this.dispatcher           = new Ammo.btCollisionDispatcher(this.collisionConfig);
-        this.overlappingPairCache = new Ammo.btDbvtBroadphase();
-        this.solver               = new Ammo.btSequentialImpulseConstraintSolver();
-        this.world                = new Ammo.btDiscreteDynamicsWorld(this.dispatcher, this.overlappingPairCache, this.solver, this.collisionConfig );
+        this.collisionConfig      = new this.Ammo.btDefaultCollisionConfiguration();
+        this.dispatcher           = new this.Ammo.btCollisionDispatcher(this.collisionConfig);
+        this.overlappingPairCache = new this.Ammo.btDbvtBroadphase();
+        this.solver               = new this.Ammo.btSequentialImpulseConstraintSolver();
+        this.world                = new this.Ammo.btDiscreteDynamicsWorld(this.dispatcher, this.overlappingPairCache, this.solver, this.collisionConfig );
 
-        this.world.setGravity(new Ammo.btVector3(0, -9.8, 0));
+        this.world.setGravity(new this.Ammo.btVector3(0, -9.8, 0));
         
         this.rigidBodies = [];
     }
 
     setGravity(v){
-        this.world.setGravity(new Ammo.btVector3(v.x, v.y, v.z));
+        this.world.setGravity(new this.Ammo.btVector3(v.x, v.y, v.z));
     }
  
     addRigidBody(body){
@@ -45,42 +45,42 @@ class PhysicsEngine{
     }
 
     createSphereShape(radius = 1){
-        let shape = new Ammo.btSphereShape(radius);
+        let shape = new this.Ammo.btSphereShape(radius);
         shape.setMargin(0.05);
 
         return shape;
     }
 
     createBoxShape(boxSize){
-        let shape = new Ammo.btBoxShape(new Ammo.btVector3(boxSize.x * 0.5, boxSize.y * 0.5, boxSize.z * 0.5));
+        let shape = new this.Ammo.btBoxShape(new this.Ammo.btVector3(boxSize.x * 0.5, boxSize.y * 0.5, boxSize.z * 0.5));
         shape.setMargin(0.05);
 
         return shape;
     }
 
     createPlaneShape(normal){
-        let shape = new Ammo.btStaticPlaneShape(new Ammo.btVector3(normal.x, normal.y, normal.z), 0.0001);
+        let shape = new this.Ammo.btStaticPlaneShape(new this.Ammo.btVector3(normal.x, normal.y, normal.z), 0.0001);
        
 
         return shape;
     }
     
     createCapsuleShape(radius, height, direction){
-        let shape = new Ammo.btCapsuleShape(radius, height, new Ammo.btVector3(direction.x, direction.y, direction.z));
+        let shape = new this.Ammo.btCapsuleShape(radius, height, new this.Ammo.btVector3(direction.x, direction.y, direction.z));
         shape.setMargin(0.05);
 
         return shape;
     }
 
     createCylinderShape(radius, height, direction){
-        let shape = new Ammo.btCylinderShape(radius, height, new Ammo.btVector3(direction.x, direction.y, direction.z));
+        let shape = new this.Ammo.btCylinderShape(radius, height, new this.Ammo.btVector3(direction.x, direction.y, direction.z));
         shape.setMargin(0.05);
 
         return shape;
     }
 
     createConeShape(radius, height, direction){
-        let shape = new Ammo.btConeShape(radius, height, new Ammo.btVector3(direction.x, direction.y, direction.z));
+        let shape = new this.Ammo.btConeShape(radius, height, new this.Ammo.btVector3(direction.x, direction.y, direction.z));
         shape.setMargin(0.05);
 
         return shape;
