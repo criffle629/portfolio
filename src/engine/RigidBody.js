@@ -12,18 +12,21 @@ export default class RigidBody {
         this.active = true;
         this.mass = mass;
         this.transform = new Ammo.btTransform();
-        this.transform.setIdentity();
+       // this.transform.setIdentity();
         this.transform.setOrigin(position.to_btVector3());
         this.transform.setRotation(new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w));
         this.motionState = new Ammo.btDefaultMotionState(this.transform);
-
+			
         let localInertia = new Vector3(0.0, 0.0, 0.0);
 
-    //    if (mass > 0)
-      //      shape.calculateLocalInertia(this.mass, localInertia.to_btVector3());
+        if (mass > 0)
+            shape.calculateLocalInertia(this.mass, localInertia.to_btVector3());
 
         let ri =new Ammo.btRigidBodyConstructionInfo(this.mass, this.motionState, shape, localInertia.to_btVector3());
         this.body = new Ammo.btRigidBody(ri);
+   
+        this.body.setFriction(1);
+        this.body.setActivationState(4);
 
         this.SetKinematic(mass === 0);
         

@@ -3,6 +3,7 @@ import Input from '../engine/Input';
 import GameEngine from '../engine/GameEngine';
 import Scene from '../engine/Scene';
 import Camera from '../engine/Camera';
+import Renderer from '../engine/Renderer';
 
 export default class Game extends React.Component {
 

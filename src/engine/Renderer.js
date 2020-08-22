@@ -17,7 +17,7 @@ class Renderer {
             this.renderer.gammaInput = true;
             this.renderer.gammaOutput = true;
        
-            this.renderer.autoClear = true;
+            this.renderer.autoClear = false;
     
             this.renderer.setClearColor('skyblue', 1.0);
     

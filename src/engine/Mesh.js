@@ -2,7 +2,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Scene from './Scene';
 
 export default class Mesh {
-    constructor(path = null, castShadow = false, receiveShadow = false) {
+    constructor(path = null, castShadow = false, receiveShadow = false, flatShading = false) {
         this.mixer = null;
         this.action = null;
         this.meshData = null;
@@ -10,7 +10,7 @@ export default class Mesh {
         this.scene = null;
         this.castShadow = castShadow;
         this.receiveShadow = receiveShadow;
-
+        this.flatShading = flatShading;
         if (path !== null)
             this.LoadMesh(path);
     }
@@ -42,6 +42,8 @@ export default class Mesh {
                     if ( child.isMesh ) {
                         child.castShadow = this.castShadow;
                         child.receiveShadow = this.receiveShadow;
+                        if (this.flatShading)
+                            child.material.flatShading = this.flatShading;
                     }
                 
                 } );

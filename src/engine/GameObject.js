@@ -9,7 +9,7 @@ export default class GameObject {
 
     static id = 0;
 
-    constructor(meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false) {
+    constructor(meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false) {
         this.position = new Vector3(0.0, 0.0, 0.0); 
         this.rotation = new Quaternion();
         this.scale = new Vector3(0.0, 0.0, 0.0);
@@ -22,17 +22,17 @@ export default class GameObject {
         this.rigidBody = null;
         this.castShadow = castShadow;
         this.recieveShadow = recieveShadow;
-        
+        this.allowUpdate = true;
         GameObject.id++;
 
-        this.LoadModel(meshPath);
+        this.LoadModel(meshPath, flatShading);
     }
 
-    LoadModel(meshPath) {
+    LoadModel(meshPath, flatShading = false) {
 
         if (meshPath === null) return;
 
-        this.loadMesh(meshPath, this.skinnedMesh, this.castShadow, this.recieveShadow)
+        this.loadMesh(meshPath, this.skinnedMesh, this.castShadow, this.recieveShadow, flatShading)
             .then(data => {
                 this.model = data;
             })
@@ -42,17 +42,17 @@ export default class GameObject {
         Scene.addGameObject(this);
     }
 
-    async loadMesh(meshPath, skinnedMesh, castShadow = false, recieveShadow = false) {
+    async loadMesh(meshPath, skinnedMesh, castShadow = false, recieveShadow = false, flatShading = false) {
         this.castShadow = castShadow;
         this.recieveShadow = recieveShadow;
         return new Promise((resolve, reject) => {
             if (skinnedMesh) {
-                this.model = new SkinnedMesh(meshPath, castShadow, recieveShadow);
+                this.model = new SkinnedMesh(meshPath, castShadow, recieveShadow, flatShading);
                 resolve(this.model);
             }
             else {
        
-                this.model = new Mesh(null, castShadow, recieveShadow);
+                this.model = new Mesh(null, castShadow, recieveShadow, flatShading);
                 this.model.LoadMesh(meshPath)
                     .then(data => {
                         resolve(data);
@@ -132,6 +132,8 @@ export default class GameObject {
 
     update() {
 
+        if (!this.allowUpdate) return; 
+        
         if (this.rigidBody !== null) {
             this.position = this.rigidBody.GetPosition();
             this.rotation = this.rigidBody.GetRotation();

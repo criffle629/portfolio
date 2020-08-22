@@ -19,9 +19,9 @@ class PhysicsEngine{
 
         this.collisionConfig      = new this.Ammo.btDefaultCollisionConfiguration();
         this.dispatcher           = new this.Ammo.btCollisionDispatcher(this.collisionConfig);
-        this.overlappingPairCache = new this.Ammo.btDbvtBroadphase();
+        this.broadphase           = new this.Ammo.btDbvtBroadphase();
         this.solver               = new this.Ammo.btSequentialImpulseConstraintSolver();
-        this.world                = new this.Ammo.btDiscreteDynamicsWorld(this.dispatcher, this.overlappingPairCache, this.solver, this.collisionConfig );
+        this.world                = new this.Ammo.btDiscreteDynamicsWorld(this.dispatcher, this.broadphase, this.solver, this.collisionConfig );
 
         this.world.setGravity(new this.Ammo.btVector3(0, -9.8, 0));
         
@@ -154,7 +154,7 @@ class PhysicsEngine{
     }
 
     update(){
-        this.world.stepSimulation( Time.deltaTime, 10);
+        this.world.stepSimulation(Time.deltaTime, 10, 1.0 / 60.0);
     }
 }
 

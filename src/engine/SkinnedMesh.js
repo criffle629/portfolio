@@ -6,7 +6,7 @@ import GameEngine from "./GameEngine";
 
 export default class SkinnedMesh{
 
-    constructor(path, castShadow = false, receiveShadow = false) {
+    constructor(path, castShadow = false, receiveShadow = false, flatShading = false) {
         this.mixer = null;
         this.action = null;
         this.meshData = null;
@@ -16,7 +16,7 @@ export default class SkinnedMesh{
         this.currentAnimation = '';
         this.castShadow = castShadow;
         this.receiveShadow = receiveShadow;
-        this.LoadMesh(path);
+        this.LoadMesh(path, flatShading);
     }
 
     setShadows(){
@@ -40,7 +40,7 @@ export default class SkinnedMesh{
     }
 
 
-    async LoadMesh(path) {
+    async LoadMesh(path, flatShading = false) {
 
         let loader = new GLTFLoader();
 
@@ -60,6 +60,9 @@ export default class SkinnedMesh{
             
                     child.castShadow = this.castShadow;
                     child.receiveShadow = this.receiveShadow;
+
+                    if (flatShading) 
+                        child.material.flatShading = flatShading;
                 }
             } );
 

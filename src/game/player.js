@@ -55,7 +55,7 @@ export default class Player extends GameObject{
     }
 
     lateUpdate(){
-        const camPos = new THREE.Vector3(this.position.x ,this.position.y + 2.0, this.position.z + 4.0);
+        const camPos = new THREE.Vector3(this.position.x ,this.position.y + 3.0, this.position.z + 4.0);
         Camera.SetPosition(camPos);
         Camera.Rotate(new Vector3(-30.0 * MathTools.deg2Rad , 0 * MathTools.deg2Rad, 0));
     }
