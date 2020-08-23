@@ -93,12 +93,12 @@ export default class GameObject {
         if (this.rigidBody !== null) {
             const euler = Vector3.zero;
             this.rigidBody.setRotation(euler);
-            const rot = Vector3.add(degrees, new Vector3(euler.x, euler.y, euler.z));
+            const rot = Vector3.Add(degrees, new Vector3(euler.x, euler.y, euler.z));
             this.rotation = Quaternion.FromEuler(rot.x, rot.y, rot.z);
             this.rigidBody.setRotation(this.rotation);
         }
         else
-            this.rotation = Vector3.add(this.rotation, degrees);
+            this.rotation = Vector3.Add(this.rotation, degrees);
     }
 
     setPosition(newPosition) {
@@ -112,11 +112,11 @@ export default class GameObject {
 
         if (this.rigidBody !== null) {
             this.position = this.rigidBody.GetPosition();
-            this.position = Vector3.add(this.position, pos);
+            this.position = Vector3.Add(this.position, pos);
             this.rigidBody.setPosition(new Vector3(this.position.x, this.position.y, this.position.z));
         }
         else {
-            this.position = Vector3.add(this.position, pos);
+            this.position = Vector3.Add(this.position, pos);
         }
     }
 
@@ -133,7 +133,7 @@ export default class GameObject {
     update() {
 
         if (!this.allowUpdate) return; 
-        
+
         if (this.rigidBody !== null) {
             this.position = this.rigidBody.GetPosition();
             this.rotation = this.rigidBody.GetRotation();

@@ -38,7 +38,7 @@ export default class Player extends GameObject{
         let moveDir = new THREE.Vector3(xMove, 0, zMove);
         moveDir.normalize();
 
-        if (!Vector3.equals(moveDir, Vector3.zero)){
+        if (!Vector3.Equals(moveDir, Vector3.zero)){
             this.forward = moveDir.normalize();
             this.move(new Vector3(this.forward.x * 3 * Time.deltaTime, 0.0, this.forward.z * 3 * Time.deltaTime));
             
@@ -47,7 +47,7 @@ export default class Player extends GameObject{
         else{
             this.changeAnimation('Rest');
         }
-        const angle = Vector3.angle(Vector3.back, this.forward); 
+        const angle = Vector3.Angle(Vector3.back, this.forward); 
     
         this.setRotation(new Vector3(0, angle  , 0));
 
@@ -55,9 +55,9 @@ export default class Player extends GameObject{
     }
 
     lateUpdate(){
-        const camPos = new THREE.Vector3(this.position.x ,this.position.y + 3.0, this.position.z + 4.0);
-        Camera.SetPosition(camPos);
-        Camera.Rotate(new Vector3(-30.0 * MathTools.deg2Rad , 0 * MathTools.deg2Rad, 0));
+     //   const camPos = new THREE.Vector3(this.position.x ,this.position.y + 3.0, this.position.z + 4.0);
+     //   Camera.SetPosition(camPos);
+     //   Camera.Rotate(new Vector3(-30.0 * MathTools.deg2Rad , 0 * MathTools.deg2Rad, 0));
     }
 
     collision(col){

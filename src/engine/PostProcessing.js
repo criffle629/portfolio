@@ -14,7 +14,11 @@ class PostProcessingManager{
     init(renderer){
         this.composer = new EffectComposer(renderer);
         this.renderPass = new RenderPass(Scene.getScene(), Camera.mainCamera);
+        this.renderPass.clearColor = new THREE.Color('skyblue');
+        this.renderPass.clearAlpha = 1;
+
         this.composer.addPass(this.renderPass);
+        
         this.bokeh = null;
         this.bloom = null;
         this.ffxa = null;

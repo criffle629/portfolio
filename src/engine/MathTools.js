@@ -34,9 +34,9 @@ export default class MathTools
     }
 
     static moveTowards(from, to, deltaTime){
-        if (Math.abs(to - from) <= deltaTime)
-            return from;
         
-        return from + Math.sin(to - from) * deltaTime;
+        if (Math.abs(from - to) <= deltaTime) return from;
+        console.log(deltaTime);
+        return from + ((to - from) * deltaTime);
     }
 }

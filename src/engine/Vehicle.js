@@ -7,6 +7,8 @@ import Input from './Input';
 import Time from './Time';
 import MathTools from './MathTools';
 import { LessDepth } from 'three';
+import Camera from './Camera';
+
 const Ammo = Physics.Ammo;
 
 export default class Vehicle extends GameObject {
@@ -17,7 +19,7 @@ export default class Vehicle extends GameObject {
         this.recieveShadow = true;
         this.skinnedMesh = false;
 
-        this.steeringRate = 500.0;
+        this.steeringRate = 5.0;
 
         this.breakForce = options.breakForce;
         this.accelForce = options.accelForce;
@@ -88,6 +90,9 @@ export default class Vehicle extends GameObject {
 
     updateInput() {
 
+        if (Input.isPressed('e') || Input.isPressed('E'))
+            Camera.target = this;
+
         if (Input.isPressed('ArrowUp') && this.speed <= 70)
             this.currentAccel += 5;
         else
@@ -98,14 +103,17 @@ export default class Vehicle extends GameObject {
         else
             this.currentBraking = 0;
 
-        if (Input.isPressed('ArrowLeft'))
-            this.steeringAngle += 1 * this.steeringRate * Time.deltaTime;
+        if (Input.isPressed('ArrowLeft')){
+            this.steeringAngle += 25 * this.steeringRate * Time.deltaTime;
+        }
         else
             if (Input.isPressed('ArrowRight'))
-                this.steeringAngle -= 1 * this.steeringRate * Time.deltaTime;
-            else
+            {
+                this.steeringAngle -= 25 * this.steeringRate * Time.deltaTime;
+            }
+        else{
                 this.steeringAngle = MathTools.moveTowards(this.steeringAngle, 0.0, this.steeringRate * Time.deltaTime);
-
+        }
         this.steeringAngle = MathTools.clamp(this.steeringAngle, -25, 25);
     }
 
@@ -128,7 +136,7 @@ export default class Vehicle extends GameObject {
         let tm, p, q;
         for (let i = 0; i < this.vehicle.getNumWheels(); i++) {
 
-            this.vehicle.updateWheelTransform(i, true);
+            this.vehicle.updateWheelTransform(i, false);
             tm = this.vehicle.getWheelTransformWS(i);
             p = tm.getOrigin();
             q = tm.getRotation();
@@ -136,6 +144,7 @@ export default class Vehicle extends GameObject {
                 this.wheelModels[i].model.mesh.position.set(p.x(), p.y(), p.z());
                 this.wheelModels[i].model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
             }
+
 
         }
         tm = this.vehicle.getChassisWorldTransform();
@@ -145,6 +154,9 @@ export default class Vehicle extends GameObject {
         if (this.model.mesh) {
             this.model.mesh.position.set(p.x(), p.y(), p.z());
             this.model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
+
+            this.position = new Vector3(p.x(), p.y(), p.z());
+            this.rotation = new Quaternion(q.x(), q.y(), q.z(), q.w());
         }
 
         this.speed = this.vehicle.getCurrentSpeedKmHour();

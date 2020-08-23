@@ -40,10 +40,6 @@ class Engine {
 
         this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
         Scene.add(this.ambientLight);
-        //this.hotrod = new GameObject('./assets/models/hotrod.glb', false, true, true);
-       // this.hotrod.addRigidBody(100, Physics.createBoxShape(new Vector3(1.35, 0.776, 2.28)), new Vector3(0, 30, -5));
-
-
        
         this.player = new Player('./assets/models/chris.glb', true, true, true);
         this.player.addRigidBody(1, Physics.createBoxShape(new Vector3(0.5, 0.88198, 0.5)), new Vector3(0, 10, 0));
@@ -51,28 +47,29 @@ class Engine {
         this.ground = new GameObject('./assets/models/ground.glb', false, false, true,);
         this.ground.addRigidBody(0, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
     
-
         this.ground = new GameObject('./assets/models/garage.glb', false, true, true);
         this.ground.addRigidBody(0, Physics.createBoxShape(new Vector3(0.5, 0.88198, 0.5)), new Vector3(-25, 0, -15));
 
         this.mound = new GameObject('./assets/models/mound.glb', false, true, true, true);
         this.mound.addRigidBody(0, Physics.createSphereShape(3), new Vector3(0, 0, -10));
 
+        Camera.target = this.player;
+        
         this.vehicle = new Vehicle({
             breakForce: 100,
             accelForce: 2000,
             bodyWidth: 1.35,
             bodyHeight: 1,
             bodyLength: 2.128,
-            mass: 800,
+            mass: 300,
             position: new Vector3(0, 1.5, -5),
             bodyModel: './assets/models/hotrod.glb',
             wheelModel: './assets/models/hotrodwheel.glb',
             stiffness: 50.0,
             damping: 2.3,
-            compression: 4.4,
-            friction: 500,
-            roll: 0.2,
+            compression: 1.4,
+            friction: 5000,
+            roll: 0.06,
             radius: 0.25,
             suspensionLen: 0.075,
        });
@@ -85,7 +82,7 @@ class Engine {
         this.renderer.InitRenderer(canvas, width, height, this.Animate).then(renderer => {
             PostProcessing.init(renderer);
             PostProcessing.addFXAA();
-          //  PostProcessing.addBloom(); 
+            PostProcessing.addBloom(); 
             //  PostProcessing.addBokeh();
             
         });
@@ -99,13 +96,14 @@ class Engine {
     Animate = () => {
 
         Time.Update();   
+
+        Physics.update();
         Scene.update();
      
-        const camPos = this.player.position;// Camera.GetCamera().position;
+        const camPos = Camera.position;// Camera.GetCamera().position;
         this.light.position.set(camPos.x, 1, camPos.z + 5);
         this.light.target.position.set(-5 + camPos.x, -5, -5 + camPos.z);
 
-        Physics.update();
         
         if (PostProcessing.isUsingEffects())
             PostProcessing.render();

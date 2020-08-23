@@ -62,7 +62,7 @@ export default class Vector3{
     static get left()    { return  new Vector3(-1.0,  0.0,  0.0); }
     static get right()   { return  new Vector3( 1.0,  0.0,  0.0); }
  
-    static add(v1, v2){
+    static Add(v1, v2){
         let v = new Vector3(0.0, 0.0, 0.0);
         v.x = v1.x + v2.x;
         v.y = v1.y + v2.y;
@@ -71,7 +71,7 @@ export default class Vector3{
         return v;
     }
 
-    static subtract(v1, v2){
+    static Subtract(v1, v2){
         let v = new Vector3(0.0, 0.0, 0.0);
         v.x = v1.x - v2.x;
         v.y = v1.y - v2.y;
@@ -80,7 +80,7 @@ export default class Vector3{
         return v;
     }
 
-    static multiply(v1, v2){
+    static Multiply(v1, v2){
         let v = new Vector3(0.0, 0.0, 0.0);
         v.x = v1.x * v2.x;
         v.y = v1.y * v2.y;
@@ -90,7 +90,7 @@ export default class Vector3{
     }
 
 
-    static addScalar(v1, scalar){
+    static AddScalar(v1, scalar){
         let v = new Vector3(0.0, 0.0, 0.0);
         v.x = v1.x + scalar;
         v.y = v1.y + scalar;
@@ -99,7 +99,7 @@ export default class Vector3{
         return v;
     }
 
-    static subtractScalar(v1, scalar){
+    static SubtractScalar(v1, scalar){
         let v = new Vector3(0.0, 0.0, 0.0);
         v.x = v1.x - scalar;
         v.y = v1.y - scalar;
@@ -108,7 +108,7 @@ export default class Vector3{
         return v;
     }
 
-    static multiplyScalar(v1, scalar){
+    static MultiplyScalar(v1, scalar){
         let v = new Vector3(0.0, 0.0, 0.0);
         v.x = v1.x * scalar;
         v.y = v1.y * scalar;
@@ -117,7 +117,7 @@ export default class Vector3{
         return v;
     }
 
-    static cross(v1, v2){
+    static Cross(v1, v2){
         let v = new Vector3(0.0, 0.0, 0.0);
 
         v.x = v1.y * v2.z - v1.z * v2.y;
@@ -127,38 +127,38 @@ export default class Vector3{
         return v;
     }
 
-    static distance(v1, v2){
-        let delta = Vector3.subtract(v2 - v1);
+    static Distance(v1, v2){
+        let delta = Vector3.Subtract(v2 - v1);
     
         let distance = Math.sqrt(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z);
     
         return distance;
     }
 
-    static dot(v1, v2){
+    static Dot(v1, v2){
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
     
-    static normalize(v1){
+    static Normalize(v1){
         v1.normalize();
         return v1;
     }
 
-    static equals(v1, v2){
+    static Equals(v1, v2){
         return (v1.x > v2.x - Number.EPSILON && v1.x < v2.x + Number.EPSILON) &&
                (v1.y > v2.y - Number.EPSILON && v1.y < v2.y + Number.EPSILON) &&
                (v1.z > v2.z - Number.EPSILON && v1.z < v2.z + Number.EPSILON);
     }
 
-    static angle(v1, v2){
-        let cp = Vector3.cross(v1, v2);
+    static Angle(v1, v2){
+        let cp = Vector3.Cross(v1, v2);
 
-        let angle = Math.atan2(cp.length(), Vector3.dot(v1, v2));
+        let angle = Math.atan2(cp.length(), Vector3.Dot(v1, v2));
 
-        return Vector3.dot(cp, Vector3.up) < 0 ? -angle: angle;
+        return Vector3.Dot(cp, Vector3.up) < 0 ? -angle: angle;
     }
 
-    static negate(v1){
+    static Negate(v1){
         let vec = v1;
         vec.x *= -1.0;
         vec.y *= -1.0;

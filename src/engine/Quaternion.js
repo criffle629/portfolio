@@ -45,7 +45,7 @@ export default class Quaternion {
     }
     
     static LookAt(sourcePoint, destPoint, up) {
-        let forwardVector = Vector3.Normalize(destPoint - sourcePoint);
+        let forwardVector = Vector3.Normalize(Vector3.Subtract(destPoint, sourcePoint));
 
         let dot = Vector3.Dot(Vector3.forward, forwardVector);
 
@@ -56,7 +56,7 @@ export default class Quaternion {
             return Quaternion.Identity();
         }
 
-        let rotAngle = Math.acosf(dot);
+        let rotAngle = Math.acos(dot);
         let rotAxis = Vector3.Cross(forwardVector, up);
         rotAxis = Vector3.Normalize(rotAxis);
         return Quaternion.CreateFromAxisAngle(rotAxis, rotAngle);
@@ -127,7 +127,7 @@ export default class Quaternion {
     }
 
     static RotatePointAroundPivot(point, pivot, maxRot) {
-        return Quaternion.LookRotation(point - pivot, Vector3.up) * point;
+        return Quaternion.LookRotation(Vector3.Subtract(point, pivot), Vector3.up) * point;
     }
 
     static RotateAround(point, pivot) {
