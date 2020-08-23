@@ -24,7 +24,7 @@ class Engine {
         this.light.shadow.camera.near = 0.01;
         this.light.shadow.camera.far = 500;
         this.light.shadow.bias = -0.00025;
-        var side = 20;
+        let side = 20;
         this.light.shadow.camera.top = side;
         this.light.shadow.camera.bottom = -side;
         this.light.shadow.camera.left = -side;
