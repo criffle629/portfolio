@@ -2,10 +2,9 @@ import Camera from './Camera';
 import * as THREE from 'three';
 import Time from './Time';
 import Scene from './Scene';
-import Renderer from "./Renderer";
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
-import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass';
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader';
+import { BokehShader, BokehDepthShader } from 'three/examples/jsm/shaders/BokehShader2';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
@@ -43,22 +42,24 @@ class PostProcessingManager{
     }
 
     addBokeh(){ 
-     
-        this.bokeh  =  new BokehPass(Scene.scene, Camera.mainCamera, {
-            focus: 10.0,
-            aperture: 1,
-            maxBlur: 5,
-            width: Scene.screenWidth,
-            height: Scene.screenHeight
-        });
+        this.bokehDepth = new ShaderPass( BokehDepthShader );
+        this.bokeh = new ShaderPass( BokehShader );
 
+       // this.bokeh  =  new BokehPass(Scene.scene, Camera.mainCamera, {
+       //     focus: 2.8,
+       //     aperture: 0.52,
+       //     maxBlur: 5,
+  
+  //      });
+    //    this.bokeh.needsSwap = false;
+        this.composer.addPass(this.bokehDepth)
         this.composer.addPass(this.bokeh)
     }
 
     addBloom(){
         this.bloom = new UnrealBloomPass(
             new THREE.Vector2(Scene.screenWidth, Scene.screenHeight),
-            .5,
+            .3,
             1,
             .8 );
      

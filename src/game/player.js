@@ -1,10 +1,9 @@
 import * as THREE from "three";
 import GameObject from '../engine/GameObject';
 import Input from '../engine/Input';
-import Camera from '../engine/Camera';
 import Time from '../engine/Time';
 import Vector3 from '../engine/Vector3';
-import MathTools from '../engine/MathTools';
+
 
 export default class Player extends GameObject{
 
@@ -16,7 +15,7 @@ export default class Player extends GameObject{
     }
     update(){
         
-        if (this.model.hasOwnProperty('mixer') && this.model.mixer !== null)
+        if (this.model && this.model.hasOwnProperty('mixer') && this.model.mixer !== null)
             this.model.mixer.timeScale = 1.0;
 
         

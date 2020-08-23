@@ -1,15 +1,14 @@
 import Vector3 from './Vector3';
-import SkinnedMesh from './SkinnedMesh';
-import Mesh from './Mesh';
 import Scene from './Scene';
 import RigidBody from './RigidBody';
 import Quaternion from './Quaternion';
- 
+import Content from './Content';
+
 export default class GameObject {
 
     static id = 0;
 
-    constructor(meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false) {
+    constructor(name = null, meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false) {
         this.position = new Vector3(0.0, 0.0, 0.0); 
         this.rotation = new Quaternion();
         this.scale = new Vector3(0.0, 0.0, 0.0);
@@ -25,46 +24,26 @@ export default class GameObject {
         this.allowUpdate = true;
         GameObject.id++;
 
-        this.LoadModel(meshPath, flatShading);
-    }
-
-    LoadModel(meshPath, flatShading = false) {
-
-        if (meshPath === null) return;
-
-        this.loadMesh(meshPath, this.skinnedMesh, this.castShadow, this.recieveShadow, flatShading)
-            .then(data => {
-                this.model = data;
-            })
-            .catch(e => {
-                console.log(e);
-            });
+        this.LoadModel(name, meshPath, flatShading);
         Scene.addGameObject(this);
     }
 
-    async loadMesh(meshPath, skinnedMesh, castShadow = false, recieveShadow = false, flatShading = false) {
-        this.castShadow = castShadow;
-        this.recieveShadow = recieveShadow;
-        return new Promise((resolve, reject) => {
-            if (skinnedMesh) {
-                this.model = new SkinnedMesh(meshPath, castShadow, recieveShadow, flatShading);
-                resolve(this.model);
-            }
-            else {
-       
-                this.model = new Mesh(null, castShadow, recieveShadow, flatShading);
-                this.model.LoadMesh(meshPath)
-                    .then(data => {
-                        resolve(data);
-                    })
-                    .catch(e => {
-                        reject(e);
-                    });
-            }
+    LoadModel = (name, meshPath, flatShading = false) => {
+
+        if (meshPath === null) return;
+
+        Content.LoadMesh(name, meshPath, this.skinnedMesh, this.castShadow, this.recieveShadow, flatShading)
+        .then(model => {
+            this.model = model;
+            
+            this.setPosition(this.position);
+            this.setRotation(this.rotation);
+        })
+        .catch(e => {
+            console.log(e);
         });
-
+        
     }
-
 
     setEnabled(value) {
         this.isEnabled = value;
@@ -158,7 +137,7 @@ export default class GameObject {
     }
 
     render() {
-        if (this.skinnedMesh)
+        if (this.skinnedMesh && this.model)
             this.model.Animate();
     }
 

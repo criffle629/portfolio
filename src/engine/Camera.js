@@ -1,8 +1,10 @@
 import * as THREE from "three";
-import Vector3 from './Vector3';
-import GameObject from './GameObject';
+
+
 import Quaternion from "./Quaternion";
 import Scene from "./Scene";
+import GameObject from './GameObject';
+import Vector3 from './Vector3';
 
 class CameraManager extends GameObject{
     constructor(){
