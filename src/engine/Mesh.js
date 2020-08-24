@@ -51,6 +51,7 @@ export default class Mesh {
                 this.scene = gltf.scene;
                 this.meshData = gltf.scene.children;
                 this.mesh = gltf.scene;
+                this.mesh.doubleSided = false;
                 Scene.add(gltf.scene);
 
                 resolve(this);

@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import MathTools from './MathTools';
-import Physics from './Physics';
-const Ammo = Physics.Ammo;
+import Ammo from 'ammo.js';
 
 export default class Vector3{
     

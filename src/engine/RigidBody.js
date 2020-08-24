@@ -2,7 +2,7 @@
 import Physics from './Physics';
 import Quaternion from './Quaternion';
 import Vector3 from './Vector3';
-const Ammo = Physics.Ammo;
+import Ammo from 'ammo.js';
 
 export default class RigidBody {
 
@@ -28,7 +28,7 @@ export default class RigidBody {
         this.body.setFriction(1);
         this.body.setActivationState(4);
 
-        this.SetKinematic(mass === 0);
+        //wathis.SetKinematic(mass === 0);
         
         Physics.addRigidBody(this.body);
     }

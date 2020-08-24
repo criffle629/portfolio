@@ -9,6 +9,7 @@ import GameObject from './GameObject';
 import Renderer from './Renderer';
 import PostProcessing from './PostProcessing';
 import Vehicle from './Vehicle';
+import Quaternion from './Quaternion';
 
 class Engine {
     constructor() {
@@ -28,8 +29,6 @@ class Engine {
         this.light.shadow.camera.left = -side;
         this.light.shadow.camera.right = side;
 
-        // this.light.position.set(camPos.x, 1, camPos.z + 5);
-
         this.light.target = new THREE.Object3D();
 
         Scene.setExpoFog('skyblue', 0.025);
@@ -40,29 +39,65 @@ class Engine {
         Scene.add(this.ambientLight);
 
         this.player = new Player('player', './assets/models/chris.glb', true, true, true);
-        this.player.addRigidBody(1, Physics.createBoxShape(new Vector3(0.5, 0.88198, 0.5)), new Vector3(0, 10, 0));
+        this.player.addRigidBody(1, Physics.createCapsuleShape(0.25, 0.5, Vector3.up), new Vector3(0, 10, 0));
+        this.player.addRigidBody(1, Physics.createCapsuleShape(0.25, 0.5, Vector3.up), new Vector3(0, 10, 0));
 
         this.ground = new GameObject('ground', './assets/models/ground.glb', false, false, true,);
         this.ground.addRigidBody(0, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
 
-        this.garage = new GameObject('garage', './assets/models/garage.glb', false, true, true);
-        this.garage.addRigidBody(0, Physics.createBoxShape(new Vector3(0.5, 0.88198, 0.5)), new Vector3(-25, 0, -15));
+        this.moundSign = new GameObject('moundsign', './assets/models/moundsign.glb', false, true, true,);
+        this.moundSign.setPosition(new Vector3(0,0, -10));
 
-        this.mound = new GameObject('mound', './assets/models/mound.glb', false, true, true, true);
-        this.mound.addRigidBody(0, Physics.createSphereShape(3), new Vector3(0, 0, -10));
+        this.garage = new GameObject('garage', null, false, true, true, true);
+        this.garage.LoadModel('garage', './assets/models/garage.glb', true)
+        .then(() => {
+            Physics.createMeshShape(this.garage.model.mesh)
+            .then(shape => {
+                this.garage.addRigidBody(0, shape, new Vector3(0, 0, -10));
+            });
+        });
+        
+        this.garagedoor = new GameObject('garagedoor', null, false, true, true, true);
+        this.garagedoor.LoadModel('garagedoor', './assets/models/garagedoor.glb', true)
+            .then(() => {
+                Physics.createMeshShape(this.garagedoor.model.mesh)
+                .then(shape => {
+                    this.garagedoor.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                });
+            });
 
+        this.mound = new GameObject('mound', null, false, true, true, true);
+        this.mound.LoadModel('mound', './assets/models/mound.glb', true)
+        .then(() => {
+            Physics.createMeshShape(this.mound.model.mesh)
+            .then(shape => {
+                this.mound.addRigidBody(0, shape, new Vector3(0, 0, -10));
+            });
+        });
+          
+        this.fenceleft = new GameObject('fenceleft', null, false, true, true, true);
+        this.fenceleft.LoadModel('fenceleft', './assets/models/fenceleft.glb', true)
+        .then(() => {
+            Physics.createMeshShape(this.fenceleft.model.mesh)
+            .then(shape => {
+                this.fenceleft.addRigidBody(0, shape, new Vector3(0, 0, -10));
+            });
+        });
+ 
         Camera.target = this.player;
-
 
         this.vehicle2 = new Vehicle({
             breakForce: 25,
             accelForceFront: 0,
-            accelForceBack: 50,
+            accelForceBack: 5,
+            accelRate: 15,
+            topSpeed: 60,
             bodyWidth: 1.35,
             bodyHeight: 1,
             bodyLength: 2.128,
             mass: 150,
             position: new Vector3(5, 1.5, -5),
+            rotation: Quaternion.FromEuler(0, 0, 0),
             bodyModel: './assets/models/classicbug.glb',
             wheelLeftModel: './assets/models/classicbugwheelLeft.glb',
             wheelRightModel: './assets/models/classicbugwheelRight.glb',
@@ -80,16 +115,18 @@ class Engine {
             frontLeftPos: new Vector3(-0.38, -0.2, 0.719),
         });
 
-
         this.vehicle = new Vehicle({
             breakForce: 25,
             accelForceFront: 0,
-            accelForceBack: 50,
+            accelForceBack: 3,
+            accelRate: 10,
+            topSpeed: 80,
             bodyWidth: 1.35,
             bodyHeight: 1,
             bodyLength: 2.128,
             mass: 300,
             position: new Vector3(0, 1.5, -5),
+            rotation: Quaternion.FromEuler(0, 0, 0),
             bodyModel: './assets/models/hotrod.glb',
             wheelLeftModel: './assets/models/hotrodwheelLeft.glb',
             wheelRightModel: './assets/models/hotrodwheelRight.glb',
@@ -106,16 +143,18 @@ class Engine {
             frontLeftPos: new Vector3(-0.524, -0.309, 0.719),
         });
 
-
         this.vehicle3 = new Vehicle({
             breakForce: 25,
-            accelForceFront: 25,
-            accelForceBack: 25,
+            accelForceFront: 8,
+            accelForceBack: 8,
+            accelRate: 5,
+            topSpeed: 100,
             bodyWidth: 1.35,
             bodyHeight: 1,
             bodyLength: 2.128,
             mass: 200,
             position: new Vector3(-5, 1.5, -5),
+            rotation: Quaternion.FromEuler(0, 0, 0),
             bodyModel: './assets/models/sportscar.glb',
             wheelLeftModel: './assets/models/sportscarwheelLeft.glb',
             wheelRightModel: './assets/models/sportscarwheelRight.glb',

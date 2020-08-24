@@ -28,11 +28,11 @@ export default class GameObject {
         Scene.addGameObject(this);
     }
 
-    LoadModel = (name, meshPath, flatShading = false) => {
+    LoadModel = async (name, meshPath, flatShading = false) => {
 
         if (meshPath === null) return;
 
-        Content.LoadMesh(name, meshPath, this.skinnedMesh, this.castShadow, this.recieveShadow, flatShading)
+        await Content.LoadMesh(name, meshPath, this.skinnedMesh, this.castShadow, this.recieveShadow, flatShading)
         .then(model => {
             this.model = model;
             
@@ -42,7 +42,6 @@ export default class GameObject {
         .catch(e => {
             console.log(e);
         });
-        
     }
 
     setEnabled(value) {

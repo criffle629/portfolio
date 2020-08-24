@@ -9,6 +9,7 @@ import MathTools from './MathTools';
 import Camera from './Camera';
 import Audio from './Audio';
 import Content from './Content';
+import Ammo from 'ammo.js';
 
 export default class Vehicle extends GameObject {
     constructor(options) {
@@ -18,8 +19,9 @@ export default class Vehicle extends GameObject {
         this.recieveShadow = true;
         this.skinnedMesh = false;
 
+        this.topSpeed = options.topSpeed;
         this.steeringRate = 5.0;
-
+        this.accelRate = options.accelRate;
         this.breakForce = options.breakForce;
         this.accelForceFront = options.accelForceFront;
         this.accelForceBack = options.accelForceBack;
@@ -49,21 +51,21 @@ export default class Vehicle extends GameObject {
 
         this.bodyShape = Physics.createBoxShape(new Vector3(options.bodyWidth, options.bodyHeight, options.bodyLength));
 
-        var transform = new Physics.Ammo.btTransform();
+        var transform = new Ammo.btTransform();
         transform.setIdentity();
-        transform.setOrigin(new Physics.Ammo.btVector3(options.position.x, options.position.y, options.position.z));
-        transform.setRotation(new Physics.Ammo.btQuaternion(0, 0, 0, 1));
-        var motionState = new Physics.Ammo.btDefaultMotionState(transform);
-        var localInertia = new Physics.Ammo.btVector3(0, 0, 0);
+        transform.setOrigin(new Ammo.btVector3(options.position.x, options.position.y, options.position.z));
+        transform.setRotation(new Ammo.btQuaternion(options.rotation.x, options.rotation.y, options.rotation.z, options.rotation.w));
+        var motionState = new Ammo.btDefaultMotionState(transform);
+        var localInertia = new Ammo.btVector3(0, 0, 0);
         this.bodyShape.calculateLocalInertia(options.mass, localInertia);
-        this.body = new Physics.Ammo.btRigidBody(new Physics.Ammo.btRigidBodyConstructionInfo(options.mass, motionState, this.bodyShape, localInertia));
+        this.body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(options.mass, motionState, this.bodyShape, localInertia));
         this.body.setActivationState(4);
 
         Physics.world.addRigidBody(this.body);
-        this.tuning = new Physics.Ammo.btVehicleTuning();
+        this.tuning = new Ammo.btVehicleTuning();
 
-        this.raycaster = new Physics.Ammo.btDefaultVehicleRaycaster(Physics.world);
-        this.vehicle = new Physics.Ammo.btRaycastVehicle(this.tuning, this.body, this.raycaster);
+        this.raycaster = new Ammo.btDefaultVehicleRaycaster(Physics.world);
+        this.vehicle = new Ammo.btRaycastVehicle(this.tuning, this.body, this.raycaster);
 
         this.vehicle.setCoordinateSystem(0, 1, 2);
 
@@ -87,7 +89,7 @@ export default class Vehicle extends GameObject {
         this.wheelInfo.push(this.createWheel(options, false, options.backRightPos, new Vector3(0, -1, 0), new Vector3(-1, 0, 0)));
         this.wheelInfo.push(this.createWheel(options, false, options.backLeftPos, new Vector3(0, -1, 0), new Vector3(-1, 0, 0)));
 
-        this.tuning = new Physics.Ammo.btVehicleTuning();
+        this.tuning = new Ammo.btVehicleTuning();
         this.currentAccelFront = 0;
         this.currentAccelBack = 0;
         this.currentBraking = 0;
@@ -113,9 +115,9 @@ export default class Vehicle extends GameObject {
         if (Input.isPressed('e') || Input.isPressed('E'))
             Camera.target = this;
 
-        if (Input.isPressed('ArrowUp') && this.speed <= 70){
-            this.currentAccelBack +=  this.accelForceBack * Time.deltaTime;
-            this.currentAccelFront += this.accelForceFront * Time.deltaTime;
+        if (Input.isPressed('ArrowUp') && this.speed <= this.topSpeed){
+            this.currentAccelBack +=  this.accelForceBack * this.accelRate * Time.deltaTime;
+            this.currentAccelFront += this.accelForceFront * this.accelRate * Time.deltaTime;
         }
         else{
             this.currentAccelBack = 0;
@@ -128,11 +130,11 @@ export default class Vehicle extends GameObject {
             this.currentBraking = 0;
 
         if (Input.isPressed('ArrowLeft')) {
-            this.steeringAngle += 25 * this.steeringRate * Time.deltaTime;
+            this.steeringAngle += 15 * this.steeringRate * Time.deltaTime;
         }
         else
             if (Input.isPressed('ArrowRight')) {
-                this.steeringAngle -= 25 * this.steeringRate * Time.deltaTime;
+                this.steeringAngle -= 15 * this.steeringRate * Time.deltaTime;
             }
             else {
                 this.steeringAngle = MathTools.moveTowards(this.steeringAngle, 0.0, this.steeringRate * Time.deltaTime);
@@ -142,8 +144,7 @@ export default class Vehicle extends GameObject {
 
     update() {
         Camera.mainCamera.add(Audio.listener);
-        if (this.engineSound !== null)
-            this.engineSound.play();
+ 
         this.updateInput();
 
         this.vehicle.applyEngineForce(this.currentAccelFront, 0);
@@ -173,7 +174,7 @@ export default class Vehicle extends GameObject {
             }
         }
 
-        tm = this.vehicle.getChassisWorldTransform();
+        tm = this.body.getWorldTransform();
         p = tm.getOrigin();
         q = tm.getRotation();
 
@@ -185,7 +186,7 @@ export default class Vehicle extends GameObject {
             this.rotation = new Quaternion(q.x(), q.y(), q.z(), q.w());
         }
 
-        this.speed = this.vehicle.getCurrentSpeedKmHour();
+        this.speed = this.vehicle.getRigidBody().getLinearVelocity().length() * 9.8;
 
         if (this.engineSound !== null && this.model !== null){
             this.engineSound.setDetune(this.speed * 15);
@@ -194,7 +195,5 @@ export default class Vehicle extends GameObject {
             this.engineSound.panner.positionZ.value = this.model.mesh.position.z;
             
         }
- 
-        //super.update();
     }
 }
