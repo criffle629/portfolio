@@ -9,7 +9,7 @@ export default class GameObject {
     static id = 0;
 
     constructor(name = null, meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false) {
-        this.position = new Vector3(0.0, 0.0, 0.0); 
+        this.position = new Vector3(0.0, 0.0, 0.0);
         this.rotation = new Quaternion();
         this.scale = new Vector3(0.0, 0.0, 0.0);
         this.isEnabled = true;
@@ -33,15 +33,15 @@ export default class GameObject {
         if (meshPath === null) return;
 
         await Content.LoadMesh(name, meshPath, this.skinnedMesh, this.castShadow, this.recieveShadow, flatShading)
-        .then(model => {
-            this.model = model;
-            
-            this.setPosition(this.position);
-            this.setRotation(this.rotation);
-        })
-        .catch(e => {
-            console.log(e);
-        });
+            .then(model => {
+                this.model = model;
+
+                this.setPosition(this.position);
+                this.setRotation(this.rotation);
+            })
+            .catch(e => {
+                console.log(e);
+            });
     }
 
     setEnabled(value) {
@@ -110,7 +110,7 @@ export default class GameObject {
 
     update() {
 
-        if (!this.allowUpdate) return; 
+        if (!this.allowUpdate) return;
 
         if (this.rigidBody !== null) {
             this.position = this.rigidBody.GetPosition();
@@ -129,7 +129,7 @@ export default class GameObject {
         this.model.mesh.rotation.set(rot.x, rot.y, rot.z);
     }
 
-    lateUpdate(){}
+    lateUpdate() { }
 
     addRigidBody(mass = 1, shape = null, position = Vector3.zero, rotation = Quaternion.Identity()) {
         this.rigidBody = new RigidBody(position, shape, rotation, mass);

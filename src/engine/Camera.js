@@ -1,6 +1,4 @@
 import * as THREE from "three";
-
-
 import Quaternion from "./Quaternion";
 import Scene from "./Scene";
 import GameObject from './GameObject';

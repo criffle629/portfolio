@@ -19,7 +19,6 @@ class ContentManager{
                 resolve(model);
             }
             else {
-       
                 let model = new Mesh(null, castShadow, recieveShadow, flatShading);
                 model.LoadMesh(path)
                     .then(data => {

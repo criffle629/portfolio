@@ -17,10 +17,10 @@ class Renderer {
             this.renderer.gammaInput = true;
             this.renderer.gammaOutput = true;
        
-            this.renderer.autoClear = false;
+            this.renderer.autoClear = true;
     
             this.renderer.setClearColor('skyblue', 1.0);
-    
+            this.renderer.clearAlpha = 1;
             this.renderer.setAnimationLoop(loopCallback);
 
             if (this.renderer !== null)

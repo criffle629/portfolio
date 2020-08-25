@@ -8,7 +8,7 @@ import Vector3 from '../engine/Vector3';
 export default class Player extends GameObject{
 
     changeAnimation(animation){
-        this.moveSpeed       = 5.0;
+        this.moveSpeed = 5.0;
    
         if (this.model !== null)
             this.model.playAnimation(animation);
@@ -18,20 +18,19 @@ export default class Player extends GameObject{
         if (this.model && this.model.hasOwnProperty('mixer') && this.model.mixer !== null)
             this.model.mixer.timeScale = 1.0;
 
-        
         let zMove = 0;
         let xMove = 0;
         
-        if (Input.isPressed('w') || Input.isPressed('W'))
+        if (Input.isPressed('w'))
             zMove = -1;
         
-        if (Input.isPressed('s') || Input.isPressed('S'))
+        if (Input.isPressed('s'))
             zMove= 1;
 
-        if (Input.isPressed('a') || Input.isPressed('A'))
+        if (Input.isPressed('a'))
             xMove = -1;   
         
-        if (Input.isPressed('d') || Input.isPressed('D'))
+        if (Input.isPressed('d'))
             xMove = 1;
     
         let moveDir = new THREE.Vector3(xMove, 0, zMove);

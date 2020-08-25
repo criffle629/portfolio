@@ -4,15 +4,15 @@ class InputManager{
     }
 
     addKey(key){
-        this.inputQueue.set(key, 1);
+        this.inputQueue.set(key.toLowerCase(), 1);
     }
 
     removeKey(key){
-       this.inputQueue.delete(key);
+       this.inputQueue.delete(key.toLowerCase());
     }
 
     isPressed(key){
-        return this.inputQueue.has(key);
+        return this.inputQueue.has(key.toLowerCase());
     }
 
     clearKeys(){

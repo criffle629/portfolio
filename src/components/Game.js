@@ -21,6 +21,7 @@ export default class Game extends React.Component {
     ScreenResize = () => {
         Scene.setScreenSize(window.innerWidth - 3, window.innerHeight - 3);
         GameEngine.InitRenderer(this.canvas, Scene.screenWidth, Scene.screenHeight);
+        Camera.Configure(60, Scene.aspectRatio, 0.1, 1000.0);
     }
    
     HandleKeyPress(e) {
@@ -35,9 +36,12 @@ export default class Game extends React.Component {
         Input.removeKey(e.key);
     }
 
+    clearInput = () => {
+        Input.clearKeys();
+    }
     render() {
         return (
-                <canvas style={{width: '100%', alignItems:'center'}} tabIndex="0" onKeyDown={this.HandleKeyPress} onKeyUp={this.HandleKeyUp} ref={(c) => {this.canvas = c; this.Load();}}/>
+                <canvas style={{width: '100%', alignItems:'center'}} tabIndex="0" onKeyDown={this.HandleKeyPress} onKeyUp={this.HandleKeyUp} ref={(c) => {this.canvas = c; this.Load();}} onBlur={this.clearInput}/>
         )
     }
 }

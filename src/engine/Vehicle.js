@@ -112,7 +112,7 @@ export default class Vehicle extends GameObject {
 
     updateInput() {
        
-        if (Input.isPressed('e') || Input.isPressed('E'))
+        if (Input.isPressed('e'))
             Camera.target = this;
 
         if (Input.isPressed('ArrowUp') && this.speed <= this.topSpeed){
