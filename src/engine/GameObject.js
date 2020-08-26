@@ -3,14 +3,14 @@ import Scene from './Scene';
 import RigidBody from './RigidBody';
 import Quaternion from './Quaternion';
 import Content from './Content';
-
+ 
 export default class GameObject {
 
     static id = 0;
 
-    constructor(name = null, meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false) {
-        this.position = new Vector3(0.0, 0.0, 0.0);
-        this.rotation = new Quaternion();
+    constructor(name = null, meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false, position = Vector3.zero, rotation = Quaternion.Identity()) {
+        this.position = position;
+        this.rotation = rotation;
         this.scale = new Vector3(0.0, 0.0, 0.0);
         this.isEnabled = true;
         this.texture = null;
@@ -22,6 +22,7 @@ export default class GameObject {
         this.castShadow = castShadow;
         this.recieveShadow = recieveShadow;
         this.allowUpdate = true;
+        this.name = name;
         GameObject.id++;
 
         this.LoadModel(name, meshPath, flatShading);

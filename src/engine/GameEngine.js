@@ -10,8 +10,7 @@ import Renderer from './Renderer';
 import PostProcessing from './PostProcessing';
 import Vehicle from './Vehicle';
 import Quaternion from './Quaternion';
-import Input from './Input';
-
+ 
 class Engine {
     constructor() {
 
@@ -42,7 +41,7 @@ class Engine {
 
         this.player = new Player('player', './assets/models/chris.glb', true, true, true);
         this.player.addRigidBody(1, Physics.createCapsuleShape(0.25, 0.5, Vector3.up), new Vector3(0, 10, 0));
-        this.player.addRigidBody(1, Physics.createCapsuleShape(0.25, 0.5, Vector3.up), new Vector3(0, 10, 0));
+    
 
         this.ground = new GameObject('ground', './assets/models/ground.glb', false, false, true,);
         this.ground.addRigidBody(0, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
@@ -104,16 +103,26 @@ class Engine {
                     });
             });
 
+        this.ekey = new GameObject('ekey', './assets/models/ekey.glb', false, false, true, true, new Vector3(-23.75, 2, -10), Quaternion.Identity());
+        
+
+
+
         Camera.target = this.player;
 
+       
+
+
+
+  
         this.vehicle2 = new Vehicle({
             breakForce: 25,
             accelForceFront: 0,
-            accelForceBack: 15,
-            accelRate: 15,
-            topSpeed: 60,
+            accelForceBack: 50,
+            accelRate: 2,
+            topSpeed: 128,
             bodyWidth: 1.35,
-            bodyHeight: 1,
+            bodyHeight: 0.5,
             bodyLength: 2.128,
             mass: 75,
             position: new Vector3(-23.75, 1.5, -10),
@@ -138,14 +147,14 @@ class Engine {
         this.vehicle = new Vehicle({
             breakForce: 25,
             accelForceFront: 0,
-            accelForceBack: 5,
-            accelRate: 10,
-            topSpeed: 80,
+            accelForceBack: 35,
+            accelRate: 2,
+            topSpeed: 160,
             bodyWidth: 1.35,
             bodyHeight: 0.5,
             bodyLength: 2.128,
             mass: 300,
-            position: new Vector3(-24.75, 1.5, -9),
+            position: new Vector3(-25.75, 1.5, -9),
             rotation: Quaternion.FromEuler(0, 12, 0),
             bodyModel: './assets/models/hotrod.glb',
             wheelLeftModel: './assets/models/hotrodwheelLeft.glb',
@@ -165,15 +174,15 @@ class Engine {
 
         this.vehicle3 = new Vehicle({
             breakForce: 25,
-            accelForceFront: 8,
-            accelForceBack: 8,
-            accelRate: 5,
-            topSpeed: 100,
+            accelForceFront: 80,
+            accelForceBack: 80,
+            accelRate: 1,
+            topSpeed: 200,
             bodyWidth: 1.35,
             bodyHeight: 0.5,
             bodyLength: 2.128,
             mass: 200,
-            position: new Vector3(-25.75, 1.5, -9),
+            position: new Vector3(-26.75, 1.5, -9),
             rotation: Quaternion.FromEuler(0, 12, 0),
             bodyModel: './assets/models/sportscar.glb',
             wheelLeftModel: './assets/models/sportscarwheelLeft.glb',
@@ -190,14 +199,15 @@ class Engine {
             frontRightPos: new Vector3(0.45, -0.23, 0.69),
             frontLeftPos: new Vector3(-0.45, -0.23, 0.69),
         });
-
         requestAnimationFrame(this.Animate);
     }
 
     InitRenderer(canvas, width, height) {
         this.renderer = new Renderer();
         this.renderer.InitRenderer(canvas, width, height, this.Animate).then(renderer => {
-        
+            PostProcessing.init(renderer);
+            PostProcessing.addFXAA();
+            PostProcessing.addBloom();
             //   PostProcessing.addBokeh(); 
         });
     }
@@ -217,10 +227,10 @@ class Engine {
         this.light.position.set(camPos.x, 1, camPos.z + 5);
         this.light.target.position.set(-5 + camPos.x, -5, -5 + camPos.z);
 
-     //   if (PostProcessing.isUsingEffects())
-      //      PostProcessing.render();
-       // else
-            this.renderer.Render(Scene.getScene(), Camera.mainCamera);
+        //   if (PostProcessing.isUsingEffects())
+        //      PostProcessing.render();
+        // else
+        this.renderer.Render(Scene.getScene(), Camera.mainCamera);
 
     }
 }

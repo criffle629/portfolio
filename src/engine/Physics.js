@@ -13,7 +13,6 @@ class PhysicsEngine {
     };
 
     constructor() {
-
         this.collisionConfig = new Ammo.btDefaultCollisionConfiguration();
         this.dispatcher = new Ammo.btCollisionDispatcher(this.collisionConfig);
         this.broadphase = new Ammo.btDbvtBroadphase();

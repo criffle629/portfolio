@@ -25,7 +25,7 @@ export default class Vehicle extends GameObject {
         this.breakForce = options.breakForce;
         this.accelForceFront = options.accelForceFront;
         this.accelForceBack = options.accelForceBack;
-
+        this.reverse = false;
         this.engineSound = null;
 
         Audio.LoadSound('./assets/sounds/engine.wav', true, 0.25)
@@ -115,20 +115,33 @@ export default class Vehicle extends GameObject {
         if (Input.isPressed('e'))
             Camera.target = this;
 
+        document.title = this.speed;
+        this.reverse = false;
         if (Input.isPressed('ArrowUp') && this.speed <= this.topSpeed){
-            this.currentAccelBack +=  this.accelForceBack * this.accelRate * Time.deltaTime;
-            this.currentAccelFront += this.accelForceFront * this.accelRate * Time.deltaTime;
+        
+                this.currentBraking = 0;
+                this.currentAccelBack =  this.accelForceBack * this.accelRate;
+                this.currentAccelFront = this.accelForceFront * this.accelRate;
         }
-        else{
+        else
+        {
             this.currentAccelBack = 0;
             this.currentAccelFront = 0;
         }
-
+ 
         if (Input.isPressed('ArrowDown'))
-            this.currentBraking += (this.breakForce * 0.25) * Time.deltaTime;
-        else
-            this.currentBraking = 0;
-
+        {
+            this.reverse = true;
+            if (this.speed <= 0 )
+                {
+                    this.currentBraking = 0;
+                    this.currentAccelBack =  -((this.accelForceBack * 0.5) * this.accelRate);
+                    this.currentAccelFront = -((this.accelForceFront * 0.5) * this.accelRate);
+                }
+                else
+                this.currentBraking = this.breakForce * 0.25;
+        }
+        
         if (Input.isPressed('ArrowLeft')) {
             this.steeringAngle += 15 * this.steeringRate * Time.deltaTime;
         }
@@ -186,8 +199,12 @@ export default class Vehicle extends GameObject {
             this.rotation = new Quaternion(q.x(), q.y(), q.z(), q.w());
         }
 
-        this.speed = this.vehicle.getRigidBody().getLinearVelocity().length() * 9.8;
-
+        let vel = (this.vehicle.getRigidBody().getLinearVelocity().length() - 0.163);
+        if (vel < 0.009)
+            vel = 0;
+        const dir = this.reverse && this.speed < 0.05 ? -1 : 1;
+        this.speed = vel * 9.8 * dir;
+        
         if (this.engineSound !== null && this.model !== null){
             this.engineSound.setDetune(this.speed * 15);
             this.engineSound.panner.positionX.value = this.model.mesh.position.x;
