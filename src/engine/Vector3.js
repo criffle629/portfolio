@@ -127,7 +127,7 @@ export default class Vector3{
     }
 
     static Distance(v1, v2){
-        let delta = Vector3.Subtract(v2 - v1);
+        let delta = Vector3.Subtract(v2, v1);
     
         let distance = Math.sqrt(delta.x * delta.x + delta.y * delta.y + delta.z * delta.z);
     

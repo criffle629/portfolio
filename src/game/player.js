@@ -3,34 +3,64 @@ import GameObject from '../engine/GameObject';
 import Input from '../engine/Input';
 import Time from '../engine/Time';
 import Vector3 from '../engine/Vector3';
-
+import VehicleManger from '../engine/VehicleManager';
+import Quaternion from '../engine/Quaternion';
+import Camera from '../engine/Camera';
 
 export default class Player extends GameObject{
-
+    constructor(name = null, meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false, position = Vector3.zero, rotation = Quaternion.Identity()) {
+        super(name, meshPath, skinnedMesh, castShadow, recieveShadow, flatShading, position, rotation);
+        this.vehicle = null;
+    }
     changeAnimation(animation){
         this.moveSpeed = 5.0;
-   
+       
         if (this.model !== null)
             this.model.playAnimation(animation);
     }
     update(){
+
+        const ePressed = Input.isKeyPressed('e');
+        if (ePressed && this.vehicle === null)
+        this.vehicle = VehicleManger.useVehicle();
+        else
+        if (ePressed && this.vehicle !== null)
+        {
+            this.vehicle.inUse = false;
+           
+           let pos = this.vehicle.position;
+           Camera.target = this;
+           this.vehicle = null;
+           this.setPosition(new Vector3(pos.x + 2, 1, pos.z));
+
+        }
+       
+  
+    
+
+        if (this.vehicle !== null && this.vehicle !== 'undefined') {
+            this.setPosition(new Vector3(0.0, -100, 0.0));
         
+            super.update();
+            return;
+        }
+
         if (this.model && this.model.hasOwnProperty('mixer') && this.model.mixer !== null)
             this.model.mixer.timeScale = 1.0;
 
         let zMove = 0;
         let xMove = 0;
         
-        if (Input.isPressed('w'))
+        if (Input.isKeyDown('w'))
             zMove = -1;
         
-        if (Input.isPressed('s'))
+        if (Input.isKeyDown('s'))
             zMove= 1;
 
-        if (Input.isPressed('a'))
+        if (Input.isKeyDown('a'))
             xMove = -1;   
         
-        if (Input.isPressed('d'))
+        if (Input.isKeyDown('d'))
             xMove = 1;
     
         let moveDir = new THREE.Vector3(xMove, 0, zMove);

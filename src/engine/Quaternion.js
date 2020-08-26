@@ -51,7 +51,7 @@ export default class Quaternion {
         let dot = Vector3.Dot(Vector3.forward, forwardVector);
 
         if (Math.abs(dot - (-1.0)) < 0.000001) {
-            return Quaternion(Vector3.up.x, Vector3.up.y, Vector3.up.z, Math.PI);
+            return new Quaternion(Vector3.up.x, Vector3.up.y, Vector3.up.z, Math.PI);
         }
         if (Math.abs(dot - (1.0)) < 0.000001) {
             return Quaternion.Identity();

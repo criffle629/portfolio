@@ -10,11 +10,13 @@ import Camera from './Camera';
 import Audio from './Audio';
 import Content from './Content';
 import Ammo from 'ammo.js';
+import VehicleManager from './VehicleManager';
 
 export default class Vehicle extends GameObject {
     constructor(options) {
         super();
 
+        this.inUse = false;
         this.castShadow = true;
         this.recieveShadow = true;
         this.skinnedMesh = false;
@@ -27,7 +29,7 @@ export default class Vehicle extends GameObject {
         this.accelForceBack = options.accelForceBack;
         this.reverse = false;
         this.engineSound = null;
-
+    
         Audio.LoadSound('./assets/sounds/engine.wav', true, 0.25)
             .then(sound => {
                 this.engineSound = sound;
@@ -95,6 +97,8 @@ export default class Vehicle extends GameObject {
         this.currentBraking = 0;
         this.steeringAngle = 0;
         this.speed = 0;
+
+        VehicleManager.addVehicle(this);
     }
 
     createWheel(options, front, wheelPos, wheelDir, wheelAxle) {
@@ -104,20 +108,20 @@ export default class Vehicle extends GameObject {
         wheel.set_m_suspensionStiffness(options.stiffness);
         wheel.set_m_wheelsDampingRelaxation(options.damping);
         wheel.set_m_wheelsDampingCompression(options.compression);
-        wheel.set_m_frictionSlip(options.friction);
+
+        const friction = front ? options.frontFriction : options.backFriction;
+        wheel.set_m_frictionSlip(friction);
         wheel.set_m_rollInfluence(options.roll);
 
         return wheel;
     }
 
     updateInput() {
-       
-        if (Input.isPressed('e'))
-            Camera.target = this;
 
-        document.title = this.speed;
+        if (!this.inUse) return;
+
         this.reverse = false;
-        if (Input.isPressed('ArrowUp') && this.speed <= this.topSpeed){
+        if (Input.isKeyDown('w') && this.speed <= this.topSpeed){
         
                 this.currentBraking = 0;
                 this.currentAccelBack =  this.accelForceBack * this.accelRate;
@@ -127,9 +131,10 @@ export default class Vehicle extends GameObject {
         {
             this.currentAccelBack = 0;
             this.currentAccelFront = 0;
+            this.currentBraking = 0.5;
         }
  
-        if (Input.isPressed('ArrowDown'))
+        if (Input.isKeyDown('s'))
         {
             this.reverse = true;
             if (this.speed <= 0 )
@@ -142,11 +147,11 @@ export default class Vehicle extends GameObject {
                 this.currentBraking = this.breakForce * 0.25;
         }
         
-        if (Input.isPressed('ArrowLeft')) {
+        if (Input.isKeyDown('a')) {
             this.steeringAngle += 15 * this.steeringRate * Time.deltaTime;
         }
         else
-            if (Input.isPressed('ArrowRight')) {
+            if (Input.isKeyDown('d')) {
                 this.steeringAngle -= 15 * this.steeringRate * Time.deltaTime;
             }
             else {
@@ -160,6 +165,11 @@ export default class Vehicle extends GameObject {
  
         this.updateInput();
 
+        if (!this.inUse){
+            this.currentBraking = this.breakForce * 0.25;;
+            this.currentAccelBack =  0;
+            this.currentAccelFront = 0;
+        }
         this.vehicle.applyEngineForce(this.currentAccelFront, 0);
         this.vehicle.applyEngineForce(this.currentAccelFront, 1);
         this.vehicle.applyEngineForce(this.currentAccelBack, 2);
@@ -206,7 +216,7 @@ export default class Vehicle extends GameObject {
         this.speed = vel * 9.8 * dir;
         
         if (this.engineSound !== null && this.model !== null){
-            this.engineSound.setDetune(this.speed * 15);
+            this.engineSound.setDetune(this.speed * 10);
             this.engineSound.panner.positionX.value = this.model.mesh.position.x;
             this.engineSound.panner.positionY.value = this.model.mesh.position.y;
             this.engineSound.panner.positionZ.value = this.model.mesh.position.z;

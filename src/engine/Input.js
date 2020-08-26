@@ -1,22 +1,38 @@
 class InputManager{
     constructor(){
-        this.inputQueue = new Map();
+        this.keyDown = new Map();
+        this.keyPressed = new Map();
     }
 
     addKey(key){
-        this.inputQueue.set(key.toLowerCase(), 1);
+        this.keyDown.set(key.toLowerCase(), 1);
+        if (this.keyPressed.get(key.toLowerCase()) !== 2){
+            this.keyPressed.set(key.toLowerCase(), 1);
+        }
     }
 
     removeKey(key){
-       this.inputQueue.delete(key.toLowerCase());
+       this.keyDown.delete(key.toLowerCase());
+       this.keyPressed.delete(key.toLowerCase());
     }
 
-    isPressed(key){
-        return this.inputQueue.has(key.toLowerCase());
+    isKeyDown(key){
+        return this.keyDown.has(key.toLowerCase());
+    }
+
+    isKeyPressed(key){
+       
+        if (this.keyPressed.has(key.toLowerCase()) && this.keyPressed.get(key.toLowerCase()) === 1){
+            this.keyPressed.set(key.toLowerCase(), 2);
+            return true;
+        }
+
+        return false;
     }
 
     clearKeys(){
-        this.inputQueue.clear();
+        this.keyDown.clear();
+        this.keyPressed.clear();
     }
 }
 

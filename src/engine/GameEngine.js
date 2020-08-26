@@ -10,9 +10,14 @@ import Renderer from './Renderer';
 import PostProcessing from './PostProcessing';
 import Vehicle from './Vehicle';
 import Quaternion from './Quaternion';
- 
+import VehicleManager from './VehicleManager';
+import VehicleManger from './VehicleManager';
+
 class Engine {
     constructor() {
+
+        this.fps = 0;
+        this.fpsTime = 0;
 
         this.light = new THREE.DirectionalLight(0xffffff, 1);
 
@@ -103,24 +108,14 @@ class Engine {
                     });
             });
 
-        this.ekey = new GameObject('ekey', './assets/models/ekey.glb', false, false, true, true, new Vector3(-23.75, 2, -10), Quaternion.Identity());
-        
-
-
-
         Camera.target = this.player;
-
-       
-
-
-
   
         this.vehicle2 = new Vehicle({
             breakForce: 25,
             accelForceFront: 0,
             accelForceBack: 50,
             accelRate: 2,
-            topSpeed: 128,
+            topSpeed: 100,
             bodyWidth: 1.35,
             bodyHeight: 0.5,
             bodyLength: 2.128,
@@ -134,7 +129,8 @@ class Engine {
             stiffness: 250.0,
             damping: 2.3,
             compression: 1.4,
-            friction: 100,
+            backFriction: 100,
+            frontFriction: 100,
             roll: .25,
             radius: 0.25,
             suspensionLen: 0.075,
@@ -147,8 +143,8 @@ class Engine {
         this.vehicle = new Vehicle({
             breakForce: 25,
             accelForceFront: 0,
-            accelForceBack: 35,
-            accelRate: 2,
+            accelForceBack: 100,
+            accelRate: 3,
             topSpeed: 160,
             bodyWidth: 1.35,
             bodyHeight: 0.5,
@@ -162,7 +158,8 @@ class Engine {
             stiffness: 50.0,
             damping: 2.3,
             compression: 2.4,
-            friction: 5000,
+            backFriction: 1,
+            frontFriction: 1,
             roll: 0.06,
             radius: 0.25,
             suspensionLen: 0.075,
@@ -174,7 +171,7 @@ class Engine {
 
         this.vehicle3 = new Vehicle({
             breakForce: 25,
-            accelForceFront: 80,
+            accelForceFront: 180,
             accelForceBack: 80,
             accelRate: 1,
             topSpeed: 200,
@@ -190,7 +187,8 @@ class Engine {
             stiffness: 50.0,
             damping: 2.3,
             compression: 2.4,
-            friction: 5000,
+            backFriction: 0.85,
+            frontFriction: 0.9,
             roll: 0.06,
             radius: 0.25,
             suspensionLen: 0.075,
@@ -221,6 +219,7 @@ class Engine {
         Time.Update();
 
         Physics.update();
+        VehicleManger.checkVehicleInRange(this.player.position);
         Scene.update();
 
         const camPos = Camera.position;// Camera.GetCamera().position;
@@ -232,6 +231,13 @@ class Engine {
         // else
         this.renderer.Render(Scene.getScene(), Camera.mainCamera);
 
+        this.fpsTime += Time.deltaTime;
+        this.fps++;
+        if (this.fpsTime >= 1){
+            document.title = this.fps + ' fps';
+            this.fps = 0;
+            this.fpsTime = 0;
+        }
     }
 }
 

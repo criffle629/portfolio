@@ -3,6 +3,7 @@ import Scene from './Scene';
 import RigidBody from './RigidBody';
 import Quaternion from './Quaternion';
 import Content from './Content';
+import Ammo from 'ammo.js';
  
 export default class GameObject {
 
@@ -62,10 +63,10 @@ export default class GameObject {
     }
 
     setQuaternion(quat) {
-        this.rotation = new Quaternion(quat.x(), quat.y(), quat.z(), quat.w());
+        this.rotation = quat; 
 
         if (this.rigidBody !== null)
-            this.rigidBody.setQuaternion(quat);
+            this.rigidBody.setQuaternion(new Ammo.btQauternion(quat.x, quat.y, quat.z, quat.w));
     }
 
     rotate(degrees) {
@@ -84,7 +85,7 @@ export default class GameObject {
         this.position = newPosition;
 
         if (this.rigidBody !== null)
-            this.rigidBody.setPosition(new Vector3(this.position.x, this.position.y, this.position.z));
+            this.rigidBody.setPosition(this.position);
     }
 
     move(pos) {
