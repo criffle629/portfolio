@@ -33,7 +33,6 @@ export default class Vehicle extends GameObject {
         Audio.LoadSound('./assets/sounds/engine.wav', true, 0.25)
             .then(sound => {
                 this.engineSound = sound;
-                this.engineSound.play();
                 Content.LoadMesh(options.bodyModel, options.bodyModel, false, true, true, false)
                 .then(model => {
                     this.model = model;
@@ -118,8 +117,14 @@ export default class Vehicle extends GameObject {
 
     updateInput() {
 
-        if (!this.inUse) return;
+        if (!this.inUse){
+            if (this.engineSound !== null && this.engineSound.isPlaying)
+                this.engineSound.stop();
+            return;
+        }
 
+        if (this.engineSound !== null && !this.engineSound.isPlaying)
+            this.engineSound.play();
         this.reverse = false;
         if (Input.isKeyDown('w') && this.speed <= this.topSpeed){
         
@@ -216,11 +221,12 @@ export default class Vehicle extends GameObject {
         this.speed = vel * 9.8 * dir;
         
         if (this.engineSound !== null && this.model !== null){
-            this.engineSound.setDetune(this.speed * 10);
-            this.engineSound.panner.positionX.value = this.model.mesh.position.x;
-            this.engineSound.panner.positionY.value = this.model.mesh.position.y;
-            this.engineSound.panner.positionZ.value = this.model.mesh.position.z;
-            
+            if (this.engineSound.isPlaying){
+                this.engineSound.setDetune(this.speed * 10);
+                this.engineSound.panner.positionX.value = this.model.mesh.position.x;
+                this.engineSound.panner.positionY.value = this.model.mesh.position.y;
+                this.engineSound.panner.positionZ.value = this.model.mesh.position.z;
+            }
         }
     }
 }

@@ -50,7 +50,6 @@ class VehicleController{
                 closest = dist;
                 this.inRangeVehicle = this.vehicles[i];
             }
-
         }
        
         if (this.inRangeVehicle  !== null){
@@ -65,20 +64,13 @@ class VehicleController{
 
         if  (this.ekey.model.mesh.visible){
             let camPos = new Vector3(Camera.position.x, 0, Camera.position.z);
-         
-
             let eKeyPos = new Vector3(this.ekey.position.x, 0, this.ekey.position.z);
-             
-
             let lookAt = Quaternion.LookRotation(Vector3.Subtract(camPos, eKeyPos), Vector3.up);
-            
-            console.log(lookAt.Euler())
             this.ekey.setRotation(Vector3.MultiplyScalar(lookAt.Euler(), MathTools.deg2Rad));
-
         }
     }
 }
 
-const VehicleManger = new VehicleController();
+const VehicleManager = new VehicleController();
  
-export default VehicleManger; 
+export default VehicleManager; 

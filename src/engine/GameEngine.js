@@ -11,7 +11,6 @@ import PostProcessing from './PostProcessing';
 import Vehicle from './Vehicle';
 import Quaternion from './Quaternion';
 import VehicleManager from './VehicleManager';
-import VehicleManger from './VehicleManager';
 
 class Engine {
     constructor() {
@@ -219,7 +218,7 @@ class Engine {
         Time.Update();
 
         Physics.update();
-        VehicleManger.checkVehicleInRange(this.player.position);
+        VehicleManager.checkVehicleInRange(this.player.position);
         Scene.update();
 
         const camPos = Camera.position;// Camera.GetCamera().position;

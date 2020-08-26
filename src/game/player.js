@@ -3,7 +3,7 @@ import GameObject from '../engine/GameObject';
 import Input from '../engine/Input';
 import Time from '../engine/Time';
 import Vector3 from '../engine/Vector3';
-import VehicleManger from '../engine/VehicleManager';
+import VehicleManager from '../engine/VehicleManager';
 import Quaternion from '../engine/Quaternion';
 import Camera from '../engine/Camera';
 
@@ -22,7 +22,7 @@ export default class Player extends GameObject{
 
         const ePressed = Input.isKeyPressed('e');
         if (ePressed && this.vehicle === null)
-        this.vehicle = VehicleManger.useVehicle();
+        this.vehicle = VehicleManager.useVehicle();
         else
         if (ePressed && this.vehicle !== null)
         {
