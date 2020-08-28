@@ -1,6 +1,5 @@
 import Vector3 from './Vector3';
 import MathTools from './MathTools';
-import Ammo from 'ammo.js';
 
 export default class Quaternion {
 

@@ -14,8 +14,8 @@ class Renderer {
             this.renderer.shadowMap.enabled = true;
             this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             this.renderer.cullFace = THREE.CullFaceBack;
-            this.renderer.gammaInput = true;
-            this.renderer.gammaOutput = true;
+          
+            this.renderer.outputEncoding = THREE.GammaEncoding;
        
             this.renderer.autoClear = true;
     

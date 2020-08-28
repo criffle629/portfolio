@@ -62,7 +62,7 @@ export default  class Vector2{
    }
 
    static distance(v1, v2){
-    let delta = Vector2.subtract(v2 - v1);
+    let delta = Vector2.subtract(v2, v1);
    
     let distance = Math.sqrt(delta.x * delta.x + delta.y * delta.y);
    
