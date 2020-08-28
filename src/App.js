@@ -7,11 +7,10 @@ class App extends React.Component {
  
   render() {
     return (
-      <div style={{width: '100%', display:'flex',  justifyContent:'center'}}>
      
-        <Game />
+        <Game style={{display: 'flex', width: '100%', height: '100%', overflow:'hidden', alignItems:'center'}}/>
      
-      </div>
+      
     )
   }
 }

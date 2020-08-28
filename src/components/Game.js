@@ -8,38 +8,41 @@ export default class Game extends React.Component {
 
     constructor(props) {
         super(props);
+        this.canvas = null;
         window.addEventListener('resize', this.ScreenResize);
     }
- 
+
     Load = () => {
-        Scene.setScreenSize(window.innerWidth - 3, window.innerHeight - 3);
-        GameEngine.InitRenderer(this.canvas, Scene.screenWidth, Scene.screenHeight);
+        Scene.setScreenSize(document.body.clientWidth, document.body.clientHeight );
         Camera.Configure(60, Scene.aspectRatio, 0.1, 1000.0);
-        document.body.appendChild(GameEngine.GetRenderer().domElement);
+        GameEngine.InitRenderer(this.canvas, Scene.screenWidth, Scene.screenHeight);
         this.canvas.focus();
     }
 
     ScreenResize = () => {
-        Scene.setScreenSize(window.innerWidth - 3, window.innerHeight - 3);
-        GameEngine.InitRenderer(this.canvas, Scene.screenWidth, Scene.screenHeight);
-        Camera.Configure(60, Scene.aspectRatio, 0.1, 1000.0);
+        if (this.canvas !== null && this.canvas !== 'undefined') {
+            Scene.setScreenSize(document.body.clientWidth, document.body.clientHeight );
+            Camera.Configure(60, Scene.aspectRatio, 0.1, 1000.0);
+
+            GameEngine.InitRenderer(this.canvas, Scene.screenWidth, Scene.screenHeight);
+        }
     }
-   
-    gamepadConnected(e){
+
+    gamepadConnected(e) {
         console.log(e);
     }
 
-    gamepadeDisconnected(e){
+    gamepadeDisconnected(e) {
         console.log(e);
     }
     HandleKeyPress(e) {
         e.preventDefault();
-        e.stopPropagation(); 
+        e.stopPropagation();
         Input.addKey(e.key);
     }
 
     HandleKeyUp(e) {
-        e.preventDefault(); 
+        e.preventDefault();
         e.stopPropagation();
         Input.removeKey(e.key);
     }
@@ -49,7 +52,10 @@ export default class Game extends React.Component {
     }
     render() {
         return (
-                <canvas  style={{width: '100%', alignItems:'center'}} tabIndex="0" onKeyDown={this.HandleKeyPress} onKeyUp={this.HandleKeyUp} ref={(c) => {this.canvas = c; this.Load();}} onBlur={this.clearInput}/>
+            <div style={{ display: 'flex', width: '100%', height:'100vh', padding:0, margin:0, flexDirection: 'column'}}>
+        
+                <canvas style={{ width: '100%', height: '100vh', position:'absolute'}} tabIndex="0" onKeyDown={this.HandleKeyPress} onKeyUp={this.HandleKeyUp} ref={(c) => { this.canvas = c; this.Load(); }} onBlur={this.clearInput} />
+            </div>
         )
     }
 }

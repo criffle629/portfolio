@@ -29,22 +29,34 @@ export default class Vehicle extends GameObject {
         this.accelForceBack = options.accelForceBack;
         this.reverse = false;
         this.engineSound = null;
-    
+        this.tireSquealSound = null;
+        this.enginePitch = options.enginePitch;
+        this.centerOfMass = options.centerOfMass;
+        this.downForce = options.downForce;
+
         Audio.LoadSound('./assets/sounds/engine.wav', true, 0.25)
             .then(sound => {
                 this.engineSound = sound;
                 Content.LoadMesh(options.bodyModel, options.bodyModel, false, true, true, false)
-                .then(model => {
-                    this.model = model;
-                    
-                    this.setPosition(this.position);
-                    this.setRotation(this.rotation);
-               
-                 })
-                .catch(e => {
-                    console.log(e);
-                });
-              
+                    .then(model => {
+                        this.model = model;
+                        this.engineSound.parrent = this.model;
+                        this.setPosition(this.position);
+                        this.setRotation(this.rotation);
+
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
+
+            })
+            .catch(e => {
+                console.log(e)
+            });
+
+        Audio.LoadSound('./assets/sounds/tiresqueal.wav', true, 0.5)
+            .then(sound => {
+                this.tireSquealSound = sound;
             })
             .catch(e => {
                 console.log(e)
@@ -73,7 +85,7 @@ export default class Vehicle extends GameObject {
         Physics.world.addAction(this.vehicle);
         Scene.addGameObject(this);
 
-     
+
         this.wheelModels = [];
         this.wheelModels.push(new GameObject(options.wheelLeftModel, options.wheelLeftModel, false, true, true));
         this.wheelModels.push(new GameObject(options.wheelRightModel, options.wheelRightModel, false, true, true));
@@ -117,7 +129,7 @@ export default class Vehicle extends GameObject {
 
     updateInput() {
 
-        if (!this.inUse){
+        if (!this.inUse) {
             if (this.engineSound !== null && this.engineSound.isPlaying)
                 this.engineSound.stop();
             return;
@@ -126,32 +138,29 @@ export default class Vehicle extends GameObject {
         if (this.engineSound !== null && !this.engineSound.isPlaying)
             this.engineSound.play();
         this.reverse = false;
-        if (Input.isKeyDown('w') && this.speed <= this.topSpeed){
-        
-                this.currentBraking = 0;
-                this.currentAccelBack =  this.accelForceBack * this.accelRate;
-                this.currentAccelFront = this.accelForceFront * this.accelRate;
+        if (Input.isKeyDown('w') && this.speed <= this.topSpeed) {
+
+            this.currentBraking = 0;
+            this.currentAccelBack = this.accelForceBack * this.accelRate;
+            this.currentAccelFront = this.accelForceFront * this.accelRate;
         }
-        else
-        {
+        else {
             this.currentAccelBack = 0;
             this.currentAccelFront = 0;
             this.currentBraking = 0.5;
         }
- 
-        if (Input.isKeyDown('s'))
-        {
+
+        if (Input.isKeyDown('s')) {
             this.reverse = true;
-            if (this.speed <= 0 )
-                {
-                    this.currentBraking = 0;
-                    this.currentAccelBack =  -((this.accelForceBack * 0.5) * this.accelRate);
-                    this.currentAccelFront = -((this.accelForceFront * 0.5) * this.accelRate);
-                }
-                else
+            if (this.speed <= 0) {
+                this.currentBraking = 0;
+                this.currentAccelBack = -((this.accelForceBack * 0.5) * this.accelRate);
+                this.currentAccelFront = -((this.accelForceFront * 0.5) * this.accelRate);
+            }
+            else
                 this.currentBraking = this.breakForce * 0.25;
         }
-        
+
         if (Input.isKeyDown('a')) {
             this.steeringAngle += 15 * this.steeringRate * Time.deltaTime;
         }
@@ -162,24 +171,87 @@ export default class Vehicle extends GameObject {
             else {
                 this.steeringAngle = MathTools.moveTowards(this.steeringAngle, 0.0, this.steeringRate * Time.deltaTime);
             }
+
         this.steeringAngle = MathTools.clamp(this.steeringAngle, -25, 25);
     }
 
-    update() {
-        Camera.mainCamera.add(Audio.listener);
- 
-        this.updateInput();
+    updateSound(){
+        if (Math.abs(this.body.getAngularVelocity().y()) > 1) {
+            
+            if (this.tireSquealSound !== null && this.model !== null) {
 
-        if (!this.inUse){
-            this.currentBraking = this.breakForce * 0.25;;
-            this.currentAccelBack =  0;
-            this.currentAccelFront = 0;
+                if (!this.tireSquealSound.isPlaying)
+                    this.tireSquealSound.play();
+
+                this.tireSquealSound.panner.setPosition(this.model.mesh.position.x, this.model.mesh.position.y, this.model.mesh.position.z);
+
+                this.tireSquealSound.setPlaybackRate(0.70);
+                this.tireSquealSound.setDetune(-100);
+            }
         }
+        else {
+                if (this.tireSquealSound !== null && this.tireSquealSound.isPlaying)
+                    this.tireSquealSound.stop();
+        }
+
+        if (this.engineSound !== null && this.model !== null) {
+
+            if (this.engineSound.isPlaying && this.model.mesh) {
+             
+                this.engineSound.setDetune((Math.abs(this.speed) + this.enginePitch) * 10);
+                this.engineSound.panner.setPosition(this.model.mesh.position.x, this.model.mesh.position.y, this.model.mesh.position.z);
+ 
+             }
+        }
+    }
+
+    updateWheels(){
+        for (let i = 0; i < this.vehicle.getNumWheels(); i++) {
+
+            this.vehicle.updateWheelTransform(i, false);
+
+            const tm = this.vehicle.getWheelTransformWS(i);
+            const p = tm.getOrigin();
+            const q = tm.getRotation();
+
+            if (this.wheelModels[i].model && this.wheelModels[i].model.mesh) {
+                this.wheelModels[i].model.mesh.position.set(p.x(), p.y(), p.z());
+                this.wheelModels[i].model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
+            }
+        }
+    }
+
+    updateRigidBody(){
+        const tm = this.body.getWorldTransform();
+        const p = tm.getOrigin();
+        const q = tm.getRotation();
+
+        if (this.model && this.model.mesh) {
+            this.model.mesh.position.set(p.x(), p.y(), p.z());
+            this.model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
+            this.position = new Vector3(p.x(), p.y(), p.z());
+            this.rotation = new Quaternion(q.x(), q.y(), q.z(), q.w());
+        }
+    }
+
+    updateSpeed(){
+        let vel = (this.vehicle.getRigidBody().getLinearVelocity().length() - 0.163);
+
+        if (vel < 0.009)
+            vel = 0;
+
+        const dir = this.reverse && this.speed < 0.05 ? -1 : 1;
+        this.speed = vel * 9.8 * dir;
+    }
+
+    updateMovement(){
         this.vehicle.applyEngineForce(this.currentAccelFront, 0);
         this.vehicle.applyEngineForce(this.currentAccelFront, 1);
         this.vehicle.applyEngineForce(this.currentAccelBack, 2);
         this.vehicle.applyEngineForce(this.currentAccelBack, 3);
+    }
 
+    updateSteering(){
         this.vehicle.setBrake(this.currentBraking, 0);
         this.vehicle.setBrake(this.currentBraking, 1);
         this.vehicle.setBrake(this.currentBraking / 2, 2);
@@ -188,45 +260,26 @@ export default class Vehicle extends GameObject {
         this.vehicle.setSteeringValue(0, 2);
         this.vehicle.setSteeringValue(this.steeringAngle * MathTools.deg2Rad, 0);
         this.vehicle.setSteeringValue(this.steeringAngle * MathTools.deg2Rad, 1);
+    }
 
-        let tm, p, q;
-        for (let i = 0; i < this.vehicle.getNumWheels(); i++) {
-
-            this.vehicle.updateWheelTransform(i, false);
-            tm = this.vehicle.getWheelTransformWS(i);
-            p = tm.getOrigin();
-            q = tm.getRotation();
-            if (this.wheelModels[i].model && this.wheelModels[i].model.mesh) {
-                this.wheelModels[i].model.mesh.position.set(p.x(), p.y(), p.z());
-                this.wheelModels[i].model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
-            }
+    resetMovementWhenNotInUse(){
+        if (!this.inUse) {
+            this.currentBraking = this.breakForce * 0.25;;
+            this.currentAccelBack = 0;
+            this.currentAccelFront = 0;
         }
+    }
 
-        tm = this.body.getWorldTransform();
-        p = tm.getOrigin();
-        q = tm.getRotation();
-
-        if (this.model && this.model.mesh) {
-            this.model.mesh.position.set(p.x(), p.y(), p.z());
-            this.model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
-
-            this.position = new Vector3(p.x(), p.y(), p.z());
-            this.rotation = new Quaternion(q.x(), q.y(), q.z(), q.w());
-        }
-
-        let vel = (this.vehicle.getRigidBody().getLinearVelocity().length() - 0.163);
-        if (vel < 0.009)
-            vel = 0;
-        const dir = this.reverse && this.speed < 0.05 ? -1 : 1;
-        this.speed = vel * 9.8 * dir;
-        
-        if (this.engineSound !== null && this.model !== null){
-            if (this.engineSound.isPlaying){
-                this.engineSound.setDetune(this.speed * 10);
-                this.engineSound.panner.positionX.value = this.model.mesh.position.x;
-                this.engineSound.panner.positionY.value = this.model.mesh.position.y;
-                this.engineSound.panner.positionZ.value = this.model.mesh.position.z;
-            }
-        }
+    update() {
+        Camera.mainCamera.add(Audio.listener);
+        this.body.applyCentralImpulse(new Ammo.btVector3(0, -(this.speed * this.downForce), 0));
+        this.resetMovementWhenNotInUse();
+        this.updateInput();
+        this.updateSound();
+        this.updateMovement();
+        this.updateSteering();
+        this.updateWheels();
+        this.updateRigidBody();
+        this.updateSpeed();
     }
 }
