@@ -24,7 +24,7 @@ export default class Game extends React.Component {
             Scene.setScreenSize(document.body.clientWidth, document.body.clientHeight );
             Camera.Configure(60, Scene.aspectRatio, 0.1, 1000.0);
 
-            GameEngine.InitRenderer(this.canvas, Scene.screenWidth, Scene.screenHeight);
+            GameEngine.GetRenderer().setSize(Scene.screenWidth, Scene.screenHeight);
         }
     }
 

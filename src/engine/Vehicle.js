@@ -34,7 +34,7 @@ export default class Vehicle extends GameObject {
         this.centerOfMass = options.centerOfMass;
         this.downForce = options.downForce;
 
-        Audio.LoadSound('./assets/sounds/engine.wav', true, 0.25)
+        Audio.LoadSound('./assets/sounds/engine.wav', true, 0.1)
             .then(sound => {
                 this.engineSound = sound;
                 Content.LoadMesh(options.bodyModel, options.bodyModel, false, true, true, false)
@@ -272,7 +272,7 @@ export default class Vehicle extends GameObject {
 
     update() {
         Camera.mainCamera.add(Audio.listener);
-        this.body.applyCentralImpulse(new Ammo.btVector3(0, -(this.speed * this.downForce), 0));
+        this.body.applyCentralImpulse(new Ammo.btVector3(0, -(Math.abs(this.speed) * this.downForce), 0));
         this.resetMovementWhenNotInUse();
         this.updateInput();
         this.updateSound();
