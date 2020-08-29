@@ -2,15 +2,15 @@ import React from 'react';
 import './App.css';
 
 import Game from './components/Game';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 class App extends React.Component {
- 
+
   render() {
     return (
-     
-        <Game style={{display: 'flex', width: '100%', height: '100%', overflow:'hidden', alignItems:'center'}}/>
-     
-      
+      <Game style={{ width: '100%', height: '100%', padding: 0, margin: 0, overflow: 'hidden' }} />
     )
   }
 }

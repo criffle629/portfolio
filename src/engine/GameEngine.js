@@ -11,6 +11,7 @@ import PostProcessing from './PostProcessing';
 import Vehicle from './Vehicle';
 import Quaternion from './Quaternion';
 import VehicleManager from './VehicleManager';
+import Input from './Input';
 
 class Engine {
     constructor() {
@@ -45,10 +46,14 @@ class Engine {
 
        this.Load()
        .then(() => {
-        console.log('hello')
+            
        });
  
         requestAnimationFrame(this.Animate);
+    }
+
+    SetOpenModalCallback(modal){
+        this.openModal = modal;
     }
 
     InitRenderer = (canvas, width, height) =>{
@@ -362,6 +367,9 @@ class Engine {
     }
 
     Animate = () => {
+
+        if (Input.isKeyPressed('l'))
+            this.openModal('roadracer');
 
         Time.Update();
 

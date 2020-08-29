@@ -185,8 +185,8 @@ export default class Vehicle extends GameObject {
 
                 this.tireSquealSound.panner.setPosition(this.model.mesh.position.x, this.model.mesh.position.y, this.model.mesh.position.z);
 
-                this.tireSquealSound.setPlaybackRate(0.70);
-                this.tireSquealSound.setDetune(-100);
+                this.tireSquealSound.setPlaybackRate(0.7);
+                this.tireSquealSound.setDetune(-250);
             }
         }
         else {

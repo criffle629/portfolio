@@ -3,19 +3,29 @@ import Input from '../engine/Input';
 import GameEngine from '../engine/GameEngine';
 import Scene from '../engine/Scene';
 import Camera from '../engine/Camera';
+import RoadRacerModal from './modal/RoadRacerModal';
 
 export default class Game extends React.Component {
 
     constructor(props) {
         super(props);
         this.canvas = null;
+        this.isLoaded = false;
+        this.state = {
+            currentModal: 'none'
+        }
         window.addEventListener('resize', this.ScreenResize);
     }
 
     Load = () => {
+
+        if (this.isLoaded) return;
+
+        this.isLoaded = true;
         Scene.setScreenSize(document.body.clientWidth, document.body.clientHeight );
         Camera.Configure(60, Scene.aspectRatio, 0.1, 1000.0);
         GameEngine.InitRenderer(this.canvas, Scene.screenWidth, Scene.screenHeight);
+        GameEngine.SetOpenModalCallback(this.openModal);
         this.canvas.focus();
     }
 
@@ -50,11 +60,22 @@ export default class Game extends React.Component {
     clearInput = () => {
         Input.clearKeys();
     }
+
+    closeModal = () => {
+        this.setState({currentModal: 'none'});
+    }
+
+    openModal = (modal) => {
+        this.setState({currentModal: modal});
+    }
+
     render() {
         return (
-            <div style={{ display: 'flex', width: '100%', height:'100vh', padding:0, margin:0, flexDirection: 'column'}}>
-        
-                <canvas style={{ width: '100%', height: '100vh', position:'absolute'}} tabIndex="0" onKeyDown={this.HandleKeyPress} onKeyUp={this.HandleKeyUp} ref={(c) => { this.canvas = c; this.Load(); }} onBlur={this.clearInput} />
+            <div  style={{   width: '100vw', height:'100vh', padding:0, margin:0, overflow:'hidden' }}>
+                
+                <canvas style={{ display: 'block', width: '100vw', height: '100vh', position:'fixed'}} tabIndex="0" onKeyDown={this.HandleKeyPress} onKeyUp={this.HandleKeyUp} ref={(c) => { this.canvas = c; this.Load(); }} onBlur={this.clearInput} />
+                <RoadRacerModal isOpen={this.state.currentModal === 'roadracer'} closeModal={this.closeModal}/>
+            
             </div>
         )
     }
