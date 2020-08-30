@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import Player from '../game/player';
-import Scene from '../engine/Scene';
-import Camera from '../engine/Camera';
-import Time from '../engine/Time';
+import Player from './player';
+import Scene from './Scene';
+import Camera from './Camera';
+import Time from './Time';
 import Vector3 from './Vector3';
 import Physics from './Physics';
 import GameObject from './GameObject';
@@ -11,6 +11,7 @@ import PostProcessing from './PostProcessing';
 import Vehicle from './Vehicle';
 import Quaternion from './Quaternion';
 import VehicleManager from './VehicleManager';
+import InfoStationManager from './InfoStationManager';
 import Input from './Input';
 
 class Engine {
@@ -29,7 +30,7 @@ class Engine {
         this.light.shadow.camera.far = 500;
         this.light.shadow.bias = -0.00025;
 
-        let side = 20;
+        let side = 50;
         this.light.shadow.camera.top = side;
         this.light.shadow.camera.bottom = -side;
         this.light.shadow.camera.left = -side;
@@ -52,17 +53,19 @@ class Engine {
         requestAnimationFrame(this.Animate);
     }
 
-    SetOpenModalCallback(modal){
-        this.openModal = modal;
+    SetOpenModalCallback(openModal, isModalOpen){
+        this.openModal = openModal;
+        this.isModalOpen = isModalOpen;
     }
 
     InitRenderer = (canvas, width, height) =>{
         this.renderer = new Renderer();
         this.renderer.InitRenderer(canvas, width, height, this.Animate).then(renderer => {
             PostProcessing.init(renderer);
-            PostProcessing.addFXAA();
-            PostProcessing.addBloom();
-            //   PostProcessing.addBokeh(); 
+           // PostProcessing.addFXAA();
+           // PostProcessing.addBloom();
+           //rz PostProcessing.addBokeh(); 
+               
         })
         .then(() => { 
         //    this.renderer.compile(Scene.scene, Camera.mainCamera); 
@@ -101,17 +104,31 @@ class Engine {
                         });
                 });
     
-                this.infostation = new GameObject('infostation', './assets/models/infostation.glb', false, false, true, false, new Vector3(-20, 0, -7.5));
+                this.infostation = new GameObject('infostation', './assets/models/infostation.glb', false, false, true, false, new Vector3(0, 0, -10));
                 
-                this.infostationbase = new GameObject('infostationbase', './assets/models/infostationbase.glb', false, false, true, false, new Vector3(-20, 0, -7.5));
+                this.infostationbase = new GameObject('infostationbase',null, false, false, true, false, new Vector3(0, 0, -10));
                 this.infostationbase.LoadModel('infostation', './assets/models/infostationbase.glb', true)
                     .then(() => {
                         Physics.createMeshShape(this.infostationbase.model.mesh)
                             .then(shape => {
-                                this.infostationbase.addRigidBody(0, shape, new Vector3(-20, 0, -7.5));
+                                this.infostationbase.addRigidBody(0, shape, new Vector3(0, 0, -10));
                             });
                     });
     
+                    this.mightychicken = new GameObject('mightychicken', null, false, true, true, true);
+                
+                  
+                    this.mightychicken.LoadModel('mightychicken', './assets/models/mightychicken.glb', true)
+                        .then(() => {
+                            Physics.createMeshShape(this.mightychicken.model.mesh)
+                                .then(shape => {
+                                    this.mightychicken.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                                });
+                        });
+
+                InfoStationManager.addInfoStation(new Vector3(-19.921, 0, -7.5799), 'roadracer');
+                InfoStationManager.addInfoStation(new Vector3(-41.183, 0, -0.5502), 'mightychicken');
+
                 this.parkinglotcurb = new GameObject('parkinglotcurb', null, false, true, true, true);
                 this.parkinglotcurb.LoadModel('parkinglotcurb', './assets/models/parkinglotcurb.glb', true)
                     .then(() => {
@@ -181,7 +198,7 @@ class Engine {
                 mass: 75,
                 enginePitch: 25,
                 position: new Vector3(-38.62, 0.56, -9.23),
-                rotation: new Quaternion(0, 0.171, 0, 0.985),
+                rotation: new Quaternion(0, 0.191, 0, 0.982),
                 centerOfMass: new Vector3(0, -1, 0),
                 bodyModel: './assets/models/classicbug.glb',
                 wheelLeftModel: './assets/models/classicbugwheelLeft.glb',
@@ -213,7 +230,7 @@ class Engine {
                 mass: 300,
                 enginePitch: -100,
                 position: new Vector3(-24.438, 0.624, -10.447),
-                rotation:  new Quaternion(0, 0.171, 0, 0.985),
+                rotation: new Quaternion(0, 0.191, 0, 0.982),
                 centerOfMass: new Vector3(0, -1, 0),
                 bodyModel: './assets/models/hotrod.glb',
                 wheelLeftModel: './assets/models/hotrodwheelLeft.glb',
@@ -244,8 +261,8 @@ class Engine {
                 bodyLength: 2.128,
                 mass: 200,
                 enginePitch: -50,
-                position: new Vector3(-27.641, 0.59, -10.019),
-                rotation: new Quaternion(0, 0.171, 0, 0.985),
+                position: new Vector3(-27.407, 0.59, -9.5),
+                rotation: new Quaternion(0, 0.191, 0, 0.982),
                 centerOfMass: new Vector3(0, -1, 0),
                 bodyModel: './assets/models/sportscar.glb',
                 wheelLeftModel: './assets/models/sportscarwheelLeft.glb',
@@ -308,8 +325,8 @@ class Engine {
                 bodyLength: 2.128,
                 mass: 500,
                 enginePitch: -100,
-                position: new Vector3(-33.5, 0.649, -10.43),
-                rotation:  new Quaternion(0, 0.171, 0, 0.985),
+                position: new Vector3(-33.75, 0.649, -10.43),
+                rotation: new Quaternion(0, 0.191, 0, 0.982),
                 centerOfMass: new Vector3(0, -1, 0),
                 bodyModel: './assets/models/truck.glb',
                 wheelLeftModel: './assets/models/truckwheelLeft.glb',
@@ -321,7 +338,7 @@ class Engine {
                 frontFriction: 0.95,
                 roll: .25,
                 radius: 0.25,
-                suspensionLen: 0.075,
+                suspensionLen: 0.1,
                 backLeftPos: new Vector3(-0.45, -0.5, -0.6),
                 backRightPos: new Vector3(0.45, -0.5, -0.6),
                 frontRightPos: new Vector3(0.45, -0.5, 0.95),
@@ -341,19 +358,19 @@ class Engine {
                 mass: 300,
                 enginePitch: -100,
                 position: new Vector3(-30.404, 0.649, -8.43),
-                rotation:  new Quaternion(0, 0.171, 0, 0.985),
+                rotation: new Quaternion(0, 0.191, 0, 0.982),
                 centerOfMass: new Vector3(0, -1, 0),
                 bodyModel: './assets/models/pickup.glb',
                 wheelLeftModel: './assets/models/pickupwheelLeft.glb',
                 wheelRightModel: './assets/models/pickupwheelRight.glb',
-                stiffness: 150.0,
+                stiffness: 50.0,
                 damping: 2.3,
                 compression: 1.4,
                 backFriction: 0.95,
                 frontFriction: 0.95,
                 roll: .25,
                 radius: 0.25,
-                suspensionLen: 0.075,
+                suspensionLen: 0.125,
                 backLeftPos: new Vector3(-0.425, -0.3, -0.79),
                 backRightPos: new Vector3(0.425, -0.3, -0.79),
                 frontRightPos: new Vector3(0.425, -0.3, 0.71),
@@ -367,23 +384,24 @@ class Engine {
     }
 
     Animate = () => {
-
-        if (Input.isKeyPressed('l'))
-            this.openModal('roadracer');
+        
+        if (this.isModalOpen())
+            Input.clearKeys();
 
         Time.Update();
 
         Physics.update();
         VehicleManager.checkVehicleInRange(this.player.position);
+        InfoStationManager.update();
         Scene.update();
 
         const camPos = Camera.position;// Camera.GetCamera().position;
         this.light.position.set(camPos.x, 1, camPos.z + 5);
         this.light.target.position.set(-5 + camPos.x, -5, -5 + camPos.z);
 
-        //   if (PostProcessing.isUsingEffects())
-        //      PostProcessing.render();
-        // else
+           if (PostProcessing.isUsingEffects())
+              PostProcessing.render();
+         else
         this.renderer.Render(Scene.getScene(), Camera.mainCamera);
 
         this.fpsTime += Time.deltaTime;
