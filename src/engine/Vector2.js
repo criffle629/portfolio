@@ -1,3 +1,5 @@
+import MathTools from './MathTools';
+
 export default  class Vector2{
     
     constructor(x = 0.0, y = 0.0){
@@ -45,7 +47,7 @@ export default  class Vector2{
        return v;
    }
 
-   static subtractScalar(v1, v2){
+   static subtractScalar(v1, scalar){
     let v = new Vector2(0.0, 0.0, 0.0);
        v.x = v1.x - scalar;
        v.y = v1.y - scalar;
@@ -53,7 +55,7 @@ export default  class Vector2{
        return v;
    }
 
-   static multiplyScalar(v1, v2){
+   static multiplyScalar(v1, scalar){
     let v = new Vector2(0.0, 0.0);
        v.x = v1.x * scalar;
        v.y = v1.y * scalar;
@@ -73,18 +75,23 @@ export default  class Vector2{
        return v1.x * v2.x + v1.y * v2.y;
    }
    
+   static Equals(v1, v2){
+    return (v1.x > v2.x - Number.EPSILON && v1.x < v2.x + Number.EPSILON) &&
+           (v1.y > v2.y - Number.EPSILON && v1.y < v2.y + Number.EPSILON);
+}
+
    length(){
        return Math.sqrt(this.x * this.x + this.y * this.y);
    }
 
    magnitude(){
-       return length();
+       return this.length();
    }
 
    normalize(){
     let mag = this.magnitude();
        
-       if (MathTools.approximate(magnitude, 0.0)){
+       if (MathTools.approximate(mag, 0.0)){
            this.x = 0.0;
            this.y = 0.0;
            this.z = 0.0;

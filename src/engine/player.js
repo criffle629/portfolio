@@ -6,6 +6,8 @@ import Vector3 from './Vector3';
 import VehicleManager from './VehicleManager';
 import Quaternion from './Quaternion';
 import Camera from './Camera';
+import Vector2 from './Vector2';
+import Gamepad from './Gamepad';
 
 export default class Player extends GameObject{
     constructor(name = null, meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false, position = Vector3.zero, rotation = Quaternion.Identity()) {
@@ -20,7 +22,7 @@ export default class Player extends GameObject{
     }
     update(){
 
-        const ePressed = Input.isKeyPressed('e');
+        const ePressed = Input.isKeyPressed('e') || Gamepad.isButtonPressed(Gamepad.Buttons.BUTTON_TOP);
         if (ePressed && this.vehicle === null)
         this.vehicle = VehicleManager.useVehicle();
         else
@@ -34,9 +36,6 @@ export default class Player extends GameObject{
            this.setPosition(new Vector3(pos.x + 2, 1, pos.z));
 
         }
-       
-  
-    
 
         if (this.vehicle !== null && this.vehicle !== 'undefined') {
             this.setPosition(new Vector3(0.0, -100, 0.0));
@@ -62,6 +61,14 @@ export default class Player extends GameObject{
         
         if (Input.isKeyDown('d'))
             xMove = 1;
+
+        let stick = Gamepad.leftStick();
+      
+        if (!Vector2.Equals(stick, Vector2.zero)){
+            stick.normalize();
+            xMove = stick.x;
+            zMove = stick.y;
+        }
     
         let moveDir = new THREE.Vector3(xMove, 0, zMove);
         moveDir.normalize();

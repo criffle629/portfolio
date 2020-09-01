@@ -20,6 +20,7 @@ class InputManager{
         return this.keyDown.has(key.toLowerCase());
     }
 
+
     isKeyPressed(key){
        
         if (this.keyPressed.has(key.toLowerCase()) && this.keyPressed.get(key.toLowerCase()) === 1){
@@ -37,6 +38,6 @@ class InputManager{
 }
 
 const Input = new InputManager();
-Object.freeze(Input);
+
 
 export default Input;

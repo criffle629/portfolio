@@ -11,6 +11,8 @@ import Audio from './Audio';
 import Content from './Content';
 import Ammo from 'ammo.js';
 import VehicleManager from './VehicleManager';
+import Gamepad from './Gamepad';
+import Vector2 from './Vector2';
 
 export default class Vehicle extends GameObject {
     constructor(options) {
@@ -105,7 +107,8 @@ export default class Vehicle extends GameObject {
         this.tuning = new Ammo.btVehicleTuning();
         this.currentAccelFront = 0;
         this.currentAccelBack = 0;
-        this.currentBraking = 0;
+        this.currentBrakingFront = 0;
+        this.currentBrakingBack = 0;
         this.steeringAngle = 0;
         this.speed = 0;
 
@@ -135,32 +138,45 @@ export default class Vehicle extends GameObject {
             return;
         }
 
+
+        if (Gamepad.isConnected()){
+            let axis = Gamepad.leftStick();
+            
+            if (!Vector2.Equals(axis, Vector2.zero))
+                this.steeringAngle = -25 * axis.x;
+        }
+
         if (this.engineSound !== null && !this.engineSound.isPlaying)
             this.engineSound.play();
         this.reverse = false;
-        if (Input.isKeyDown('w') && this.speed <= this.topSpeed) {
+        if ((Input.isKeyDown('w') || Gamepad.isButtonDown(Gamepad.Buttons.TRIGGER_RIGHT)) && this.speed <= this.topSpeed) {
 
-            this.currentBraking = 0;
+            this.currentBrakingFront = 0;
+            this.currentBrakingBack = 0;
             this.currentAccelBack = this.accelForceBack * this.accelRate;
             this.currentAccelFront = this.accelForceFront * this.accelRate;
         }
         else {
             this.currentAccelBack = 0;
             this.currentAccelFront = 0;
-            this.currentBraking = 0.5;
+            this.currentBrakingFront = 0.5;
+            this.currentBrakingBack = 0.5;
         }
 
-        if (Input.isKeyDown('s')) {
+        if (Input.isKeyDown('s') || Gamepad.isButtonDown(Gamepad.Buttons.TRIGGER_LEFT)) {
             this.reverse = true;
             if (this.speed <= 0) {
-                this.currentBraking = 0;
+                this.currentBrakingFront = 0;
+                this.currentBrakingBack = 0;
                 this.currentAccelBack = -((this.accelForceBack * 0.5) * this.accelRate);
                 this.currentAccelFront = -((this.accelForceFront * 0.5) * this.accelRate);
             }
-            else
-                this.currentBraking = this.breakForce * 0.25;
+            else{
+                this.currentBrakingFront = this.breakForce * 0.25;
+                this.currentBrakingBack = this.breakForce * 0.25;
+            }
         }
-
+        
         if (Input.isKeyDown('a')) {
             this.steeringAngle += 15 * this.steeringRate * Time.deltaTime;
         }
@@ -171,6 +187,7 @@ export default class Vehicle extends GameObject {
             else {
                 this.steeringAngle = MathTools.moveTowards(this.steeringAngle, 0.0, this.steeringRate * Time.deltaTime);
             }
+
 
         this.steeringAngle = MathTools.clamp(this.steeringAngle, -25, 25);
     }
@@ -252,10 +269,10 @@ export default class Vehicle extends GameObject {
     }
 
     updateSteering(){
-        this.vehicle.setBrake(this.currentBraking, 0);
-        this.vehicle.setBrake(this.currentBraking, 1);
-        this.vehicle.setBrake(this.currentBraking / 2, 2);
-        this.vehicle.setBrake(this.currentBraking / 2, 3);
+        this.vehicle.setBrake(this.currentBrakingFront, 0);
+        this.vehicle.setBrake(this.currentBrakingFront, 1);
+        this.vehicle.setBrake(this.currentBrakingBack / 2, 2);
+        this.vehicle.setBrake(this.currentBrakingBack / 2, 3);
         this.vehicle.setSteeringValue(0, 3);
         this.vehicle.setSteeringValue(0, 2);
         this.vehicle.setSteeringValue(this.steeringAngle * MathTools.deg2Rad, 0);
@@ -264,7 +281,8 @@ export default class Vehicle extends GameObject {
 
     resetMovementWhenNotInUse(){
         if (!this.inUse) {
-            this.currentBraking = this.breakForce * 0.25;;
+            this.currentBrakingFront = this.breakForce * 0.25;
+            this.currentBrakingBack = this.breakForce * 0.25;
             this.currentAccelBack = 0;
             this.currentAccelFront = 0;
         }

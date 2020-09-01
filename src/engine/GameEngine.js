@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Player from './player';
+import Player from './Player';
 import Scene from './Scene';
 import Camera from './Camera';
 import Time from './Time';
@@ -267,14 +267,14 @@ class Engine {
                 bodyModel: './assets/models/sportscar.glb',
                 wheelLeftModel: './assets/models/sportscarwheelLeft.glb',
                 wheelRightModel: './assets/models/sportscarwheelRight.glb',
-                stiffness: 100.0,
+                stiffness: 200.0,
                 damping: 2.3,
                 compression: 2.4,
-                backFriction: .85,
-                frontFriction: .95,
+                backFriction: 0.85,
+                frontFriction: 0.95,
                 roll: 0.25,
                 radius: 0.25,
-                suspensionLen: 0.095,
+                suspensionLen: 0.075,
                 backLeftPos: new Vector3(-0.45, -0.23, -0.62),
                 backRightPos: new Vector3(0.45, -0.23, -0.62),
                 frontRightPos: new Vector3(0.45, -0.23, 0.69),
@@ -385,8 +385,10 @@ class Engine {
 
     Animate = () => {
         
-        if (this.isModalOpen())
+        if (this.isModalOpen()){
+            Gamepad.clearButtons();
             Input.clearKeys();
+        }
 
         Time.Update();
 

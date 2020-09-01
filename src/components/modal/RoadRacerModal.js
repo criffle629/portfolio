@@ -99,6 +99,7 @@ export default props => {
                     <div style={styles.contentText}> - Game Center integration on iOS and Google Play Services integration on Android </div>
                     <div style={styles.contentText}> - Push notification </div>
                     <div style={styles.contentText}> - In App Purchases (consumable and non-consumable) </div>
+                    <div style={styles.contentText}> - Procedurally generated levels </div>
                 </div>
                 <div style={{ width: '100%' }}>
                     <div style={styles.linkSection}>

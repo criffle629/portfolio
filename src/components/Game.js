@@ -71,7 +71,7 @@ export default class Game extends React.Component {
     }
 
     isModalOpen = () => {
-        return this.state.currentModal != 'none';
+        return this.state.currentModal !== 'none';
     }
 
     render() {
