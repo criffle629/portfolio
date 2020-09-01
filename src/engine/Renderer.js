@@ -3,7 +3,6 @@ import * as THREE from 'three';
 class Renderer {
     constructor() {
         this.renderer = null;
-      
     }
 
     InitRenderer(canvas, width, height, loopCallback) {
@@ -28,7 +27,6 @@ class Renderer {
             else
                 reject('Error creating renderer');
         });
-
     }
 
     Render(scene, camera){

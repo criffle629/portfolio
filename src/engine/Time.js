@@ -17,5 +17,4 @@ class TimeManager{
 }
 
 const Time = new TimeManager();
-
 export default Time;

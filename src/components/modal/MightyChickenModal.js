@@ -38,13 +38,11 @@ export default props => {
             margin: '10px',
             color: 'white',
         },
-        linkSection:{
+        linkSection: {
             display: 'flex',
             flexDirection: 'row',
         },
         linkText: {
-            
-
             width: '150px',
             color: 'white',
         },
@@ -72,23 +70,22 @@ export default props => {
             padding: theme.spacing(2, 4, 3),
             outline: 'none'
         },
-        
+
     }));
 
     const classes = useStyles();
 
     return (
-
-
         <Modal
             open={isOpen}
             onClose={closeModal}
             aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-        >
+            aria-describedby="simple-modal-description">
 
             <div style={styles.modal} className={classes.main}>
+
                 <div style={styles.image}></div>
+
                 <div style={styles.promoText}>
                     Dodge the mutant robo fish, killer bomb, spinning blades and poisonous arrow! Avoid getting sliced in half in the spear cave.
                 </div>
@@ -101,20 +98,27 @@ export default props => {
                     <div style={styles.contentText}> - Push notification </div>
                     <div style={styles.contentText}> - In App Purchases </div>
                 </div>
-                
+
                 <div style={{ width: '100%' }}>
+
                     <div style={styles.linkSection}>
                         <span style={styles.linkText}>Apple App Store:</span> <a href='https://itunes.apple.com/us/app/mighty-chicken-and-friends/id1422459374?ls=1' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Mighty Chicken iOS</a>
                     </div>
+
                     <div style={styles.linkSection}>
                         <span style={styles.linkText}>Google Play Store:</span>  <a href='https://play.google.com/store/apps/details?id=com.intoxic8studio.mightychicken' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Mighty Chicken Android</a>
                     </div>
+
                     <div style={styles.linkSection}>
                         <span style={styles.linkText}>Website:</span>  <a href='http://www.themightychicken.com/' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Mighty Chicken</a>
                     </div>
+
                 </div>
+
                 <Button style={styles.closeButton} className={classes.button} onClick={closeModal}>Close</Button>
+
             </div>
+            
         </Modal>
     );
 }

@@ -4,8 +4,8 @@ import Scene from "./Scene";
 import GameObject from './GameObject';
 import Vector3 from './Vector3';
 
-class CameraManager extends GameObject{
-    constructor(){
+class CameraManager extends GameObject {
+    constructor() {
         super();
         this.mainCamera = new THREE.PerspectiveCamera(60, 1024 / 600, 0.1, 1000);
         this.target = null;
@@ -13,32 +13,32 @@ class CameraManager extends GameObject{
         this.distance = 5.0;
         this.position = Vector3.zero;
 
-        Scene.addGameObject(this);        
+        Scene.addGameObject(this);
     }
 
-    Configure(fov, aspect, zNear, zFar){
+    Configure(fov, aspect, zNear, zFar) {
         this.mainCamera = new THREE.PerspectiveCamera(fov, aspect, zNear, zFar);
     }
 
-    Move(pos){
+    Move(pos) {
         this.mainCamera.translateX(pos.x);
         this.mainCamera.translateY(pos.y);
         this.mainCamera.translateZ(pos.z);
     }
 
-    Rotate(rot){
+    Rotate(rot) {
         this.mainCamera.rotation.set(rot.x, rot.y, rot.z);
     }
 
-    SetPosition(pos){
+    SetPosition(pos) {
         this.mainCamera.position.set(pos.x, pos.y, pos.z);
     }
 
-    GetCamera(){
+    GetCamera() {
         return this.mainCamera;
     }
 
-    lateUpdate(){
+    lateUpdate() {
 
         if (this.target === null) return;
 
@@ -46,7 +46,7 @@ class CameraManager extends GameObject{
         this.rotation = Quaternion.LookAt(this.position, this.target.position, Vector3.up);
 
         this.SetPosition(this.position);
-        
+
         const rot = this.rotation.Euler();
 
         this.Rotate(rot);

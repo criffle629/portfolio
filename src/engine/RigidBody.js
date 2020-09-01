@@ -12,7 +12,7 @@ export default class RigidBody {
         this.active = true;
         this.mass = mass;
         this.transform = new Ammo.btTransform();
-       // this.transform.setIdentity();
+        this.transform.setIdentity();
         this.transform.setOrigin(position.to_btVector3());
         this.transform.setRotation(new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w));
         this.motionState = new Ammo.btDefaultMotionState(this.transform);
@@ -28,7 +28,7 @@ export default class RigidBody {
         this.body.setFriction(1);
         this.body.setActivationState(4);
 
-        //wathis.SetKinematic(mass === 0);
+        this.SetKinematic(mass === 0);
         
         Physics.addRigidBody(this.body);
     }
@@ -99,7 +99,6 @@ export default class RigidBody {
         return new Quaternion(quat.x(), quat.y(), quat.z(), quat.w());
     }
 
-
     GetLinearVelocity() {
         let v = this.body.getLinearVelocity();
 
@@ -145,7 +144,7 @@ export default class RigidBody {
 
     WantsSleep() {
         return this.body.wantsSleeping();
-    }z
+    }
 
     GetMotionState() {
         return this.body.getMotionState();
@@ -191,15 +190,6 @@ export default class RigidBody {
 
     IsActive() {
         return this.active;
-    }
-
-    SetActive(value) {
-        //  if (value)
-        //      Physics:: instance -> AddRigidBody(rigidBody);
-        //  else
-        //        Physics:: instance -> RemoveRigidBody(rigidBody);
-
-        //  active = value;
     }
 
     GetCollisionShape() {

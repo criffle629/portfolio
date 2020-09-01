@@ -29,11 +29,8 @@ class PostProcessingManager {
     }
 
     addFXAA() {
-
         this.ffxa = new ShaderPass(FXAAShader);
-
         this.ffxa.uniforms['resolution'].value.set(1 / Scene.screenWidth * 5, 1 / Scene.screenHeight);
-
         this.composer.addPass(this.ffxa);
     }
 
@@ -66,5 +63,4 @@ class PostProcessingManager {
 }
 
 const PostProcessing = new PostProcessingManager();
-
 export default PostProcessing;

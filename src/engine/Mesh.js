@@ -15,21 +15,21 @@ export default class Mesh {
             this.LoadMesh(path);
     }
 
-    setShadows(){
+    setShadows() {
 
-        this.scene.traverse( child => { 
-            if ( child.isMesh ) {
+        this.scene.traverse(child => {
+            if (child.isMesh) {
                 child.castShadow = this.castShadow;
                 child.receiveShadow = this.receiveShadow;
             }
-        } );
+        });
     }
 
-    castShadow(value){
+    castShadow(value) {
         this.castShadow = value;
     }
 
-    receiveShadow(value){
+    receiveShadow(value) {
         this.receiveShadow = value;
     }
 
@@ -38,15 +38,14 @@ export default class Mesh {
             let loader = new GLTFLoader();
             loader.load(path, (gltf) => {
 
-                gltf.scene.traverse( child => { 
-                    if ( child.isMesh ) {
+                gltf.scene.traverse(child => {
+                    if (child.isMesh) {
                         child.castShadow = this.castShadow;
                         child.receiveShadow = this.receiveShadow;
                         if (this.flatShading)
                             child.material.flatShading = this.flatShading;
                     }
-                
-                } );
+                });
 
                 this.scene = gltf.scene;
                 this.meshData = gltf.scene.children;
@@ -55,7 +54,7 @@ export default class Mesh {
                 Scene.add(gltf.scene);
 
                 resolve(this);
-    
+
             }, undefined, function (error) {
                 console.error(error);
                 reject('error');

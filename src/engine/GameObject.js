@@ -4,7 +4,7 @@ import RigidBody from './RigidBody';
 import Quaternion from './Quaternion';
 import Content from './Content';
 import Ammo from 'ammo.js';
- 
+
 export default class GameObject {
 
     static id = 0;
@@ -63,7 +63,7 @@ export default class GameObject {
     }
 
     setQuaternion(quat) {
-        this.rotation = quat; 
+        this.rotation = quat;
 
         if (this.rigidBody !== null)
             this.rigidBody.setQuaternion(new Ammo.btQauternion(quat.x, quat.y, quat.z, quat.w));

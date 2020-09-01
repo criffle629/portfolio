@@ -1,4 +1,3 @@
-import * as THREE from 'three';
 import Player from './Player';
 import Scene from './Scene';
 import Camera from './Camera';
@@ -13,6 +12,9 @@ import Quaternion from './Quaternion';
 import VehicleManager from './VehicleManager';
 import InfoStationManager from './InfoStationManager';
 import Input from './Input';
+import Gamepad from './Gamepad';
+import Light from './Light';
+
 
 class Engine {
     constructor() {
@@ -20,71 +22,64 @@ class Engine {
         this.fps = 0;
         this.fpsTime = 0;
 
-        this.light = new THREE.DirectionalLight(0xffffff, 1);
-
-        this.light.castShadow = true;
-
-        this.light.shadow.mapSize.width = 8000;
-        this.light.shadow.mapSize.height = 8000;
-        this.light.shadow.camera.near = 0.01;
-        this.light.shadow.camera.far = 500;
-        this.light.shadow.bias = -0.00025;
-
-        let side = 50;
-        this.light.shadow.camera.top = side;
-        this.light.shadow.camera.bottom = -side;
-        this.light.shadow.camera.left = -side;
-        this.light.shadow.camera.right = side;
-
-        this.light.target = new THREE.Object3D();
-
         Scene.setExpoFog('skyblue', 0.01);
-        Scene.add(this.light.target);
-        Scene.add(this.light);
 
-        this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        Scene.add(this.ambientLight);
+        this.light = new Light({
+            lightType: Light.LightType.DIRECTIONAL,
+            color: 0xffffff,
+            intensity: 1,
+            castShadow: true,
+            shadowMapWidth: 8000,
+            shadowMapHeight: 8000,
+            cameraNear: 0.1,
+            cameraFar: 500,
+            shadowBias: -0.00025,
+            shadowCameraSize: 50,
+            target: new Vector3(-5, -5, -5)
+        });
 
-       this.Load()
-       .then(() => {
-            
-       });
- 
+        this.ambientLight = new Light({
+            lightType: Light.LightType.AMBIENT,
+            color: 0xffffff,
+            intensity: 0.5
+        });
+
+        this.Load().then(() => {});
+
         requestAnimationFrame(this.Animate);
     }
 
-    SetOpenModalCallback(openModal, isModalOpen){
+    SetOpenModalCallback(openModal, isModalOpen) {
         this.openModal = openModal;
         this.isModalOpen = isModalOpen;
     }
 
-    InitRenderer = (canvas, width, height) =>{
+    InitRenderer = (canvas, width, height) => {
         this.renderer = new Renderer();
         this.renderer.InitRenderer(canvas, width, height, this.Animate).then(renderer => {
             PostProcessing.init(renderer);
-           // PostProcessing.addFXAA();
-           // PostProcessing.addBloom();
-           //rz PostProcessing.addBokeh(); 
-               
+            // PostProcessing.addFXAA();
+            // PostProcessing.addBloom();
+            //rz PostProcessing.addBokeh(); 
         })
-        .then(() => { 
-        //    this.renderer.compile(Scene.scene, Camera.mainCamera); 
-        });
+            .then(() => {
+                //    this.renderer.compile(Scene.scene, Camera.mainCamera); 
+            });
     }
 
-    Load = async () =>{
-        return await new Promise((resolve, reject) =>{
+    Load = async () => {
+        return await new Promise((resolve, reject) => {
             this.player = new Player('player', './assets/models/chris.glb', true, true, true);
             this.player.addRigidBody(1, Physics.createCapsuleShape(0.25, 0.5, Vector3.up), new Vector3(0, 10, 0));
-        
+
             this.ground = new GameObject('ground', './assets/models/ground.glb', false, false, true,);
             this.ground.addRigidBody(0, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
-        
-            this.grass = new GameObject('grass', './assets/models/grass.glb', false, true, true, true,  new Vector3(0, 0, -10));
-        
+
+            this.grass = new GameObject('grass', './assets/models/grass.glb', false, true, true, true, new Vector3(0, 0, -10));
+
             this.moundSign = new GameObject('moundsign', './assets/models/moundsign.glb', false, true, true,);
             this.moundSign.setPosition(new Vector3(0, 0, -10));
-    
+
             this.road = new GameObject('road', null, false, true, true, true);
             this.road.LoadModel('road', './assets/models/road.glb', true)
                 .then(() => {
@@ -93,8 +88,7 @@ class Engine {
                             this.road.addRigidBody(0, shape, new Vector3(0, 0, -10));
                         });
                 });
-    
-    
+
             this.parkinglot = new GameObject('parkinglot', null, false, true, true, true);
             this.parkinglot.LoadModel('parkinglot', './assets/models/parkinglot.glb', true)
                 .then(() => {
@@ -103,41 +97,41 @@ class Engine {
                             this.parkinglot.addRigidBody(0, shape, new Vector3(0, 0, -10));
                         });
                 });
-    
-                this.infostation = new GameObject('infostation', './assets/models/infostation.glb', false, false, true, false, new Vector3(0, 0, -10));
-                
-                this.infostationbase = new GameObject('infostationbase',null, false, false, true, false, new Vector3(0, 0, -10));
-                this.infostationbase.LoadModel('infostation', './assets/models/infostationbase.glb', true)
-                    .then(() => {
-                        Physics.createMeshShape(this.infostationbase.model.mesh)
-                            .then(shape => {
-                                this.infostationbase.addRigidBody(0, shape, new Vector3(0, 0, -10));
-                            });
-                    });
-    
-                    this.mightychicken = new GameObject('mightychicken', null, false, true, true, true);
-                
-                  
-                    this.mightychicken.LoadModel('mightychicken', './assets/models/mightychicken.glb', true)
-                        .then(() => {
-                            Physics.createMeshShape(this.mightychicken.model.mesh)
-                                .then(shape => {
-                                    this.mightychicken.addRigidBody(0, shape, new Vector3(0, 0, -10));
-                                });
+
+            this.infostation = new GameObject('infostation', './assets/models/infostation.glb', false, false, true, false, new Vector3(0, 0, -10));
+
+            this.infostationbase = new GameObject('infostationbase', null, false, false, true, false, new Vector3(0, 0, -10));
+            this.infostationbase.LoadModel('infostation', './assets/models/infostationbase.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.infostationbase.model.mesh)
+                        .then(shape => {
+                            this.infostationbase.addRigidBody(0, shape, new Vector3(0, 0, -10));
                         });
+                });
 
-                InfoStationManager.addInfoStation(new Vector3(-19.921, 0, -7.5799), 'roadracer');
-                InfoStationManager.addInfoStation(new Vector3(-41.183, 0, -0.5502), 'mightychicken');
+            this.mightychicken = new GameObject('mightychicken', null, false, true, true, true);
 
-                this.parkinglotcurb = new GameObject('parkinglotcurb', null, false, true, true, true);
-                this.parkinglotcurb.LoadModel('parkinglotcurb', './assets/models/parkinglotcurb.glb', true)
-                    .then(() => {
-                        Physics.createMeshShape(this.parkinglotcurb.model.mesh)
-                            .then(shape => {
-                                this.parkinglotcurb.addRigidBody(0, shape, new Vector3(0, 0, -10));
-                            });
-                    });
-    
+
+            this.mightychicken.LoadModel('mightychicken', './assets/models/mightychicken.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.mightychicken.model.mesh)
+                        .then(shape => {
+                            this.mightychicken.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                        });
+                });
+
+            InfoStationManager.addInfoStation(new Vector3(-19.921, 0, -7.5799), 'roadracer');
+            InfoStationManager.addInfoStation(new Vector3(-41.183, 0, -0.5502), 'mightychicken');
+
+            this.parkinglotcurb = new GameObject('parkinglotcurb', null, false, true, true, true);
+            this.parkinglotcurb.LoadModel('parkinglotcurb', './assets/models/parkinglotcurb.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.parkinglotcurb.model.mesh)
+                        .then(shape => {
+                            this.parkinglotcurb.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                        });
+                });
+
             this.garage = new GameObject('garage', null, false, true, true, true);
             this.garage.LoadModel('garage', './assets/models/garage.glb', true)
                 .then(() => {
@@ -146,7 +140,7 @@ class Engine {
                             this.garage.addRigidBody(0, shape, new Vector3(0, 0, -10));
                         });
                 });
-    
+
             this.garagedoor = new GameObject('garagedoor', null, false, true, true, true);
             this.garagedoor.LoadModel('garagedoor', './assets/models/garagedoor.glb', true)
                 .then(() => {
@@ -155,7 +149,7 @@ class Engine {
                             this.garagedoor.addRigidBody(0, shape, new Vector3(0, 0, -10));
                         });
                 });
-    
+
             this.rrsign = new GameObject('rrsign', null, false, true, true, true);
             this.rrsign.LoadModel('rrsign', './assets/models/rrsign.glb', true)
                 .then(() => {
@@ -164,7 +158,7 @@ class Engine {
                             this.rrsign.addRigidBody(0, shape, new Vector3(0, 0, -10));
                         });
                 });
-    
+
             this.mound = new GameObject('mound', null, false, true, true, true);
             this.mound.LoadModel('mound', './assets/models/mound.glb', true)
                 .then(() => {
@@ -173,7 +167,7 @@ class Engine {
                             this.mound.addRigidBody(0, shape, new Vector3(0, 0, -10));
                         });
                 });
-    
+
             this.fenceleft = new GameObject('fenceleft', null, false, true, true, true);
             this.fenceleft.LoadModel('fenceleft', './assets/models/fenceleft.glb', true)
                 .then(() => {
@@ -182,9 +176,9 @@ class Engine {
                             this.fenceleft.addRigidBody(0, shape, new Vector3(0, 0, -10));
                         });
                 });
-    
+
             Camera.target = this.player;
-      
+
             this.vehicle2 = new Vehicle({
                 breakForce: 10,
                 accelForceFront: 0,
@@ -216,7 +210,7 @@ class Engine {
                 frontRightPos: new Vector3(0.38, -0.2, 0.719),
                 frontLeftPos: new Vector3(-0.38, -0.2, 0.719),
             });
-    
+
             this.vehicle = new Vehicle({
                 breakForce: 25,
                 accelForceFront: 0,
@@ -248,7 +242,7 @@ class Engine {
                 frontRightPos: new Vector3(0.524, -0.309, 0.719),
                 frontLeftPos: new Vector3(-0.524, -0.309, 0.719),
             });
-     
+
             this.vehicle3 = new Vehicle({
                 breakForce: 25,
                 accelForceFront: 180,
@@ -280,7 +274,7 @@ class Engine {
                 frontRightPos: new Vector3(0.45, -0.23, 0.69),
                 frontLeftPos: new Vector3(-0.45, -0.23, 0.69),
             });
-    
+
             this.vehicle4 = new Vehicle({
                 breakForce: 25,
                 accelForceFront: 0,
@@ -294,7 +288,7 @@ class Engine {
                 mass: 100,
                 enginePitch: 50,
                 position: new Vector3(-35.883, 0.295, -6.466),
-                rotation:  new Quaternion(0, 0.545, 0, 0.8383),
+                rotation: new Quaternion(0, 0.545, 0, 0.8383),
                 centerOfMass: new Vector3(0, -1, 0),
                 bodyModel: './assets/models/racecar.glb',
                 wheelLeftModel: './assets/models/racecarwheelLeft.glb',
@@ -312,7 +306,7 @@ class Engine {
                 frontRightPos: new Vector3(0.4, 0, 0.67),
                 frontLeftPos: new Vector3(-0.4, 0, 0.67),
             });
-    
+
             this.vehicle5 = new Vehicle({
                 breakForce: 10,
                 accelForceFront: 0,
@@ -344,7 +338,7 @@ class Engine {
                 frontRightPos: new Vector3(0.45, -0.5, 0.95),
                 frontLeftPos: new Vector3(-0.45, -0.5, 0.95),
             });
-    
+
             this.vehicle5 = new Vehicle({
                 breakForce: 20,
                 accelForceFront: 0,
@@ -379,13 +373,14 @@ class Engine {
             resolve(true);  // This needs to be better
         });
     }
+    
     GetRenderer() {
         return this.renderer.renderer;
     }
 
     Animate = () => {
-        
-        if (this.isModalOpen()){
+
+        if (this.isModalOpen()) {
             Gamepad.clearButtons();
             Input.clearKeys();
         }
@@ -397,18 +392,14 @@ class Engine {
         InfoStationManager.update();
         Scene.update();
 
-        const camPos = Camera.position;// Camera.GetCamera().position;
-        this.light.position.set(camPos.x, 1, camPos.z + 5);
-        this.light.target.position.set(-5 + camPos.x, -5, -5 + camPos.z);
-
-           if (PostProcessing.isUsingEffects())
-              PostProcessing.render();
-         else
-        this.renderer.Render(Scene.getScene(), Camera.mainCamera);
+        if (PostProcessing.isUsingEffects())
+            PostProcessing.render();
+        else
+            this.renderer.Render(Scene.getScene(), Camera.mainCamera);
 
         this.fpsTime += Time.deltaTime;
         this.fps++;
-        if (this.fpsTime >= 1){
+        if (this.fpsTime >= 1) {
             document.title = this.fps + ' fps';
             this.fps = 0;
             this.fpsTime = 0;

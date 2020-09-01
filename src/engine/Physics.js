@@ -132,5 +132,4 @@ class PhysicsEngine {
 }
 
 const Physics = new PhysicsEngine();
-
 export default Physics;

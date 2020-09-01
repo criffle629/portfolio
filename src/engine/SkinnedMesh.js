@@ -4,7 +4,7 @@ import Scene from './Scene';
 import Time from './Time';
 import GameEngine from "./GameEngine";
 
-export default class SkinnedMesh{
+export default class SkinnedMesh {
 
     constructor(path, castShadow = false, receiveShadow = false, flatShading = false) {
         this.mixer = null;
@@ -19,26 +19,25 @@ export default class SkinnedMesh{
         this.LoadMesh(path, flatShading);
     }
 
-    setShadows(){
-        this.scene.traverse( child => { 
-            if ( child.isMesh ) {
+    setShadows() {
+        this.scene.traverse(child => {
+            if (child.isMesh) {
                 child.castShadow = this.castShadow;
                 child.receiveShadow = this.receiveShadow;
             }
-        } );
+        });
     }
 
-    castShadow(value){
+    castShadow(value) {
         this.castShadow = value;
         GameEngine.AddCallback(this.setShadows(value));
 
     }
 
-    receiveShadow(value){
+    receiveShadow(value) {
         this.receiveShadow = value;
         GameEngine.AddCallback(this.setShadows(value));
     }
-
 
     async LoadMesh(path, flatShading = false) {
 
@@ -46,25 +45,25 @@ export default class SkinnedMesh{
 
         await loader.load(path, (gltf) => {
             this.meshData = new THREE.SkinnedMesh(gltf);
- 
+
             this.mixer = new THREE.AnimationMixer(gltf.scene);
             this.mixer.timeScale = 1;
 
-            let skeleton = new THREE.SkeletonHelper( gltf.scene );
+            let skeleton = new THREE.SkeletonHelper(gltf.scene);
             skeleton.visible = false;
             Scene.add(skeleton);
-    
-            gltf.scene.traverse( child => { 
 
-                if ( child.isMesh ) {
-            
+            gltf.scene.traverse(child => {
+
+                if (child.isMesh) {
+
                     child.castShadow = this.castShadow;
                     child.receiveShadow = this.receiveShadow;
 
-                    if (flatShading) 
+                    if (flatShading)
                         child.material.flatShading = flatShading;
                 }
-            } );
+            });
 
             this.scene = gltf.scene;
             this.meshData = gltf.scene.children;
@@ -72,37 +71,36 @@ export default class SkinnedMesh{
             this.anim = gltf;
 
             Scene.add(gltf.scene);
-            
+
         }, undefined, function (error) {
             console.error(error);
         });
     }
 
-    playAnimation(animation){
+    playAnimation(animation) {
 
         if (this.meshData === null)
             return;
 
-        if (this.currentAnimation !== animation)
-        {
+        if (this.currentAnimation !== animation) {
             this.currentAnimation = animation;
             let clip = THREE.AnimationClip.findByName(this.anim, animation);
-            
+
             if (this.action !== null)
                 this.action.stop();
 
             this.action = this.mixer.clipAction(clip);
-           
+
             if (this.action !== null)
                 this.action.play();
         }
     }
 
-    Animate () { 
-       
-        if (this.mixer !== null){
+    Animate() {
+
+        if (this.mixer !== null) {
             this.mixer.update(Time.deltaTime);
-          
+
         }
     }
 }

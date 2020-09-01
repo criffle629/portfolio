@@ -17,7 +17,7 @@ export default class Quaternion {
         this.z *= scale;
         this.w *= scale;
     }
-    
+
     Inverse() {
         return new Quaternion(this.x, this.y, this.z, -this.w);
     }
@@ -28,11 +28,11 @@ export default class Quaternion {
 
     Euler() {
         let v = new Vector3();
-   
+
         v.y = Math.atan2(2.0 * this.w * this.y + 2.0 * this.z * this.x, 1.0 - 2.0 * (this.x * this.x + this.y * this.y)) * MathTools.rad2Deg;
         v.x = Math.asin(2.0 * (this.w * this.x - this.y * this.z)) * MathTools.rad2Deg;
         v.z = Math.atan2(2.0 * this.w * this.z + 2.0 * this.x * this.y, 1.0 - 2.0 * (this.z * this.z + this.x * this.x)) * MathTools.rad2Deg;
-        
+
         return v;
     }
 
@@ -43,7 +43,7 @@ export default class Quaternion {
     LengthSquared() {
         return (this.x * this.x + this.y * this.y + this.z * this.z) + this.w * this.w;
     }
-    
+
     static LookAt(sourcePoint, destPoint, up) {
         let forwardVector = Vector3.Normalize(Vector3.Subtract(destPoint, sourcePoint));
 

@@ -1,13 +1,13 @@
 import * as THREE from "three";
 
-class SceneManager{
+class SceneManager {
 
     static FOG_TYPE = {
         LINEAR: 0,
         EXPONENTIAL: 1,
     };
 
-    constructor(){
+    constructor() {
         this.scene = new THREE.Scene();
         this.enabledObjects = {};
         this.disabledObjects = {};
@@ -15,69 +15,69 @@ class SceneManager{
         this.screenHeight = 600;
         this.aspectRatio = 1024 / 600;
     }
-    
-    add(obj){
+
+    add(obj) {
         this.scene.add(obj);
     }
 
-    addGameObject(obj){
+    addGameObject(obj) {
 
         if (obj.objID in this.disabledObjects)
             this.enableObject(obj);
         else
-        if (!(obj.objID in this.enableObject))
-            this.enabledObjects[obj.objID] = obj;
-    }   
+            if (!(obj.objID in this.enableObject))
+                this.enabledObjects[obj.objID] = obj;
+    }
 
-    getScene(){
+    getScene() {
         return this.scene;
     }
 
-    enableObject(obj){
-        if (obj.objID in this.disabledObjects){
+    enableObject(obj) {
+        if (obj.objID in this.disabledObjects) {
             this.enabledObjects[obj.objID] = obj;
             delete this.disabledObjects[obj.objID];
         }
     }
 
-    disableObject(obj){
-        if (obj.objID in this.enableObjects){
+    disableObject(obj) {
+        if (obj.objID in this.enableObjects) {
             this.disabledObjects[obj.objID] = obj;
             delete this.enabledObjects[obj.objID];
         }
     }
 
-    update(){
+    update() {
 
-        for (let obj in this.enabledObjects){
+        for (let obj in this.enabledObjects) {
             this.enabledObjects[obj].update();
         }
 
-        for (let obj in this.enabledObjects){
+        for (let obj in this.enabledObjects) {
             this.enabledObjects[obj].lateUpdate();
         }
 
-        for (let obj in this.enabledObjects){
+        for (let obj in this.enabledObjects) {
             this.enabledObjects[obj].render();
         }
     }
 
-    setScreenSize(width, height){
+    setScreenSize(width, height) {
         this.screenWidth = width;
         this.screenHeight = height;
 
         this.aspectRatio = width / height;
     }
 
-    setLinearFog(color, near, far){
+    setLinearFog(color, near, far) {
         this.scene.fog = new THREE.Fog(color, near, far);
     }
 
-    setExpoFog(color, density){
+    setExpoFog(color, density) {
         this.scene.fog = new THREE.FogExp2(color, density);
     }
 }
 
-const Scene =  new SceneManager();
+const Scene = new SceneManager();
 
 export default Scene;

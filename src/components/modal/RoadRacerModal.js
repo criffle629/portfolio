@@ -38,12 +38,12 @@ export default props => {
             margin: '10px',
             color: 'white',
         },
-        linkSection:{
+        linkSection: {
             display: 'flex',
             flexDirection: 'row',
         },
         linkText: {
-            
+
 
             width: '150px',
             color: 'white',
@@ -85,7 +85,9 @@ export default props => {
         >
 
             <div style={styles.modal} className={classes.main}>
+
                 <div style={styles.image}></div>
+
                 <div style={styles.promoText}>
                     Tilt to steer, swipe to jump over obstacles, buy cars to unlock Powerups and collect coins to upgrade them, collect gears for rewinds and see how far you can race!
                 </div>
@@ -101,18 +103,25 @@ export default props => {
                     <div style={styles.contentText}> - In App Purchases (consumable and non-consumable) </div>
                     <div style={styles.contentText}> - Procedurally generated levels </div>
                 </div>
+
                 <div style={{ width: '100%' }}>
+
                     <div style={styles.linkSection}>
                         <span style={styles.linkText}>Apple App Store:</span> <a href='https://itunes.apple.com/us/app/road-racer/id575817068?mt=8' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Road Racer</a>
                     </div>
+
                     <div style={styles.linkSection}>
                         <span style={styles.linkText}>Google Play Store:</span>  <a href='https://play.google.com/store/apps/details?id=com.intoxic8studio.roadracer' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Road Racer 168</a>
                     </div>
+
                     <div style={styles.linkSection}>
                         <span style={styles.linkText}>Website:</span>  <a href='http://intoxic8studio.com/' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Intoxic8 Studio LLC</a>
                     </div>
+
                 </div>
+
                 <Button style={styles.closeButton} className={classes.button} onClick={closeModal}>Close</Button>
+                
             </div>
         </Modal>
     );

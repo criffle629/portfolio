@@ -138,17 +138,18 @@ export default class Vehicle extends GameObject {
             return;
         }
 
-
-        if (Gamepad.isConnected()){
+        if (Gamepad.isConnected()) {
             let axis = Gamepad.leftStick();
-            
+
             if (!Vector2.Equals(axis, Vector2.zero))
                 this.steeringAngle = -25 * axis.x;
         }
 
         if (this.engineSound !== null && !this.engineSound.isPlaying)
             this.engineSound.play();
+
         this.reverse = false;
+
         if ((Input.isKeyDown('w') || Gamepad.isButtonDown(Gamepad.Buttons.TRIGGER_RIGHT)) && this.speed <= this.topSpeed) {
 
             this.currentBrakingFront = 0;
@@ -171,12 +172,12 @@ export default class Vehicle extends GameObject {
                 this.currentAccelBack = -((this.accelForceBack * 0.5) * this.accelRate);
                 this.currentAccelFront = -((this.accelForceFront * 0.5) * this.accelRate);
             }
-            else{
+            else {
                 this.currentBrakingFront = this.breakForce * 0.25;
                 this.currentBrakingBack = this.breakForce * 0.25;
             }
         }
-        
+
         if (Input.isKeyDown('a')) {
             this.steeringAngle += 15 * this.steeringRate * Time.deltaTime;
         }
@@ -188,13 +189,12 @@ export default class Vehicle extends GameObject {
                 this.steeringAngle = MathTools.moveTowards(this.steeringAngle, 0.0, this.steeringRate * Time.deltaTime);
             }
 
-
         this.steeringAngle = MathTools.clamp(this.steeringAngle, -25, 25);
     }
 
-    updateSound(){
+    updateSound() {
         if (Math.abs(this.body.getAngularVelocity().y()) > 1) {
-            
+
             if (this.tireSquealSound !== null && this.model !== null) {
 
                 if (!this.tireSquealSound.isPlaying)
@@ -207,22 +207,22 @@ export default class Vehicle extends GameObject {
             }
         }
         else {
-                if (this.tireSquealSound !== null && this.tireSquealSound.isPlaying)
-                    this.tireSquealSound.stop();
+            if (this.tireSquealSound !== null && this.tireSquealSound.isPlaying)
+                this.tireSquealSound.stop();
         }
 
         if (this.engineSound !== null && this.model !== null) {
 
             if (this.engineSound.isPlaying && this.model.mesh) {
-             
+
                 this.engineSound.setDetune((Math.abs(this.speed) + this.enginePitch) * 10);
                 this.engineSound.panner.setPosition(this.model.mesh.position.x, this.model.mesh.position.y, this.model.mesh.position.z);
- 
-             }
+
+            }
         }
     }
 
-    updateWheels(){
+    updateWheels() {
         for (let i = 0; i < this.vehicle.getNumWheels(); i++) {
 
             this.vehicle.updateWheelTransform(i, false);
@@ -238,7 +238,7 @@ export default class Vehicle extends GameObject {
         }
     }
 
-    updateRigidBody(){
+    updateRigidBody() {
         const tm = this.body.getWorldTransform();
         const p = tm.getOrigin();
         const q = tm.getRotation();
@@ -251,7 +251,7 @@ export default class Vehicle extends GameObject {
         }
     }
 
-    updateSpeed(){
+    updateSpeed() {
         let vel = (this.vehicle.getRigidBody().getLinearVelocity().length() - 0.163);
 
         if (vel < 0.009)
@@ -261,14 +261,14 @@ export default class Vehicle extends GameObject {
         this.speed = vel * 9.8 * dir;
     }
 
-    updateMovement(){
+    updateMovement() {
         this.vehicle.applyEngineForce(this.currentAccelFront, 0);
         this.vehicle.applyEngineForce(this.currentAccelFront, 1);
         this.vehicle.applyEngineForce(this.currentAccelBack, 2);
         this.vehicle.applyEngineForce(this.currentAccelBack, 3);
     }
 
-    updateSteering(){
+    updateSteering() {
         this.vehicle.setBrake(this.currentBrakingFront, 0);
         this.vehicle.setBrake(this.currentBrakingFront, 1);
         this.vehicle.setBrake(this.currentBrakingBack / 2, 2);
@@ -279,7 +279,7 @@ export default class Vehicle extends GameObject {
         this.vehicle.setSteeringValue(this.steeringAngle * MathTools.deg2Rad, 1);
     }
 
-    resetMovementWhenNotInUse(){
+    resetMovementWhenNotInUse() {
         if (!this.inUse) {
             this.currentBrakingFront = this.breakForce * 0.25;
             this.currentBrakingBack = this.breakForce * 0.25;

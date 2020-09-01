@@ -1,10 +1,9 @@
 import Vector2 from './Vector2';
 import Gamepads from 'gamepads';
- 
+
 class GamepadManager {
 
-   
-    constructor(){
+    constructor() {
 
         this.Buttons = {
             BUTTON_BOTTOM: 0,
@@ -31,18 +30,18 @@ class GamepadManager {
 
         this.connected = false;
         Gamepads.start();
- 
+
         this.leftAxis = Vector2.zero;
         this.rightAxis = Vector2.zero;
 
         Gamepads.addEventListener('connect', e => {
             this.connected = true;
-            e.gamepad.addEventListener('joystickmove', e =>{
-                this.leftAxis = new Vector2( e.horizontalValue,  e.verticalValue);
+            e.gamepad.addEventListener('joystickmove', e => {
+                this.leftAxis = new Vector2(e.horizontalValue, e.verticalValue);
             }, [0, 1]);
 
-            e.gamepad.addEventListener('joystickmove', e =>{
-                this.rightAxis = new Vector2( e.horizontalValue,  e.verticalValue);
+            e.gamepad.addEventListener('joystickmove', e => {
+                this.rightAxis = new Vector2(e.horizontalValue, e.verticalValue);
             }, [2, 3]);
 
             e.gamepad.addEventListener('buttonpress', e => {
@@ -52,17 +51,15 @@ class GamepadManager {
                 this.removeButton(e.index);
             });
         });
-         
+
         Gamepads.addEventListener('disconnect', e => {
             this.connected = false;
         });
-
-       
     }
 
-    deadzone(axis){
+    deadzone(axis) {
         let newAxis = axis;
-        
+
         if (Math.abs(newAxis.x) < 0.015)
             newAxis.x = 0;
 
@@ -75,37 +72,36 @@ class GamepadManager {
     leftStick() {
         if (!this.connected) return Vector2.zero;
         let axis = this.deadzone(this.leftAxis);
- 
+
         return axis;
     }
 
     rightStick() {
         if (!this.connected) return Vector2.zero;
         let axis = this.deadzone(this.rightAxis);
-       
+
         return axis;
     }
 
-    addButton(button){
+    addButton(button) {
         this.buttonsDown.set(button, 1);
-        if (this.buttonsPressed.get(button) !== 2){
+        if (this.buttonsPressed.get(button) !== 2) {
             this.buttonsPressed.set(button, 1);
         }
     }
 
-    removeButton(button){
-       this.buttonsDown.delete(button);
-       this.buttonsPressed.delete(button);
+    removeButton(button) {
+        this.buttonsDown.delete(button);
+        this.buttonsPressed.delete(button);
     }
 
-    isButtonDown(button){
+    isButtonDown(button) {
         return this.buttonsDown.has(button);
     }
 
+    isButtonPressed(button) {
 
-    isButtonPressed(button){
-       
-        if (this.buttonsPressed.has(button) && this.buttonsPressed.get(button) === 1){
+        if (this.buttonsPressed.has(button) && this.buttonsPressed.get(button) === 1) {
             this.buttonsPressed.set(button, 2);
             return true;
         }
@@ -113,11 +109,11 @@ class GamepadManager {
         return false;
     }
 
-    getTrigger(trigger){
+    getTrigger(trigger) {
 
     }
 
-    clearButtons(){
+    clearButtons() {
         this.buttonsDown.clear();
         this.buttonsPressed.clear();
         this.leftAxis = Vector2.zero;

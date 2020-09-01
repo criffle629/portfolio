@@ -1,8 +1,8 @@
 import Mesh from './Mesh';
 import SkinnedMesh from './SkinnedMesh';
 
-class ContentManager{
-    constructor(){
+class ContentManager {
+    constructor() {
         this.meshes = {};
         this.sounds = {};
     }
@@ -28,12 +28,11 @@ class ContentManager{
                     .catch(e => {
                         reject(e);
                     });
-                }
+            }
         });
     }
 }
 
 const Content = new ContentManager();
 Object.freeze(Content);
-
 export default Content;
