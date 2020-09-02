@@ -4,6 +4,7 @@ import RigidBody from './RigidBody';
 import Quaternion from './Quaternion';
 import Content from './Content';
 import Ammo from 'ammo.js';
+import MathTools from './MathTools';
 
 export default class GameObject {
 
@@ -126,15 +127,15 @@ export default class GameObject {
             return;
 
         const rot = this.rotation.Euler();
-
+    
         this.model.mesh.position.set(this.position.x, this.position.y, this.position.z);
         this.model.mesh.rotation.set(rot.x, rot.y, rot.z);
     }
 
     lateUpdate() { }
 
-    addRigidBody(mass = 1, shape = null, position = Vector3.zero, rotation = Quaternion.Identity()) {
-        this.rigidBody = new RigidBody(position, shape, rotation, mass);
+    addRigidBody(options = {mass: 0, friction: 1, rollingFriction: 1, restitution: 0.8}, shape = null, position = Vector3.zero, rotation = Quaternion.Identity()) {
+        this.rigidBody = new RigidBody(position, shape, rotation, options);
     }
 
     render() {

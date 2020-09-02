@@ -1,5 +1,5 @@
 import Time from './Time';
-import Ammo from 'ammo.js';
+import Ammo from 'ammo.js'
 
 class PhysicsEngine {
 
@@ -38,6 +38,10 @@ class PhysicsEngine {
         return this.rigidBodies[this.rigidBodies.length - 1];
     }
 
+    removeRigidBody(body){
+        this.world.removeRigidBody(body);
+    }
+    
     createSphereShape(radius = 1) {
         let shape = new Ammo.btSphereShape(radius);
         shape.setMargin(0.05);
@@ -47,8 +51,7 @@ class PhysicsEngine {
 
     createBoxShape(boxSize) {
         let shape = new Ammo.btBoxShape(new Ammo.btVector3(boxSize.x * 0.5, boxSize.y * 0.5, boxSize.z * 0.5));
-        shape.setMargin(0.05);
-
+        
         return shape;
     }
 

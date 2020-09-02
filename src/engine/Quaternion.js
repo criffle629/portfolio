@@ -1,7 +1,7 @@
 import Vector3 from './Vector3';
 import MathTools from './MathTools';
 
-export default class Quaternion {
+export default class  Quaternion {
 
     constructor(x = 0.0, y = 0.0, z = 0.0, w = 1.0) {
         this.x = x;

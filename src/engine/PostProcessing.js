@@ -63,4 +63,5 @@ class PostProcessingManager {
 }
 
 const PostProcessing = new PostProcessingManager();
+
 export default PostProcessing;

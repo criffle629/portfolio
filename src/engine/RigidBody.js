@@ -3,39 +3,56 @@ import Physics from './Physics';
 import Quaternion from './Quaternion';
 import Vector3 from './Vector3';
 import Ammo from 'ammo.js';
+import MathTools from './MathTools';
 
 export default class RigidBody {
-
-    constructor(position = new Vector3(0, 0, 0), shape,  rotation = Quaternion.Identity(), mass = 1) {
+    static rigidID = 0;
+    constructor(position = new Vector3(0, 0, 0), shape, rotation = Quaternion.Identity(), options = { mass: 0, friction: 1, rollingFriction: 1, restitution: 0.8 }) {
 
         this.isKinematic = false;
         this.active = true;
-        this.mass = mass;
+        this.mass = options.mass;
+
+        this.shape = shape;
+        this.friction = options.friction;
+        this.rollingFriction = options.rollingFriction;
+        this.restitution = options.restitution;
+        this.ragdollActive = false;
+
+        this.id = RigidBody.rigidID;
+        RigidBody.rigidID++;
+
         this.transform = new Ammo.btTransform();
         this.transform.setIdentity();
         this.transform.setOrigin(position.to_btVector3());
         this.transform.setRotation(new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w));
         this.motionState = new Ammo.btDefaultMotionState(this.transform);
-			
-        let localInertia = new Vector3(0.0, 0.0, 0.0);
 
-        if (mass > 0)
-            shape.calculateLocalInertia(this.mass, localInertia.to_btVector3());
+        let localInertia = new Ammo.btVector3(0.0, 0.0, 0.0);
+        localInertia =  this.shape.calculateLocalInertia(this.mass, localInertia);
+        let ri = new Ammo.btRigidBodyConstructionInfo(this.mass, this.motionState, this.shape, localInertia);
 
-        let ri =new Ammo.btRigidBodyConstructionInfo(this.mass, this.motionState, shape, localInertia.to_btVector3());
-        this.body = new Ammo.btRigidBody(ri);
+        this.body = new Ammo.btRigidBody(ri);;
+
+      
+
    
-        this.body.setFriction(1);
-        this.body.setActivationState(4);
-
-        this.SetKinematic(mass === 0);
-        
+            this.body.setFriction(this.friction);
+            this.body.setDamping(0.25, 0.25);
+            this.body.setCcdMotionThreshold(1);
+            this.body.setCcdSweptSphereRadius(0.2);
+            this.body.setRestitution(this.restitution);
+ 
+        this.SetKinematic(MathTools.approximate(this.mass, 0.0));
         Physics.addRigidBody(this.body);
     }
 
+
     setMass(mass) {
-        this.mass = mass;
-        this.body.setMassProps(mass, this.body.getLocalInertia());
+        if (this.body) {
+            this.mass = mass;
+            this.body.setMassProps(mass, new Ammo.btVector3(0.0, 0.0, 0.0));
+        }
     }
 
     SetKinematic(value) {
@@ -49,20 +66,20 @@ export default class RigidBody {
         else {
             this.body.setMassProps(this.mass, new Ammo.btVector3(0.0, 0.0, 0.0));
             this.body.setCollisionFlags(0);
-            this.body.setActivationState(1);
+            this.body.setActivationState(4);
         }
     }
 
     AddForce(force) {
-        this.body.applyCentralForce(force.To_btVector3());
+        this.body.applyCentralForce(force.to_btVector3());
     }
 
     AddForceAt(force, position) {
-        this.body.applyForce(force.To_btVector3(), position.To_btVector3());
+        this.body.applyForce(force.to_btVector3(), position.to_btVector3());
     }
 
     SetLinearFactor(factor) {
-        this.body.setLinearFactor(factor.To_btVector3());
+        this.body.setLinearFactor(factor.to_btVector3());
     }
 
     SetSleepingThreshold(linear, angular) {
@@ -70,23 +87,23 @@ export default class RigidBody {
     }
 
     ApplyTorque(torque) {
-        this.body.applyTorque(torque.To_btVector3());
+        this.body.applyTorque(torque.to_btVector3());
     }
 
     ApplyCentralImpulse(impulse) {
-        this.body.applyCentralImpulse(impulse.To_btVector3());
+        this.body.applyCentralImpulse(impulse.to_btVector3());
     }
 
     ApplyTorqueImpulse(impulse) {
-        this.body.applyTorqueImpulse(impulse.To_btVector3());
+        this.body.applyTorqueImpulse(impulse.to_btVector3());
     }
 
     ApplyImpulse(impulse) {
-        this.body.applyImpulse(impulse.To_btVector3(), this.body.getCenterOfMassPosition());
+        this.body.applyImpulse(impulse.to_btVector3(), new Ammo.btVector3(0, 0, 0));
     }
 
     ApplyImpulseAt(impulse, position) {
-        this.body.applyImpulse(impulse.To_btVector3(), position.To_btVector3());
+        this.body.applyImpulse(impulse.to_btVector3(), position.to_btVector3());
     }
 
     ClearForces() {
@@ -112,15 +129,15 @@ export default class RigidBody {
     }
 
     SetLinearVelocity(velocity) {
-        this.bodysetLinearVelocity(velocity.To_btVector3());
+        this.bodysetLinearVelocity(velocity.to_btVector3());
     }
 
     setAngularVelocity(velocity) {
-        this.body.setAngularVelocity(velocity.To_btVector3());
+        this.body.setAngularVelocity(velocity.to_btVector3());
     }
 
     translate(position) {
-        this.body.translate(position.To_btVector3());
+        this.body.translate(position.to_btVector3());
     }
 
     setPosition(position) {
@@ -128,7 +145,7 @@ export default class RigidBody {
     }
 
     Move(position) {
-        this.body.translate(position.To_btVector3());
+        this.body.translate(position.to_btVector3());
     }
 
     setRotation(rotation) {
@@ -137,7 +154,7 @@ export default class RigidBody {
         this.body.getMotionState().setWorldTransform(this.body.getWorldTransform());
     }
 
-    setQuaternion(quat){
+    setQuaternion(quat) {
         this.body.getWorldTransform().setRotation(quat);
         this.body.getMotionState().setWorldTransform(this.body.getWorldTransform());
     }
@@ -155,7 +172,9 @@ export default class RigidBody {
     }
 
     SetAngularFactor(factor) {
-        this.body.setAngularFactor(factor.To_btVector3());
+        Physics.removeRigidBody(this.body);
+        this.body.setAngularFactor(factor.to_btVector3());
+        Physics.addRigidBody(this.body);
     }
 
     GetAngularFactor() {
@@ -198,7 +217,18 @@ export default class RigidBody {
 
     SetCollisionShape(collider) {
         this.body.setCollisionShape(collider);
-        this.body.setRollingFriction(0.3);
+    }
+
+    SetRollingFriction(friction) {
+        Physics.removeRigidBody(this.body);
+        this.body.setRollingFriction(friction);
+        Physics.addRigidBody(this.body);
+    }
+
+    SetRestitution(restitiuion) {
+        Physics.removeRigidBody(this.body);
+        this.body.setRestitution(restitiuion);
+        Physics.addRigidBody(this.body);
     }
 
     GetCollisionFlags() {
@@ -211,13 +241,13 @@ export default class RigidBody {
 
     GetPosition() {
         let v = this.body.getWorldTransform().getOrigin();
-        
+
         return new Vector3(v.x(), v.y(), v.z());
     }
 
     GetRotation() {
         let quat = this.body.getWorldTransform().getRotation();
- 
+
         return new Quaternion(quat.x(), quat.y(), quat.z(), quat.w());;
     }
 

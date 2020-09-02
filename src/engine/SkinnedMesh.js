@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Scene from './Scene';
 import Time from './Time';
-import GameEngine from "./GameEngine";
+ 
 
 export default class SkinnedMesh {
 
@@ -14,8 +14,12 @@ export default class SkinnedMesh {
         this.anim = null;
         this.scene = null;
         this.currentAnimation = '';
+        this.bones = [];
+        this.ragdollActivated = false;
+
         this.castShadow = castShadow;
         this.receiveShadow = receiveShadow;
+        this.flatShading = flatShading;
         this.LoadMesh(path, flatShading);
     }
 
@@ -30,31 +34,59 @@ export default class SkinnedMesh {
 
     castShadow(value) {
         this.castShadow = value;
-        GameEngine.AddCallback(this.setShadows(value));
-
+        this.updateScene();
     }
 
     receiveShadow(value) {
         this.receiveShadow = value;
-        GameEngine.AddCallback(this.setShadows(value));
+        this.updateScene();
     }
 
+    updateScene(){
+       this.scene.traverse(child => {
+
+            if (child.isMesh) {
+
+                child.castShadow = this.castShadow;
+                child.receiveShadow = this.receiveShadow;
+
+                if (this.flatShading)
+                    child.material.flatShading = this.flatShading;
+            }
+        });
+    }
     async LoadMesh(path, flatShading = false) {
 
         let loader = new GLTFLoader();
 
+        this.flatShading = flatShading;
         await loader.load(path, (gltf) => {
             this.meshData = new THREE.SkinnedMesh(gltf);
 
             this.mixer = new THREE.AnimationMixer(gltf.scene);
             this.mixer.timeScale = 1;
-
-            let skeleton = new THREE.SkeletonHelper(gltf.scene);
-            skeleton.visible = false;
-            Scene.add(skeleton);
-
+ 
             gltf.scene.traverse(child => {
+/*
+                if (child.isBone) {
+                    console.log(child);
 
+                    const quat = child.quaternion;
+                    let pos = child.position;
+                    pos = new Vector3(pos.x, pos.y, pos.z);
+            
+
+                    this.bones.push({
+                        bone:child,
+                        body: new RigidBody(new Vector3(pos.x, pos.y, pos.z), Phsyics.createCapsuleShape(0.051, 0.051, Vector3.forward), new Quaternion(quat.x, quat.y, quat.z, quat.w), {
+                        mass: 0.0,
+                        friction: 1,
+                        rollingFriction: 0,
+                        restitution: 0
+                        })
+                        });
+                }
+*/
                 if (child.isMesh) {
 
                     child.castShadow = this.castShadow;
@@ -96,11 +128,35 @@ export default class SkinnedMesh {
         }
     }
 
+    SetRagdollActive(value){
+
+        this.ragdollActivated = value;
+        for (let i = 0; i < this.bones.length; i++)
+        {   
+            if (this.bones[i].body !== null){
+                const mass = value ? 0.25 : 0;
+                this.bones[i].body.setMass(mass);
+            }
+        }
+    }
+
     Animate() {
 
-        if (this.mixer !== null) {
-            this.mixer.update(Time.deltaTime);
+     /*
 
+        for (let i = 0; i < this.bones.length; i++)
+        {
+            if (this.bones[i].body !== null && this.bones[i].body.mass > 0){
+            
+                const rot = this.bones[i].body.GetRotation().Euler();
+                const pos = this.bones[i].body.GetPosition();
+                this.bones[i].bone.rotation.set(rot.x, rot.y, rot.z);
+                this.bones[i].bone.position.set(pos.x, pos.y, pos.z);
+            }
+        }
+*/
+        if (this.mixer !== null && !this.ragdollActivated) {
+            this.mixer.update(Time.deltaTime);
         }
     }
 }

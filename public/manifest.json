@@ -1,21 +1,16 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Christopher Riffle",
+  "name": "Christopher Riffle's Portfolio",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "chris.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "chris.png",
       "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "177x177"
     }
   ],
   "start_url": ".",

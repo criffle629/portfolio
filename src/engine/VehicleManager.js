@@ -11,14 +11,20 @@ class VehicleController {
         this.isReady = false;
 
         this.ekey = new GameObject('ekey', null, false, false, true, true, new Vector3(-23.75, 2, -10), Quaternion.Identity());
+        this.rkey = new GameObject('rkey', null, false, false, true, true, new Vector3(-23.75, 2, -10), Quaternion.Identity());
 
         this.ekey.LoadModel('ekey', './assets/models/ekey.glb', true)
             .then(() => {
-                this.isReady = true;
                 this.ekey.model.mesh.visible = false;
+            
             });
-
+            this.rkey.LoadModel('rkey', './assets/models/rkey.glb', true)
+            .then(() => {
+                this.isReady = true;
+                this.rkey.model.mesh.visible = false;
+            });
         this.inRangeVehicle = null;
+        this.vehicleInUse = null;
     }
 
     addVehicle(vehicle) {
@@ -30,28 +36,16 @@ class VehicleController {
 
         this.inRangeVehicle.inUse = true;
         Camera.target = this.inRangeVehicle;
+        this.vehicleInUse = this.inRangeVehicle;
 
         return this.inRangeVehicle;
     }
 
-    checkVehicleInRange(pos) {
+    leaveVehicle(){
+        this.vehicleInUse = null;
+    }
 
-        if (!this.isReady) return;
-
-        this.inRangeVehicle = null;
-        let closest = this.distFromVehicle + 1;
-
-        for (let i = 0; i < this.vehicles.length; i++) {
-            let vehiclePos = this.vehicles[i].position;
-            vehiclePos = new Vector3(vehiclePos.x, vehiclePos.y, vehiclePos.z);
-
-            const dist = Vector3.Distance(pos, vehiclePos);
-            if (dist < closest && dist <= 3 && !this.vehicles[i].inUse) {
-                closest = dist;
-                this.inRangeVehicle = this.vehicles[i];
-            }
-        }
-
+    updateEKey(){
         if (this.inRangeVehicle !== null) {
 
             let vehiclePos = this.inRangeVehicle.position;
@@ -68,6 +62,46 @@ class VehicleController {
             let lookAt = Quaternion.LookRotation(Vector3.Subtract(camPos, eKeyPos), Vector3.up);
             this.ekey.setRotation(Vector3.MultiplyScalar(lookAt.Euler(), MathTools.deg2Rad));
         }
+
+    }
+
+    updateRKey(){
+        if (this.vehicleInUse !== null) {
+
+            if (this.vehicleInUse.inUse && this.vehicleInUse.isUpsideDown()) {
+                let vehiclePos = this.vehicleInUse.position;
+                this.rkey.setPosition(new Vector3(vehiclePos.x, vehiclePos.y + 1, vehiclePos.z));
+                this.rkey.model.mesh.visible = true;
+            }
+            else {
+                this.rkey.model.mesh.visible = false;
+            }
+        }
+    }
+
+    findInRangeVehicle(pos){
+        this.inRangeVehicle = null;
+        let closest = this.distFromVehicle + 1;
+
+        for (let i = 0; i < this.vehicles.length; i++) {
+            let vehiclePos = this.vehicles[i].position;
+            vehiclePos = new Vector3(vehiclePos.x, vehiclePos.y, vehiclePos.z);
+
+            const dist = Vector3.Distance(pos, vehiclePos);
+            if (dist < closest && dist <= 3 && !this.vehicles[i].inUse) {
+                closest = dist;
+                this.inRangeVehicle = this.vehicles[i];
+            }
+        }
+    }
+    
+    checkVehicleInRange(pos) {
+
+        if (!this.isReady) return;
+
+        this.findInRangeVehicle(pos);
+        this.updateEKey();
+        this.updateRKey();
     }
 }
 

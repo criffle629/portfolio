@@ -35,6 +35,7 @@ export default class Vehicle extends GameObject {
         this.enginePitch = options.enginePitch;
         this.centerOfMass = options.centerOfMass;
         this.downForce = options.downForce;
+        this.options = options;
 
         Audio.LoadSound('./assets/sounds/engine.wav', true, 0.1)
             .then(sound => {
@@ -130,7 +131,22 @@ export default class Vehicle extends GameObject {
         return wheel;
     }
 
+    isUpsideDown() {
+        const rot = this.rotation.Euler();
+        return (Math.abs(rot.x) >= 40 || Math.abs(rot.z) >= 40);
+    }
     updateInput() {
+        if (this.isUpsideDown() && this.inUse) {
+            if (Input.isKeyDown('r')) {
+                const position = new Vector3(this.position.x, this.position.y + 1.5, this.position.z);
+                const rotation = new Quaternion(0.0, this.rotation.y, 0.0, this.rotation.w);
+                const quat = new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+
+                this.body.getWorldTransform().setOrigin(Vector3.toBTV3(position));
+                this.body.getWorldTransform().setRotation(quat);
+                this.body.getMotionState().setWorldTransform(this.body.getWorldTransform());
+            }
+        }
 
         if (!this.inUse) {
             if (this.engineSound !== null && this.engineSound.isPlaying)
@@ -150,7 +166,7 @@ export default class Vehicle extends GameObject {
 
         this.reverse = false;
 
-        if ((Input.isKeyDown('w') || Gamepad.isButtonDown(Gamepad.Buttons.TRIGGER_RIGHT)) && this.speed <= this.topSpeed) {
+        if ((Input.isKeyDown('w') || Input.isKeyDown('ArrowUp') || Gamepad.isButtonDown(Gamepad.Buttons.TRIGGER_RIGHT)) && this.speed <= this.topSpeed) {
 
             this.currentBrakingFront = 0;
             this.currentBrakingBack = 0;
@@ -164,7 +180,7 @@ export default class Vehicle extends GameObject {
             this.currentBrakingBack = 0.5;
         }
 
-        if (Input.isKeyDown('s') || Gamepad.isButtonDown(Gamepad.Buttons.TRIGGER_LEFT)) {
+        if (Input.isKeyDown('s') || Input.isKeyDown('ArrowDown') || Gamepad.isButtonDown(Gamepad.Buttons.TRIGGER_LEFT)) {
             this.reverse = true;
             if (this.speed <= 0) {
                 this.currentBrakingFront = 0;
@@ -178,11 +194,11 @@ export default class Vehicle extends GameObject {
             }
         }
 
-        if (Input.isKeyDown('a')) {
+        if (Input.isKeyDown('a') || Input.isKeyDown('ArrowLeft')) {
             this.steeringAngle += 15 * this.steeringRate * Time.deltaTime;
         }
         else
-            if (Input.isKeyDown('d')) {
+            if (Input.isKeyDown('d') || Input.isKeyDown('ArrowRight')) {
                 this.steeringAngle -= 15 * this.steeringRate * Time.deltaTime;
             }
             else {

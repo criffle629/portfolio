@@ -31,7 +31,7 @@ export default class Player extends GameObject {
         else
             if (ePressed && this.vehicle !== null) {
                 this.vehicle.inUse = false;
-
+                VehicleManager.leaveVehicle();
                 let pos = this.vehicle.position;
                 Camera.target = this;
                 this.vehicle = null;
@@ -52,17 +52,22 @@ export default class Player extends GameObject {
         let zMove = 0;
         let xMove = 0;
 
-        if (Input.isKeyDown('w'))
+        if (Input.isKeyDown('w') || Input.isKeyDown('ArrowUp'))
             zMove = -1;
 
-        if (Input.isKeyDown('s'))
+        if (Input.isKeyDown('s') || Input.isKeyDown('ArrowDown'))
             zMove = 1;
 
-        if (Input.isKeyDown('a'))
+        if (Input.isKeyDown('a') || Input.isKeyDown('ArrowLeft'))
             xMove = -1;
 
-        if (Input.isKeyDown('d'))
+        if (Input.isKeyDown('d') || Input.isKeyDown('ArrowRight'))
             xMove = 1;
+
+    //    if (Input.isKeyPressed('l')){
+    //        this.model.ragdollActive = !this.model.ragdollActive;
+    //        this.model.SetRagdollActive(this.model.ragdollActive);
+    //    }
 
         let stick = Gamepad.leftStick();
 

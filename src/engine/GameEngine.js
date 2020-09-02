@@ -14,14 +14,14 @@ import InfoStationManager from './InfoStationManager';
 import Input from './Input';
 import Gamepad from './Gamepad';
 import Light from './Light';
-
+import Ball from './Ball';
 
 class Engine {
     constructor() {
 
         this.fps = 0;
         this.fpsTime = 0;
-
+        this.ball = new Ball();
         Scene.setExpoFog('skyblue', 0.01);
 
         this.light = new Light({
@@ -44,7 +44,7 @@ class Engine {
             intensity: 0.5
         });
 
-        this.Load().then(() => {});
+        this.Load().then(() => { });
 
         requestAnimationFrame(this.Animate);
     }
@@ -69,11 +69,71 @@ class Engine {
 
     Load = async () => {
         return await new Promise((resolve, reject) => {
-            this.player = new Player('player', './assets/models/chris.glb', true, true, true);
-            this.player.addRigidBody(1, Physics.createCapsuleShape(0.25, 0.5, Vector3.up), new Vector3(0, 10, 0));
+            this.player = new Player('player', null, true, true, true, new Vector3(0, 1, 0));
+            this.player.LoadModel('player', './assets/models/chris.glb', true)
+            .then(() => {
+                this.player.addRigidBody({
+                    friction: 1,
+                    rollingFriction: 0,
+                    restitution: 0.0,
+                    mass: 1
+                }, Physics.createCapsuleShape(0.25, 0.5, Vector3.up), new Vector3(0, 1, 0));
+            });
+           
+/*
+            this.soccerfield = new GameObject('soccerfield', null, false, true, true, true);
+            this.soccerfield.LoadModel('soccerfield', './assets/models/soccerfield.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.soccerfield.model.mesh)
+                        .then(shape => {
+                            this.soccerfield.addRigidBody(
+                                {
+                                    friction: 1,
+                                    rollingFriction: 1,
+                                    restitution: 0.0,
+                                    mass: 0
+                                }, shape, new Vector3(0, 0, 0));
+                        });
+                });
+
+                this.soccerfielddome = new GameObject('soccerfielddome', null, false, false, true, true);
+                this.soccerfielddome.LoadModel('soccerfielddome', './assets/models/soccerfielddome.glb', true)
+                    .then(() => {
+                        Physics.createMeshShape(this.soccerfielddome.model.mesh)
+                            .then(shape => {
+                                this.soccerfielddome.addRigidBody(
+                                    {
+                                        friction: 1,
+                                        rollingFriction: 1,
+                                        restitution: 0.0,
+                                        mass: 0
+                                    }, shape, new Vector3(0, 0, 0));
+                            });
+                    });
+
+                    this.soccerfieldgoal = new GameObject('soccerfieldgoal', null, false, true, true, true);
+                    this.soccerfieldgoal.LoadModel('soccerfieldgoal', './assets/models/soccerfieldgoal.glb', true)
+                        .then(() => {
+                            Physics.createMeshShape(this.soccerfieldgoal.model.mesh)
+                                .then(shape => {
+                                    this.soccerfieldgoal.addRigidBody(
+                                        {
+                                            friction: 1,
+                                            rollingFriction: 1,
+                                            restitution: 0.0,
+                                            mass: 0
+                                        }, shape, new Vector3(0, 0, 0));
+                                });
+                        });
+                        */
 
             this.ground = new GameObject('ground', './assets/models/ground.glb', false, false, true,);
-            this.ground.addRigidBody(0, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
+            this.ground.addRigidBody({
+                friction: 1,
+                rollingFriction: 1,
+                restitution: 0.0,
+                mass: 0
+            }, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
 
             this.grass = new GameObject('grass', './assets/models/grass.glb', false, true, true, true, new Vector3(0, 0, -10));
 
@@ -85,7 +145,13 @@ class Engine {
                 .then(() => {
                     Physics.createMeshShape(this.road.model.mesh)
                         .then(shape => {
-                            this.road.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                            this.road.addRigidBody(
+                                {
+                                    friction: 1,
+                                    rollingFriction: 1,
+                                    restitution: 0.0,
+                                    mass: 0
+                                }, shape, new Vector3(0, 0, -10));
                         });
                 });
 
@@ -94,7 +160,12 @@ class Engine {
                 .then(() => {
                     Physics.createMeshShape(this.parkinglot.model.mesh)
                         .then(shape => {
-                            this.parkinglot.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                            this.parkinglot.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
                         });
                 });
 
@@ -105,7 +176,12 @@ class Engine {
                 .then(() => {
                     Physics.createMeshShape(this.infostationbase.model.mesh)
                         .then(shape => {
-                            this.infostationbase.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                            this.infostationbase.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
                         });
                 });
 
@@ -116,9 +192,47 @@ class Engine {
                 .then(() => {
                     Physics.createMeshShape(this.mightychicken.model.mesh)
                         .then(shape => {
-                            this.mightychicken.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                            this.mightychicken.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
                         });
                 });
+
+            this.mightychickensign = new GameObject('mightychickensign', null, false, true, true, true);
+
+
+            this.mightychickensign.LoadModel('mightychickensign', './assets/models/mightychickensign.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.mightychickensign.model.mesh)
+                        .then(shape => {
+                            this.mightychickensign.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
+                        });
+                });
+
+                this.mightychickensignpost = new GameObject('mightychickensignpost', null, false, true, true, true);
+
+
+                this.mightychickensignpost.LoadModel('mightychickensignpost', './assets/models/mightychickensignpost.glb', true)
+                    .then(() => {
+                        Physics.createMeshShape(this.mightychickensignpost.model.mesh)
+                            .then(shape => {
+                                this.mightychickensignpost.addRigidBody({
+                                    friction: 1,
+                                    rollingFriction: 1,
+                                    restitution: 0.0,
+                                    mass: 0
+                                }, shape, new Vector3(0, 0, -10));
+                            });
+                    });
+
 
             InfoStationManager.addInfoStation(new Vector3(-19.921, 0, -7.5799), 'roadracer');
             InfoStationManager.addInfoStation(new Vector3(-41.183, 0, -0.5502), 'mightychicken');
@@ -128,7 +242,12 @@ class Engine {
                 .then(() => {
                     Physics.createMeshShape(this.parkinglotcurb.model.mesh)
                         .then(shape => {
-                            this.parkinglotcurb.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                            this.parkinglotcurb.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
                         });
                 });
 
@@ -137,7 +256,12 @@ class Engine {
                 .then(() => {
                     Physics.createMeshShape(this.garage.model.mesh)
                         .then(shape => {
-                            this.garage.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                            this.garage.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
                         });
                 });
 
@@ -146,7 +270,12 @@ class Engine {
                 .then(() => {
                     Physics.createMeshShape(this.garagedoor.model.mesh)
                         .then(shape => {
-                            this.garagedoor.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                            this.garagedoor.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
                         });
                 });
 
@@ -155,7 +284,12 @@ class Engine {
                 .then(() => {
                     Physics.createMeshShape(this.rrsign.model.mesh)
                         .then(shape => {
-                            this.rrsign.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                            this.rrsign.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
                         });
                 });
 
@@ -164,7 +298,12 @@ class Engine {
                 .then(() => {
                     Physics.createMeshShape(this.mound.model.mesh)
                         .then(shape => {
-                            this.mound.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                            this.mound.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
                         });
                 });
 
@@ -173,10 +312,16 @@ class Engine {
                 .then(() => {
                     Physics.createMeshShape(this.fenceleft.model.mesh)
                         .then(shape => {
-                            this.fenceleft.addRigidBody(0, shape, new Vector3(0, 0, -10));
+                            this.fenceleft.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
                         });
                 });
 
+   
             Camera.target = this.player;
 
             this.vehicle2 = new Vehicle({
@@ -373,7 +518,7 @@ class Engine {
             resolve(true);  // This needs to be better
         });
     }
-    
+
     GetRenderer() {
         return this.renderer.renderer;
     }
@@ -387,7 +532,7 @@ class Engine {
 
         Time.Update();
 
-        Physics.update();
+     
         VehicleManager.checkVehicleInRange(this.player.position);
         InfoStationManager.update();
         Scene.update();
@@ -400,10 +545,12 @@ class Engine {
         this.fpsTime += Time.deltaTime;
         this.fps++;
         if (this.fpsTime >= 1) {
-            document.title = this.fps + ' fps';
+            //   document.title = this.fps + ' fps';
             this.fps = 0;
             this.fpsTime = 0;
         }
+
+        Physics.update();
     }
 }
 
