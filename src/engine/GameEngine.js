@@ -31,8 +31,8 @@ class Engine {
         this.renderer = new Renderer();
         this.renderer.InitRenderer(canvas, width, height, this.Animate).then(renderer => {
             PostProcessing.init(renderer);
-             PostProcessing.addFXAA();
-             PostProcessing.addBloom();
+           //  PostProcessing.addFXAA();
+           //  PostProcessing.addBloom();
             //rz PostProcessing.addBokeh(); 
         })
             .then(() => {

@@ -18,10 +18,10 @@ export default class MainGame{
         this.ball = new Ball({
             position: new Vector3(0.0, 2.0, -20.0),
             rotation: Quaternion.Identity(),
-            mass: 0.1,
-            friction: 1,
-            rollingFriction: 0.8,
-            restitution: 0.8,
+            mass: 0.2,
+            friction: 0.5,
+            rollingFriction: 0.3,
+            restitution: 3,
             damping: new Vector2(0.2, 0.1),
             radius: 0.125,
             model: './assets/models/soccerball.glb'
@@ -34,12 +34,12 @@ export default class MainGame{
             color: 0xffffff,
             intensity: 1,
             castShadow: true,
-            shadowMapWidth: 8000,
-            shadowMapHeight: 8000,
+            shadowMapWidth: 8192,
+            shadowMapHeight: 8192,
             cameraNear: 0.1,
             cameraFar: 500,
             shadowBias: -0.00025,
-            shadowCameraSize: 50,
+            shadowCameraSize: 100,
             target: new Vector3(-5, -5, -5)
         });
 
@@ -50,7 +50,6 @@ export default class MainGame{
         });
 
         this.Load().then(() => { });
-     
     }
 
     Load = async () => {
@@ -70,7 +69,7 @@ export default class MainGame{
             this.ground.addRigidBody({
                 friction: 1,
                 rollingFriction: 1,
-                restitution: 0.0,
+                restitution: 0.2    ,
                 mass: 0
             }, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
 
@@ -347,8 +346,8 @@ export default class MainGame{
                 stiffness: 150.0,
                 damping: 2.3,
                 compression: 2,
-                backFriction: 0.85,
-                frontFriction: 0.95,
+                backFriction: 1.8   ,
+                frontFriction: 2,
                 roll: 0.25,
                 radius: 0.25,
                 suspensionLen: 0.075,
