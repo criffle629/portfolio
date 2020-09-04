@@ -24,7 +24,7 @@ export default class Vehicle extends GameObject {
         this.skinnedMesh = false;
 
         this.topSpeed = options.topSpeed;
-        this.steeringRate = 5.0;
+        this.steeringRate = 25.0;
         this.accelRate = options.accelRate;
         this.breakForce = options.breakForce;
         this.accelForceFront = options.accelForceFront;
@@ -159,7 +159,7 @@ export default class Vehicle extends GameObject {
             let axis = Gamepad.leftStick();
 
             if (!Vector2.Equals(axis, Vector2.zero))
-                this.steeringAngle = -25 * axis.x;
+                this.steeringAngle = -30 * axis.x;
         }
 
         if (this.engineSound !== null && !this.engineSound.isPlaying)
@@ -167,12 +167,13 @@ export default class Vehicle extends GameObject {
 
         this.reverse = false;
 
-        if ((Input.isKeyDown('w') || Input.isKeyDown('ArrowUp') || Gamepad.isButtonDown(Gamepad.Buttons.TRIGGER_RIGHT)) && this.speed <= this.topSpeed) {
+        if ((Input.isKeyDown('w') || Input.isKeyDown('ArrowUp') || Gamepad.rightTrigger() > 0) && this.speed <= this.topSpeed) {
 
+            const accel = (Gamepad.rightTrigger() > 0) ? Gamepad.rightTrigger() : 1;
             this.currentBrakingFront = 0;
             this.currentBrakingBack = 0;
-            this.currentAccelBack = this.accelForceBack * this.accelRate;
-            this.currentAccelFront = this.accelForceFront * this.accelRate;
+            this.currentAccelBack = (this.accelForceBack * this.accelRate) * accel;
+            this.currentAccelFront = (this.accelForceFront * this.accelRate) * accel;
         }
         else {
             this.currentAccelBack = 0;
@@ -181,17 +182,18 @@ export default class Vehicle extends GameObject {
             this.currentBrakingBack = 0.5;
         }
 
-        if (Input.isKeyDown('s') || Input.isKeyDown('ArrowDown') || Gamepad.isButtonDown(Gamepad.Buttons.TRIGGER_LEFT)) {
+        if (Input.isKeyDown('s') || Input.isKeyDown('ArrowDown') || Gamepad.leftTrigger() > 0) {
             this.reverse = true;
+            const breaking = (Gamepad.leftTrigger() > 0) ? Gamepad.leftTrigger() : 1;
             if (this.speed <= 0) {
                 this.currentBrakingFront = 0;
                 this.currentBrakingBack = 0;
-                this.currentAccelBack = -((this.accelForceBack * 0.5) * this.accelRate);
-                this.currentAccelFront = -((this.accelForceFront * 0.5) * this.accelRate);
+                this.currentAccelBack = -((this.accelForceBack * 0.5) * this.accelRate) * breaking;
+                this.currentAccelFront = -((this.accelForceFront * 0.5) * this.accelRate) * breaking;
             }
             else {
-                this.currentBrakingFront = this.breakForce * 0.25;
-                this.currentBrakingBack = this.breakForce * 0.25;
+                this.currentBrakingFront = this.breakForce * 0.25 * breaking;
+                this.currentBrakingBack = this.breakForce * 0.25 * breaking;
             }
         }
 
@@ -288,13 +290,15 @@ export default class Vehicle extends GameObject {
         this.vehicle.applyEngineForce(this.currentAccelFront, 1);
         this.vehicle.applyEngineForce(this.currentAccelBack, 2);
         this.vehicle.applyEngineForce(this.currentAccelBack, 3);
-    }
 
-    updateSteering() {
         this.vehicle.setBrake(this.currentBrakingFront, 0);
         this.vehicle.setBrake(this.currentBrakingFront, 1);
         this.vehicle.setBrake(this.currentBrakingBack / 2, 2);
         this.vehicle.setBrake(this.currentBrakingBack / 2, 3);
+    }
+
+    updateSteering() {
+
         this.vehicle.setSteeringValue(0, 3);
         this.vehicle.setSteeringValue(0, 2);
         this.vehicle.setSteeringValue(this.steeringAngle * MathTools.deg2Rad, 0);

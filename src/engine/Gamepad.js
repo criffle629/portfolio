@@ -33,18 +33,37 @@ class GamepadManager {
 
         this.leftAxis = Vector2.zero;
         this.rightAxis = Vector2.zero;
-
+        this.rightTriggerValue = 0.0;
+        this.leftTriggerValue = 0.0;
+        this.gamepad = null;
         Gamepads.addEventListener('connect', e => {
             this.connected = true;
+            this.gamepad = e.gamepad;
             e.gamepad.addEventListener('joystickmove', e => {
-                this.leftAxis = new Vector2(e.horizontalValue, e.verticalValue);
+                this.leftAxis = new Vector2(e.horizontalValue * 1.12, e.verticalValue * 1.12);  // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
+           
             }, [0, 1]);
 
             e.gamepad.addEventListener('joystickmove', e => {
-                this.rightAxis = new Vector2(e.horizontalValue, e.verticalValue);
+                this.rightAxis = new Vector2(e.horizontalValue * 1.12, e.verticalValue * 1.12); // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
             }, [2, 3]);
 
             e.gamepad.addEventListener('buttonpress', e => {
+          
+                this.addButton(e.index);
+            });
+
+            e.gamepad.addEventListener('buttonvaluechange', e => {
+                this.rightTriggerValue = e.value;
+               
+            }, 7);
+
+            e.gamepad.addEventListener('buttonvaluechange', e => {
+                this.leftTriggerValue = e.value;
+            }, 6);
+
+            e.gamepad.addEventListener('buttonpress', e => {
+                console.log(e.value);
                 this.addButton(e.index);
             });
             e.gamepad.addEventListener('buttonrelease', e => {
@@ -109,8 +128,12 @@ class GamepadManager {
         return false;
     }
 
-    getTrigger(trigger) {
+    rightTrigger() {
+        return this.rightTriggerValue;
+    }
 
+    leftTrigger() {
+        return this.leftTriggerValue;
     }
 
     clearButtons() {
@@ -122,6 +145,11 @@ class GamepadManager {
 
     isConnected() {
         return this.connected;
+    }
+
+    update(){
+        
+ 
     }
 }
 

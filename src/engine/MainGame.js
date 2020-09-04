@@ -155,21 +155,20 @@ export default class MainGame{
                         });
                 });
 
-                this.mightychickensignpost = new GameObject('mightychickensignpost', null, false, true, true, true);
+                this.mightychickentv = new GameObject('mightychickentv', null, false, true, true, true);
 
-
-                this.mightychickensignpost.LoadModel('mightychickensignpost', './assets/models/mightychickensignpost.glb', true)
-                    .then(() => {
-                        Physics.createMeshShape(this.mightychickensignpost.model.mesh)
-                            .then(shape => {
-                                this.mightychickensignpost.addRigidBody({
-                                    friction: 1,
-                                    rollingFriction: 1,
-                                    restitution: 0.0,
-                                    mass: 0
-                                }, shape, new Vector3(0, 0, -10));
-                            });
-                    });
+                this.mightychickentv.LoadModel('mightychickentv', './assets/models/mightychickentv.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.mightychickentv.model.mesh)
+                        .then(shape => {
+                            this.mightychickentv.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
+                        });
+                });
 
             InfoStationManager.addInfoStation(new Vector3(-19.921, 0, -7.5799), 'roadracer');
             InfoStationManager.addInfoStation(new Vector3(-41.183, 0, -0.5502), 'mightychicken');
@@ -346,8 +345,8 @@ export default class MainGame{
                 stiffness: 150.0,
                 damping: 2.3,
                 compression: 2,
-                backFriction: 1.8   ,
-                frontFriction: 2,
+                backFriction: 1.25,
+                frontFriction: 1.5,
                 roll: 0.25,
                 radius: 0.25,
                 suspensionLen: 0.075,
@@ -378,8 +377,8 @@ export default class MainGame{
                 stiffness: 500.0,
                 damping: 2.3,
                 compression: 2.4,
-                backFriction: 0.95,
-                frontFriction:1,
+                backFriction: 1.95,
+                frontFriction:2,
                 roll: 0.0,
                 radius: 0.25,
                 suspensionLen: 0.01,

@@ -51,6 +51,7 @@ class Engine {
             Input.clearKeys();
         }
 
+        Gamepad.update();
         Time.Update();
 
      
