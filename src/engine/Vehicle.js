@@ -36,7 +36,7 @@ export default class Vehicle extends GameObject {
         this.centerOfMass = options.centerOfMass;
         this.downForce = options.downForce;
         this.options = options;
-
+        this.downForceVel = new Vector3(0, -(Math.abs(this.speed) * this.downForce),0);
         Audio.LoadSound('./assets/sounds/engine.wav', true, 0.1)
             .then(sound => {
                 this.engineSound = sound;
@@ -67,12 +67,12 @@ export default class Vehicle extends GameObject {
 
         this.bodyShape = Physics.createBoxShape(new Vector3(options.bodyWidth, options.bodyHeight, options.bodyLength));
 
-        var transform = new Ammo.btTransform();
+        let transform = new Ammo.btTransform();
         transform.setIdentity();
         transform.setOrigin(new Ammo.btVector3(options.position.x, options.position.y, options.position.z));
         transform.setRotation(new Ammo.btQuaternion(options.rotation.x, options.rotation.y, options.rotation.z, options.rotation.w));
-        var motionState = new Ammo.btDefaultMotionState(transform);
-        var localInertia = new Ammo.btVector3(0, 0, 0);
+        let motionState = new Ammo.btDefaultMotionState(transform);
+        let localInertia = new Ammo.btVector3(0, 0, 0);
         this.bodyShape.calculateLocalInertia(options.mass, localInertia);
         this.body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(options.mass, motionState, this.bodyShape, localInertia));
         this.body.setActivationState(4);
@@ -142,17 +142,18 @@ export default class Vehicle extends GameObject {
                 const rotation = new Quaternion(0.0, this.rotation.y, 0.0, this.rotation.w);
                 const quat = new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
 
-                this.body.getWorldTransform().setOrigin(Vector3.toBTV3(position));
+                this.body.getWorldTransform().setOrigin(position.to_btVector3());
                 this.body.getWorldTransform().setRotation(quat);
                 this.body.getMotionState().setWorldTransform(this.body.getWorldTransform());
             }
         }
 
-        if (!this.inUse) {
+        if (!this.inUse && MathTools.approximate(this.speed, 0.0)){
             if (this.engineSound !== null && this.engineSound.isPlaying)
-                this.engineSound.stop();
-            return;
+            this.engineSound.stop();
         }
+
+        if (!this.inUse  ) return;
 
         if (Gamepad.isConnected()) {
             let axis = Gamepad.leftStick();
@@ -262,8 +263,13 @@ export default class Vehicle extends GameObject {
         if (this.model && this.model.mesh) {
             this.model.mesh.position.set(p.x(), p.y(), p.z());
             this.model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
-            this.position = new Vector3(p.x(), p.y(), p.z());
-            this.rotation = new Quaternion(q.x(), q.y(), q.z(), q.w());
+            this.position.x = p.x();
+            this.position.y = p.y();
+            this.position.z = p.z(); 
+            this.rotation.x = q.x();
+            this.rotation.y = q.y();
+            this.rotation.z = q.z();
+            this.rotation.w = q.w();
         }
     }
 
@@ -306,7 +312,7 @@ export default class Vehicle extends GameObject {
 
     update() {
         Camera.mainCamera.add(Audio.listener);
-        this.body.applyCentralImpulse(new Ammo.btVector3(0, -(Math.abs(this.speed) * this.downForce), 0));
+        //this.body.applyCentralImpulse(this.downForceVel.to_btVector3());
         this.resetMovementWhenNotInUse();
         this.updateInput();
         this.updateSound();

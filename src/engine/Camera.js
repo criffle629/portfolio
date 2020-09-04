@@ -12,7 +12,7 @@ class CameraManager extends GameObject {
         this.heigth = 3.0;
         this.distance = 5.0;
         this.position = Vector3.zero;
-
+        this.offset = new Vector3(0, this.heigth, this.distance);
         Scene.addGameObject(this);
     }
 
@@ -42,7 +42,7 @@ class CameraManager extends GameObject {
 
         if (this.target === null) return;
 
-        this.position = Vector3.Add(this.target.position, new Vector3(0.0, this.heigth, this.distance));
+        this.position = Vector3.Add(this.target.position, this.offset);
         this.rotation = Quaternion.LookAt(this.position, this.target.position, Vector3.up);
 
         this.SetPosition(this.position);

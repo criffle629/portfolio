@@ -70,7 +70,8 @@ class VehicleController {
 
             if (this.vehicleInUse.inUse && this.vehicleInUse.isUpsideDown()) {
                 let vehiclePos = this.vehicleInUse.position;
-                this.rkey.setPosition(new Vector3(vehiclePos.x, vehiclePos.y + 1, vehiclePos.z));
+                vehiclePos.y += 1;
+                this.rkey.setPosition(vehiclePos);
                 this.rkey.model.mesh.visible = true;
             }
             else {
@@ -85,7 +86,6 @@ class VehicleController {
 
         for (let i = 0; i < this.vehicles.length; i++) {
             let vehiclePos = this.vehicles[i].position;
-            vehiclePos = new Vector3(vehiclePos.x, vehiclePos.y, vehiclePos.z);
 
             const dist = Vector3.Distance(pos, vehiclePos);
             if (dist < closest && dist <= 3 && !this.vehicles[i].inUse) {

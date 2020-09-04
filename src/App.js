@@ -1,13 +1,20 @@
 import React from 'react';
 import './App.css';
-
 import Game from './components/Game';
+import Loading from './components/Loading';
+
+import { Route } from "react-router-dom";
 
 class App extends React.Component {
 
   render() {
     return (
-      <Game style={{ width: '100%', height: '100%', padding: 0, margin: 0, overflow: 'hidden' }} />
+   
+        <div>
+         <Route exact path="/" component = {Loading} />   
+         <Route exact path="/game" component = {Game} />  
+      </div>
+ 
     )
   }
 }

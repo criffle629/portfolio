@@ -19,30 +19,33 @@ export default class RigidBody {
         this.restitution = options.restitution;
         this.ragdollActive = false;
 
+        this.btPos = new Ammo.btVector3(position.x, position.y, position.z);
+        this.btQuat = new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+
         this.id = RigidBody.rigidID;
         RigidBody.rigidID++;
-
+        this.cachedbtVec3 = new Ammo.btVector3(0, 0, 0);
         this.transform = new Ammo.btTransform();
         this.transform.setIdentity();
-        this.transform.setOrigin(position.to_btVector3());
-        this.transform.setRotation(new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w));
+        this.transform.setOrigin(this.btPos);
+        this.transform.setRotation(this.btQuat);
         this.motionState = new Ammo.btDefaultMotionState(this.transform);
 
         let localInertia = new Ammo.btVector3(0.0, 0.0, 0.0);
-        localInertia =  this.shape.calculateLocalInertia(this.mass, localInertia);
+        localInertia = this.shape.calculateLocalInertia(this.mass, localInertia);
         let ri = new Ammo.btRigidBodyConstructionInfo(this.mass, this.motionState, this.shape, localInertia);
-
+        this.position = position;
+        this.rotation = rotation;
+        
         this.body = new Ammo.btRigidBody(ri);;
 
-      
+        this.body.setFriction(this.friction);
+        this.body.setDamping(0.25, 0.25);
+        this.body.setCcdMotionThreshold(1);
+        this.body.setCcdSweptSphereRadius(0.2);
+        this.body.setRestitution(this.restitution);
 
-   
-            this.body.setFriction(this.friction);
-            this.body.setDamping(0.25, 0.25);
-            this.body.setCcdMotionThreshold(1);
-            this.body.setCcdSweptSphereRadius(0.2);
-            this.body.setRestitution(this.restitution);
- 
+       
         this.SetKinematic(MathTools.approximate(this.mass, 0.0));
         Physics.addRigidBody(this.body);
     }
@@ -141,7 +144,8 @@ export default class RigidBody {
     }
 
     setPosition(position) {
-        this.body.getWorldTransform().setOrigin(Vector3.toBTV3(position));
+        this.btPos.setValue(position.x, position.y, position.z);
+        this.body.getWorldTransform().setOrigin(this.btPos);
     }
 
     Move(position) {
@@ -149,8 +153,8 @@ export default class RigidBody {
     }
 
     setRotation(rotation) {
-        let quat = new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
-        this.body.getWorldTransform().setRotation(quat);
+        this.btQuat.setValue(rotation.x, rotation.y, rotation.z, rotation.w);
+        this.body.getWorldTransform().setRotation(this.btQuat);
         this.body.getMotionState().setWorldTransform(this.body.getWorldTransform());
     }
 
@@ -241,14 +245,14 @@ export default class RigidBody {
 
     GetPosition() {
         let v = this.body.getWorldTransform().getOrigin();
-
-        return new Vector3(v.x(), v.y(), v.z());
+        this.position.set(v.x(), v.y(), v.z());
+        return this.position;
     }
 
     GetRotation() {
         let quat = this.body.getWorldTransform().getRotation();
-
-        return new Quaternion(quat.x(), quat.y(), quat.z(), quat.w());;
+        this.rotation.set(quat.x(), quat.y(), quat.z(), quat.w());
+        return this.rotation;
     }
 
     SetActivationState(state) {

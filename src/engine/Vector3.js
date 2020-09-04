@@ -8,6 +8,16 @@ export default class Vector3 {
         this.x = x;
         this.y = y;
         this.z = z;
+
+  
+    }
+
+    set(x, y, z){
+        this.x = x;
+        this.y = y;
+        this.z = z;
+
+        return this;
     }
 
     length() {
@@ -32,6 +42,8 @@ export default class Vector3 {
         this.x /= mag;
         this.y /= mag;
         this.z /= mag;
+
+        return this;
     }
 
     negate() {

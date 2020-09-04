@@ -1,5 +1,5 @@
 import Time from './Time';
-import Ammo from 'ammo.js'
+import Ammo from 'ammo.js';
 
 class PhysicsEngine {
 

@@ -8,6 +8,14 @@ export default class  Quaternion {
         this.y = y;
         this.z = z;
         this.w = w;
+
+        this.euler = new Vector3(0,0,0);
+    }
+    set(x, y, z, w){
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
     }
 
     Normalize() {
@@ -27,13 +35,11 @@ export default class  Quaternion {
     }
 
     Euler() {
-        let v = new Vector3();
+        this.euler.y = Math.atan2(2.0 * this.w * this.y + 2.0 * this.z * this.x, 1.0 - 2.0 * (this.x * this.x + this.y * this.y)) * MathTools.rad2Deg;
+        this.euler.x = Math.asin(2.0 * (this.w * this.x - this.y * this.z)) * MathTools.rad2Deg;
+        this.euler.z = Math.atan2(2.0 * this.w * this.z + 2.0 * this.x * this.y, 1.0 - 2.0 * (this.z * this.z + this.x * this.x)) * MathTools.rad2Deg;
 
-        v.y = Math.atan2(2.0 * this.w * this.y + 2.0 * this.z * this.x, 1.0 - 2.0 * (this.x * this.x + this.y * this.y)) * MathTools.rad2Deg;
-        v.x = Math.asin(2.0 * (this.w * this.x - this.y * this.z)) * MathTools.rad2Deg;
-        v.z = Math.atan2(2.0 * this.w * this.z + 2.0 * this.x * this.y, 1.0 - 2.0 * (this.z * this.z + this.x * this.x)) * MathTools.rad2Deg;
-
-        return v;
+        return this.euler;
     }
 
     Length() {

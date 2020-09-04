@@ -4,7 +4,6 @@ import RigidBody from './RigidBody';
 import Quaternion from './Quaternion';
 import Content from './Content';
 import Ammo from 'ammo.js';
-import MathTools from './MathTools';
 
 export default class GameObject {
 
@@ -25,6 +24,8 @@ export default class GameObject {
         this.recieveShadow = recieveShadow;
         this.allowUpdate = true;
         this.name = name;
+        this.tag = {};
+
         GameObject.id++;
 
         this.LoadModel(name, meshPath, flatShading);
@@ -89,15 +90,15 @@ export default class GameObject {
             this.rigidBody.setPosition(this.position);
     }
 
-    move(pos) {
+    move() {
 
         if (this.rigidBody !== null) {
             this.position = this.rigidBody.GetPosition();
-            this.position = Vector3.Add(this.position, pos);
-            this.rigidBody.setPosition(new Vector3(this.position.x, this.position.y, this.position.z));
+            this.position = Vector3.Add(this.position, this.moveDir);
+            this.rigidBody.setPosition(this.position);
         }
         else {
-            this.position = Vector3.Add(this.position, pos);
+            this.position = Vector3.Add(this.position,  this.moveDir);
         }
     }
 

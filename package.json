@@ -11,14 +11,14 @@
     "ammo.js": "0.0.10",
     "fontsource-ubuntu": "^3.0.3",
     "gamepads": "^1.2.2",
+    "history": "^5.0.0",
     "offscreen-canvas": "^0.1.1",
-    "physijs": "^1.0.4",
-    "postprocessing": "^6.17.1",
+    "postprocessing": "^6.17.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
-    "three": "^0.118.3"
+    "three": "^0.120.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,6 +42,6 @@
     ]
   },
   "devDependencies": {
-    "worker-loader": "^3.0.1"
+    "worker-loader": "^3.0.2"
   }
 }

@@ -18,6 +18,10 @@ export default class Game extends React.Component {
         window.addEventListener('resize', this.ScreenResize);
     }
 
+    componentDidMount(){
+        GameEngine.Init();
+    }
+
     Load = () => {
 
         if (this.isLoaded) return;

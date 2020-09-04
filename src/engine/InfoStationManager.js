@@ -13,13 +13,13 @@ class InfoStationsController {
         this.infoStations.push({ position: position, name: stationName });
     }
 
-    update() {
+    update(pos) {
         let activate = false;
         let openModal = '';
         let closestDistance = 10;
 
         for (let i = 0; i < this.infoStations.length; i++) {
-            const dist = Vector3.Distance(this.infoStations[i].position, GameEngine.player.position);
+            const dist = Vector3.Distance(this.infoStations[i].position, pos);
 
             if (dist < closestDistance) closestDistance = dist;
 
