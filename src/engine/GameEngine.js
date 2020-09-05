@@ -6,8 +6,8 @@ import Renderer from './Renderer';
 import PostProcessing from './PostProcessing';
 import Input from './Input';
 import Gamepad from './Gamepad';
-import MainGame from './MainGame';
-import StadiumGame from './StadiumGame';
+import MainGame from '../maingame/MainGame';
+import StadiumGame from '../stadiumgame/StadiumGame';
 
 class Engine {
     constructor() {

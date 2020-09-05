@@ -1,6 +1,6 @@
-import Vector3 from './Vector3';
-import GameEngine from './GameEngine';
-import Input from './Input';
+import Vector3 from '../engine/Vector3';
+import GameEngine from '../engine/GameEngine';
+import Input from '../engine/Input';
 
 class InfoStationsController {
     constructor() {

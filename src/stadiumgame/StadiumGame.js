@@ -1,21 +1,21 @@
 import Player from './Player';
-import Scene from './Scene';
-import Camera from './Camera';
-import Vector3 from './Vector3';
-import Vector2 from './Vector2';
-import Physics from './Physics';
-import GameObject from './GameObject';
-import Vehicle from './Vehicle';
-import Quaternion from './Quaternion';
-import InfoStationManager from './InfoStationManager';
-import Light from './Light';
-import Ball from './Ball';
-import VehicleManager from './VehicleManager';
+import Scene from '../engine/Scene';
+import Camera from '../engine/Camera';
+import Vector3 from '../engine/Vector3';
+import Vector2 from '../engine/Vector2';
+import Physics from '../engine/Physics';
+import GameObject from '../engine/GameObject';
+import Vehicle from '../engine/Vehicle';
+import Quaternion from '../engine/Quaternion';
+ 
+import Light from '../engine/Light';
+import Ball from '../engine/Ball';
+import VehicleManager from '../engine/VehicleManager';
 
 export default class StadiumGame{
     constructor() {
      
-        Scene.setExpoFog('skyblue', 0.01);
+        Scene.setExpoFog('skyblue', 0.001);
 
         this.ball = new Ball({
             position: new Vector3(0.0, 1.0, -20.0),
@@ -23,9 +23,9 @@ export default class StadiumGame{
             mass: 1,
             friction: 0.25,
             rollingFriction: 0.25,
-            restitution: 1.5,
+            restitution: 2,
             damping: new Vector2(0.2, 0.1),
-            radius: 0.75,
+            radius: 1,
             model: './assets/models/stadiumball.glb'
         });
 
@@ -65,7 +65,7 @@ export default class StadiumGame{
                 }, Physics.createCapsuleShape(0.25, 0.5, Vector3.up), new Vector3(0, 1, 0));
             });
            
-            this.soccerfield = new GameObject('ground', './assets/models/soccerfield.glb', false, false, true,);
+            this.soccerfield = new GameObject('ground', null    , false, false, true,);
             this.soccerfield.addRigidBody({
                 friction: 1,
                 rollingFriction: 1,
@@ -83,7 +83,7 @@ export default class StadiumGame{
                                     {
                                         friction: 1,
                                         rollingFriction: 1,
-                                        restitution: 0.1,
+                                        restitution: 0.5,
                                         mass: 0
                                     }, shape, new Vector3(0, 0, 0));
                             });
@@ -94,13 +94,14 @@ export default class StadiumGame{
 
             this.vehicle2 = new Vehicle({
                 breakForce: 25,
-                accelForceFront: 20,
-                accelForceBack: 100,
+                accelForceFront: 150,
+                accelForceBack: 150,
                 accelRate: 3,
-                downForce: 0.3,
-                topSpeed: 120,
+                downForce: 10,
+                topSpeed: 180,
                 bodyWidth: 1.0,
                 bodyHeight: 0.5,
+                constantDownforce: true,
                 bodyLength: 2.128,
                 mass: 100,
                 enginePitch: 25,
@@ -110,14 +111,14 @@ export default class StadiumGame{
                 bodyModel: './assets/models/classicbug.glb',
                 wheelLeftModel: './assets/models/classicbugwheelLeft.glb',
                 wheelRightModel: './assets/models/classicbugwheelRight.glb',
-                stiffness: 500.0,
-                damping: 1.75,
-                compression: 2.4,
-                backFriction: 2,
-                frontFriction: 2,
-                roll: .25,
+                stiffness: 100.0,
+                damping: 5.75,
+                compression: 0,
+                backFriction: 400,
+                frontFriction: 400,
+                roll: 0,
                 radius: 0.25,
-                suspensionLen: 0.01,
+                suspensionLen: 0.1,
                 backLeftPos: new Vector3(-0.4, -0.2, -0.654),
                 backRightPos: new Vector3(0.4, -0.2, -0.654),
                 frontRightPos: new Vector3(0.38, -0.2, 0.719),
@@ -289,6 +290,5 @@ export default class StadiumGame{
 
     update(){
         VehicleManager.checkVehicleInRange(this.player.position);
-        InfoStationManager.update(this.player.position);
     }
 }

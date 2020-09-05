@@ -9,15 +9,19 @@ class CameraManager extends GameObject {
         super();
         this.mainCamera = new THREE.PerspectiveCamera(60, 1024 / 600, 0.1, 1000);
         this.target = null;
-        this.heigth = 3.0;
-        this.distance = 5.0;
+ 
         this.position = Vector3.zero;
-        this.offset = new Vector3(0, this.heigth, this.distance);
+       
+        this.controller = null;
         Scene.addGameObject(this);
     }
 
     Configure(fov, aspect, zNear, zFar) {
         this.mainCamera = new THREE.PerspectiveCamera(fov, aspect, zNear, zFar);
+    }
+
+    SetController(controller){
+        this.controller = controller;
     }
 
     Move(pos) {
@@ -38,18 +42,14 @@ class CameraManager extends GameObject {
         return this.mainCamera;
     }
 
+    update(){
+        if (this.controller !== null)
+        this.controller.update();
+    }
+
     lateUpdate() {
-
-        if (this.target === null) return;
-
-        this.position = Vector3.Add(this.target.position, this.offset);
-        this.rotation = Quaternion.LookAt(this.position, this.target.position, Vector3.up);
-
-        this.SetPosition(this.position);
-
-        const rot = this.rotation.Euler();
-
-        this.Rotate(rot);
+        if (this.controller !== null)
+            this.controller.lateUpdate();
     }
 }
 

@@ -1,16 +1,17 @@
 import Player from './Player';
-import Scene from './Scene';
-import Camera from './Camera';
-import Vector3 from './Vector3';
-import Vector2 from './Vector2';
-import Physics from './Physics';
-import GameObject from './GameObject';
-import Vehicle from './Vehicle';
-import Quaternion from './Quaternion';
+import Scene from '../engine/Scene';
+import Camera from '../engine/Camera';
+import Vector3 from '../engine/Vector3';
+import Vector2 from '../engine/Vector2';
+import Physics from '../engine/Physics';
+import GameObject from '../engine/GameObject';
+import Vehicle from '../engine/Vehicle';
+import Quaternion from '../engine/Quaternion';
 import InfoStationManager from './InfoStationManager';
-import Light from './Light';
-import Ball from './Ball';
-import VehicleManager from './VehicleManager';
+import Light from '../engine/Light';
+import Ball from '../engine/Ball';
+import VehicleManager from '../engine/VehicleManager';
+import MainGameCameraController from './CameraController';
 
 export default class MainGame{
     constructor() {
@@ -21,7 +22,7 @@ export default class MainGame{
             mass: 0.2,
             friction: 0.5,
             rollingFriction: 0.3,
-            restitution: 3,
+            restitution: 1.5,
             damping: new Vector2(0.2, 0.1),
             radius: 0.125,
             model: './assets/models/soccerball.glb'
@@ -60,7 +61,7 @@ export default class MainGame{
                 this.player.addRigidBody({
                     friction: 1,
                     rollingFriction: 0,
-                    restitution: 0.0,
+                    restitution: 0.5,
                     mass: 1
                 }, Physics.createCapsuleShape(0.25, 0.5, Vector3.up), new Vector3(0, 1, 0));
             });
@@ -69,7 +70,7 @@ export default class MainGame{
             this.ground.addRigidBody({
                 friction: 1,
                 rollingFriction: 1,
-                restitution: 0.2    ,
+                restitution: 0.5   ,
                 mass: 0
             }, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
 
@@ -259,6 +260,7 @@ export default class MainGame{
 
    
             Camera.target = this.player;
+            Camera.controller = new MainGameCameraController( new Vector3(0, 3.0, 5.0));
 
             this.vehicle2 = new Vehicle({
                 breakForce: 25,
@@ -342,7 +344,7 @@ export default class MainGame{
                 bodyModel: './assets/models/sportscar.glb',
                 wheelLeftModel: './assets/models/sportscarwheelLeft.glb',
                 wheelRightModel: './assets/models/sportscarwheelRight.glb',
-                stiffness: 150.0,
+                stiffness: 100.0,
                 damping: 2.3,
                 compression: 2,
                 backFriction: 1.25,

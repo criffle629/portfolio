@@ -36,6 +36,8 @@ export default class Vehicle extends GameObject {
         this.centerOfMass = options.centerOfMass;
         this.downForce = options.downForce;
         this.options = options;
+        this.speed = 0;
+        this.constantDownforce = options.constantDownforce;
         this.downForceVel = new Vector3(0, -(Math.abs(this.speed) * this.downForce),0);
         Audio.LoadSound('./assets/sounds/engine.wav', true, 0.1)
             .then(sound => {
@@ -76,7 +78,7 @@ export default class Vehicle extends GameObject {
         this.bodyShape.calculateLocalInertia(options.mass, localInertia);
         this.body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(options.mass, motionState, this.bodyShape, localInertia));
         this.body.setActivationState(4);
-
+        this.body.setRestitution(0.5);
         Physics.world.addRigidBody(this.body);
         this.tuning = new Ammo.btVehicleTuning();
 
@@ -111,7 +113,7 @@ export default class Vehicle extends GameObject {
         this.currentBrakingFront = 0;
         this.currentBrakingBack = 0;
         this.steeringAngle = 0;
-        this.speed = 0;
+ 
 
         VehicleManager.addVehicle(this);
     }
@@ -265,13 +267,8 @@ export default class Vehicle extends GameObject {
         if (this.model && this.model.mesh) {
             this.model.mesh.position.set(p.x(), p.y(), p.z());
             this.model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
-            this.position.x = p.x();
-            this.position.y = p.y();
-            this.position.z = p.z(); 
-            this.rotation.x = q.x();
-            this.rotation.y = q.y();
-            this.rotation.z = q.z();
-            this.rotation.w = q.w();
+            this.position.set(p.x(), p.y(), p.z());
+            this.rotation.set(q.x(), q.y(), q.z(), q.w());
         }
     }
 
@@ -305,6 +302,11 @@ export default class Vehicle extends GameObject {
         this.vehicle.setSteeringValue(this.steeringAngle * MathTools.deg2Rad, 1);
     }
 
+    applyDownforce() {
+        const downForce = this.constantDownforce ? -this.downForce : -(Math.abs(this.speed) * this.downForce);
+        this.downForceVel = new Vector3(0, downForce,0);
+        this.body.applyCentralImpulse(this.downForceVel.to_btVector3());
+    }
     resetMovementWhenNotInUse() {
         if (!this.inUse) {
             this.currentBrakingFront = this.breakForce * 0.25;
@@ -316,7 +318,7 @@ export default class Vehicle extends GameObject {
 
     update() {
         Camera.mainCamera.add(Audio.listener);
-        //this.body.applyCentralImpulse(this.downForceVel.to_btVector3());
+        this.applyDownforce();
         this.resetMovementWhenNotInUse();
         this.updateInput();
         this.updateSound();

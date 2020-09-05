@@ -31,21 +31,30 @@ class GamepadManager {
         this.connected = false;
         Gamepads.start();
 
-        this.leftAxis = Vector2.zero;
-        this.rightAxis = Vector2.zero;
+        this.inputAxisSmoothAmount = 10;
+        this.leftAxis = new Vector2(0, 0);
+
+        this.rightAxis= new Vector2(0, 0);
+   
         this.rightTriggerValue = 0.0;
         this.leftTriggerValue = 0.0;
         this.gamepad = null;
+
         Gamepads.addEventListener('connect', e => {
             this.connected = true;
             this.gamepad = e.gamepad;
+
             e.gamepad.addEventListener('joystickmove', e => {
-                this.leftAxis = new Vector2(e.horizontalValue * 1.12, e.verticalValue * 1.12);  // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
+                // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
+                this.leftAxis.x = e.horizontalValue * 1.12;
+                this.leftAxis.y = e.verticalValue * 1.12;  
            
             }, [0, 1]);
 
             e.gamepad.addEventListener('joystickmove', e => {
-                this.rightAxis = new Vector2(e.horizontalValue * 1.12, e.verticalValue * 1.12); // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
+                // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
+                this.rightAxis.x = e.horizontalValue * 1.12;
+                this.rightAxis.y = e.verticalValue * 1.12;  
             }, [2, 3]);
 
             e.gamepad.addEventListener('buttonpress', e => {
@@ -90,16 +99,15 @@ class GamepadManager {
 
     leftStick() {
         if (!this.connected) return Vector2.zero;
-        let axis = this.deadzone(this.leftAxis);
+     
 
-        return axis;
+        return this.leftAxis;
     }
 
     rightStick() {
         if (!this.connected) return Vector2.zero;
-        let axis = this.deadzone(this.rightAxis);
 
-        return axis;
+        return this.rightAxis;
     }
 
     addButton(button) {
@@ -147,10 +155,7 @@ class GamepadManager {
         return this.connected;
     }
 
-    update(){
-        
- 
-    }
+    update(){ }
 }
 
 const Gamepad = new GamepadManager();

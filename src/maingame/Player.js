@@ -1,13 +1,13 @@
 
-import GameObject from './GameObject';
-import Input from './Input';
-import Time from './Time';
-import Vector3 from './Vector3';
-import VehicleManager from './VehicleManager';
-import Quaternion from './Quaternion';
-import Camera from './Camera';
-import Vector2 from './Vector2';
-import Gamepad from './Gamepad';
+import GameObject from '../engine/GameObject';
+import Input from '../engine/Input';
+import Time from '../engine/Time';
+import Vector3 from '../engine/Vector3';
+import VehicleManager from '../engine/VehicleManager';
+import Quaternion from '../engine/Quaternion';
+import Camera from '../engine/Camera';
+import Vector2 from '../engine/Vector2';
+import Gamepad from '../engine/Gamepad';
 
 export default class Player extends GameObject {
 
