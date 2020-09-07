@@ -58,12 +58,13 @@ export default class  Quaternion {
         if (Math.abs(dot - (-1.0)) < 0.000001) {
             return new Quaternion(Vector3.up.x, Vector3.up.y, Vector3.up.z, Math.PI);
         }
+
         if (Math.abs(dot - (1.0)) < 0.000001) {
             return Quaternion.Identity();
         }
 
         let rotAngle = Math.acos(dot);
-        let rotAxis = Vector3.Cross(forwardVector, up);
+        let rotAxis = Vector3.Cross(Vector3.forward, forwardVector);
         rotAxis = Vector3.Normalize(rotAxis);
         return Quaternion.CreateFromAxisAngle(rotAxis, rotAngle);
     }
@@ -179,10 +180,6 @@ export default class  Quaternion {
 
     static Dot(q1, q2) {
         return q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
-    }
-
-    static Slerp(from, to, t) {
-        return Quaternion.SlerpUnclamped(from, to, t);
     }
 
     static Normalize(q) {

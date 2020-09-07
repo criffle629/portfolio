@@ -5,6 +5,8 @@ import Scene from '../engine/Scene';
 import Camera from '../engine/Camera';
 import RoadRacerModal from './modal/RoadRacerModal';
 import MightyChickenModal from './modal/MightyChickenModal';
+import MainMenuStadium from '../stadiumgame/ui/mainmenu';
+import StadiumGameUI from '../stadiumgame/ui/gameui';
 
 export default class Game extends React.Component {
 
@@ -19,6 +21,8 @@ export default class Game extends React.Component {
     }
 
     componentDidMount(){
+        
+        GameEngine.SetOpenModalCallback(this.openModal, this.isModalOpen);
         GameEngine.Init();
     }
 
@@ -30,7 +34,7 @@ export default class Game extends React.Component {
         Scene.setScreenSize(document.body.clientWidth, document.body.clientHeight );
         Camera.Configure(60, Scene.aspectRatio, 0.1, 1000.0);
         GameEngine.InitRenderer(this.canvas, Scene.screenWidth, Scene.screenHeight);
-        GameEngine.SetOpenModalCallback(this.openModal, this.isModalOpen);
+
         this.canvas.focus();
     }
 
@@ -85,7 +89,8 @@ export default class Game extends React.Component {
                 <canvas style={{ display: 'block', width: '100vw', height: '100vh', position:'fixed'}} tabIndex="0" onKeyDown={this.HandleKeyPress} onKeyUp={this.HandleKeyUp} ref={(c) => { this.canvas = c; this.Load(); }} onBlur={this.clearInput} />
                 <RoadRacerModal isOpen={this.state.currentModal === 'roadracer'} closeModal={this.closeModal}/>
                 <MightyChickenModal isOpen={this.state.currentModal === 'mightychicken'} closeModal={this.closeModal}/>
-
+                <StadiumGameUI isOpen={this.state.currentModal === 'stadiumui'} closeModal={this.closeModal} openModel={this.openModal}/>
+                <MainMenuStadium isOpen={this.state.currentModal === 'stadiummenu'} closeModal={this.closeModal} openModel={this.openModal}/>
             </div>
         )
     }

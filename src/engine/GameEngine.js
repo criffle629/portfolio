@@ -14,12 +14,12 @@ class Engine {
         this.fps = 0;
         this.fpsTime = 0;
 
-        this.mainGame = new MainGame();
+        this.mainGame = new StadiumGame();
     }
 
     Init(){
     
-
+        this.mainGame.Init();
         requestAnimationFrame(this.Animate);
     }
     SetOpenModalCallback(openModal, isModalOpen) {

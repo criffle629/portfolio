@@ -72,7 +72,6 @@ class GamepadManager {
             }, 6);
 
             e.gamepad.addEventListener('buttonpress', e => {
-                console.log(e.value);
                 this.addButton(e.index);
             });
             e.gamepad.addEventListener('buttonrelease', e => {

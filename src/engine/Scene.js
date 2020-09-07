@@ -53,10 +53,13 @@ class SceneManager {
             this.enabledObjects[obj].update();
         }
 
+        if (this.ball !== undefined && this.ball !== null)
+            this.cameraController.ball = this.ball;
+
         for (let obj in this.enabledObjects) {
             this.enabledObjects[obj].lateUpdate();
         }
-
+        
         for (let obj in this.enabledObjects) {
             this.enabledObjects[obj].render();
         }

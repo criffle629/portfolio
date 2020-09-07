@@ -41,6 +41,16 @@ class VehicleController {
         return this.inRangeVehicle;
     }
 
+    controllVehicle(vehicle) {
+        if (vehicle === null) return null;
+
+        vehicle.inUse = true;
+        Camera.target = vehicle;
+        this.vehicleInUse = vehicle;
+
+        return vehicle;
+    }
+
     leaveVehicle(){
         this.vehicleInUse = null;
     }

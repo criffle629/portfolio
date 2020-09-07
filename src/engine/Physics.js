@@ -130,7 +130,7 @@ class PhysicsEngine {
     }
 
     update() {
-        this.world.stepSimulation(Time.deltaTime, 10, 1.0 / 60.0);
+        this.world.stepSimulation(Time.deltaTime, 10);
     }
 }
 

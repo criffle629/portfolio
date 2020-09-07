@@ -21,7 +21,7 @@ class Renderer {
             this.renderer.setClearColor('skyblue', 1.0);
             this.renderer.clearAlpha = 1;
             this.renderer.setAnimationLoop(loopCallback);
-
+            this.renderer.setFaceCulling("back")
             if (this.renderer !== null)
                 resolve(this.renderer);
             else

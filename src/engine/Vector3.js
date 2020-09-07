@@ -28,6 +28,30 @@ export default class Vector3 {
         return this.length();
     }
 
+    rotate(quat){
+        let v = new Vector3(quat.x, quat.y, quat.z);
+
+        const d1 = 2.0 * Vector3.Dot(v, this);
+        const d2 = (quat.w * quat.w - Vector3.Dot(v, v));
+        v.x *= d1;
+        v.y *= d1;
+        v.z *= d1;
+
+        v.x += d2 * this.x;
+        v.y += d2 * this.y;
+        v.z += d2 * this.z;
+
+        let c1 = Vector3.Cross(v, this);
+
+        v.x += 2.0 * quat.w * c1.x;
+        v.y += 2.0 * quat.w * c1.y;
+        v.z += 2.0 * quat.w * c1.z;
+
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+    }
+
     normalize() {
         let mag = this.magnitude();
 
@@ -145,6 +169,25 @@ export default class Vector3 {
 
         return distance;
     }
+
+    static Lerp(a, b, t)
+    {
+        let out = b;
+        out.x = b.x - a.x;
+        out.y = b.y - a.y;
+        out.z = b.z - a.z;
+
+        out.x *= MathTools.clamp(t, 0.0, 1.0);
+        out.y *= MathTools.clamp(t, 0.0, 1.0);
+        out.y *= MathTools.clamp(t, 0.0, 1.0);
+
+        a.x += out.x;
+        a.y += out.y;
+        a.z += out.z;
+
+        return a;
+    }
+
 
     static Dot(v1, v2) {
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;

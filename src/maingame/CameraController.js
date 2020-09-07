@@ -2,7 +2,7 @@ import Vector3 from '../engine/Vector3';
 import Camera from '../engine/Camera';
 import Quaternion from '../engine/Quaternion';
 
-export default class CCameraController{
+export default class CameraController{
     constructor(offset){
         this.offset = offset;
     }

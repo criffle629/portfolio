@@ -5,16 +5,17 @@ import Vector3 from '../engine/Vector3';
 import Vector2 from '../engine/Vector2';
 import Physics from '../engine/Physics';
 import GameObject from '../engine/GameObject';
-import Vehicle from '../engine/Vehicle';
+import Vehicle from './Vehicle';
 import Quaternion from '../engine/Quaternion';
 import InfoStationManager from './InfoStationManager';
 import Light from '../engine/Light';
 import Ball from '../engine/Ball';
 import VehicleManager from '../engine/VehicleManager';
-import MainGameCameraController from './CameraController';
+import CameraController from './CameraController';
+import GameEngine from '../engine/GameEngine';
 
 export default class MainGame{
-    constructor() {
+    Init() {
      
         this.ball = new Ball({
             position: new Vector3(0.0, 2.0, -20.0),
@@ -49,6 +50,8 @@ export default class MainGame{
             color: 0xffffff,
             intensity: 0.5
         });
+
+   
 
         this.Load().then(() => { });
     }
@@ -260,7 +263,8 @@ export default class MainGame{
 
    
             Camera.target = this.player;
-            Camera.controller = new MainGameCameraController( new Vector3(0, 3.0, 5.0));
+            this.cameraController = new CameraController( new Vector3(0, 3.0, 5.0));
+            Camera.controller = this.cameraController;
 
             this.vehicle2 = new Vehicle({
                 breakForce: 25,
