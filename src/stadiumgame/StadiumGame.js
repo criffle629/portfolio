@@ -65,8 +65,7 @@ export default class StadiumGame{
                 restitution: 0.5,
                 mass: 0
             }, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
-
-
+            
                 this.soccerfielddome = new GameObject('soccerfielddome', null, false, false, true, true);
                 this.soccerfielddome.LoadModel('soccerfielddome', './assets/models/soccerfielddome.glb', false)
                     .then(() => {
