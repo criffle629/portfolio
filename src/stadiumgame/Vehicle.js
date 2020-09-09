@@ -33,7 +33,6 @@ export default class Vehicle extends GameObject {
         this.engineSound = null;
         this.tireSquealSound = null;
         this.enginePitch = options.enginePitch;
-        this.centerOfMass = options.centerOfMass;
         this.downForce = options.downForce;
         this.options = options;
         this.speed = 0;
