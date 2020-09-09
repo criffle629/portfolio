@@ -110,7 +110,7 @@ export default class StadiumGame{
                 backFriction: 1,
                 frontFriction: 1,
                 roll: 0.02,
-                radius: 0.2,
+                radius: 0.25,
                 suspensionLen: 0.05,
                 backLeftPos: new Vector3(-0.4, -0.35, -0.654),
                 backRightPos: new Vector3(0.4, -0.35, -0.654),
