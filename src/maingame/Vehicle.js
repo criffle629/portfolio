@@ -267,12 +267,12 @@ export default class Vehicle extends GameObject {
         const tm = this.body.getWorldTransform();
         const p = tm.getOrigin();
         const q = tm.getRotation();
-
+        this.rotation.set(q.x(), q.y(), q.z(), q.w());
         if (this.model && this.model.mesh) {
             this.model.mesh.position.set(p.x(), p.y(), p.z());
             this.model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
             this.position.set(p.x(), p.y(), p.z());
-            this.rotation.set(q.x(), q.y(), q.z(), q.w());
+      
         }
     }
 
