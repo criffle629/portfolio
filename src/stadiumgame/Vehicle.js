@@ -13,10 +13,25 @@ import Ammo from 'ammo.js';
 import VehicleManager from '../engine/VehicleManager';
 import Gamepad from '../engine/Gamepad';
 import Vector2 from '../engine/Vector2';
+import InputManager from '../engine/InputManager';
+import GamepadManager from '../engine/GamepadManager';
 
 export default class Vehicle extends GameObject {
     constructor(options) {
         super();
+
+        this.isPlayer = options.isPlayer;
+        this.uuid = options.uuid;
+
+        if (!this.isPlayer){
+            this.input = new InputManager();
+            this.gamepad =new  GamepadManager(true);
+        }
+        else
+       {
+           this.input = Input;
+           this.gamepad = Gamepad;
+       }
 
         this.inUse = false;
         this.castShadow = true;
@@ -140,7 +155,7 @@ export default class Vehicle extends GameObject {
     }
     updateInput() {
         if (this.isUpsideDown() && this.inUse) {
-            if (Input.isKeyDown('r') || Gamepad.isButtonPressed(Gamepad.Buttons.BUTTON_TOP)) {
+            if (this.input.isKeyDown('r') || this.gamepad.isButtonPressed(this.gamepad.Buttons.BUTTON_TOP)) {
                 const position = new Vector3(this.position.x, this.position.y + 1.5, this.position.z);
                 const rotation = new Quaternion(0.0, this.rotation.y, 0.0, this.rotation.w);
                 const quat = new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
@@ -162,7 +177,7 @@ export default class Vehicle extends GameObject {
         vUp.y *= this.jumpForce;
         vUp.z *= this.jumpForce;
 
-        if ((Gamepad.isButtonPressed(Gamepad.Buttons.BUTTON_BOTTOM) || Input.isKeyPressed(' ')) && this.jumpCount < 2){
+        if ((this.gamepad.isButtonPressed(this.gamepad.Buttons.BUTTON_BOTTOM) || this.input.isKeyPressed(' ')) && this.jumpCount < 2){
             this.body.applyCentralImpulse(vUp.to_btVector3());
             ++this.jumpCount;
         }
@@ -174,8 +189,8 @@ export default class Vehicle extends GameObject {
 
         if (!this.inUse  ) return;
 
-        if (Gamepad.isConnected()) {
-            let axis = Gamepad.leftStick();
+        if (this.gamepad.isConnected()) {
+            let axis = this.gamepad.leftStick();
 
             if (!Vector2.Equals(axis, Vector2.zero))
                 this.steeringAngle = -30 * axis.x;
@@ -186,9 +201,9 @@ export default class Vehicle extends GameObject {
 
         this.reverse = false;
 
-        if ((Input.isKeyDown('w') || Input.isKeyDown('ArrowUp') || Gamepad.rightTrigger() > 0) && this.speed <= this.topSpeed) {
+        if ((this.input.isKeyDown('w') || this.input.isKeyDown('ArrowUp') || this.gamepad.rightTrigger() > 0) && this.speed <= this.topSpeed) {
 
-            const accel = (Gamepad.rightTrigger() > 0) ? Gamepad.rightTrigger() : 1;
+            const accel = (this.gamepad.rightTrigger() > 0) ? this.gamepad.rightTrigger() : 1;
             this.currentBrakingFront = 0;
             this.currentBrakingBack = 0;
             this.currentAccelBack = (this.accelForceBack * this.accelRate) * accel;
@@ -201,9 +216,9 @@ export default class Vehicle extends GameObject {
             this.currentBrakingBack = 0.5;
         }
 
-        if (Input.isKeyDown('s') || Input.isKeyDown('ArrowDown') || Gamepad.leftTrigger() > 0) {
+        if (this.input.isKeyDown('s') || this.input.isKeyDown('ArrowDown') || this.gamepad.leftTrigger() > 0) {
             this.reverse = true;
-            const breaking = (Gamepad.leftTrigger() > 0) ? Gamepad.leftTrigger() : 1;
+            const breaking = (this.gamepad.leftTrigger() > 0) ? this.gamepad.leftTrigger() : 1;
             if (this.speed <= 0) {
                 this.currentBrakingFront = 0;
                 this.currentBrakingBack = 0;
@@ -216,11 +231,11 @@ export default class Vehicle extends GameObject {
             }
         }
 
-        if (Input.isKeyDown('a') || Input.isKeyDown('ArrowLeft')) {
+        if (this.input.isKeyDown('a') || this.input.isKeyDown('ArrowLeft')) {
             this.steeringAngle += 15 * this.steeringRate * Time.deltaTime;
         }
         else
-            if (Input.isKeyDown('d') || Input.isKeyDown('ArrowRight')) {
+            if (this.input.isKeyDown('d') || this.input.isKeyDown('ArrowRight')) {
                 this.steeringAngle -= 15 * this.steeringRate * Time.deltaTime;
             }
             else {
@@ -350,7 +365,7 @@ export default class Vehicle extends GameObject {
 
     updateMidAirRotation(){
         if (!this.wheelsOnGround){
-            let axis = Gamepad.leftStick();
+            let axis = this.gamepad.leftStick();
             const tm = this.body.getWorldTransform();
             const p = tm.getOrigin();
             const q = tm.getRotation();
@@ -390,5 +405,9 @@ export default class Vehicle extends GameObject {
         this.updateSpeed();
 
     
+    }
+    destroy(){
+        this.tireSquealSound.stop();
+        this.engineSound.stop();
     }
 }

@@ -14,7 +14,7 @@ class Engine {
         this.fps = 0;
         this.fpsTime = 0;
 
-        this.mainGame = new StadiumGame();
+        this.mainGame = new MainGame();
     }
 
     Init(){

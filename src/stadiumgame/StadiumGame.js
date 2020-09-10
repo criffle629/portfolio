@@ -12,12 +12,17 @@ import VehicleManager from '../engine/VehicleManager';
 import CameraController from './CameraController';
 import Multiplayer from './Multiplayer';
 import GameEngine from '../engine/GameEngine';
+import Gamepad from '../engine/Gamepad';
+import Input from '../engine/Input';
 
 export default class StadiumGame{
  
     Init(){
+        Multiplayer.connect()
+        .then(socket => {
+            console.log(socket);
+        });
 
-       
         Scene.setExpoFog('skyblue', 0.001);
 
         this.ball = new Ball({
@@ -87,6 +92,7 @@ export default class StadiumGame{
             Camera.controller = new CameraController( new Vector3(0, 3.0, 5.0), this.ball);
 
             this.vehicle2 = new Vehicle({
+                isPlayer: true,
                 breakForce: 25,
                 accelForceFront: 100,
                 accelForceBack: 100,
@@ -123,6 +129,10 @@ export default class StadiumGame{
     }
 
     update(){
-       
+     
+        Multiplayer.updateInputWithHost({keyboard: Input, gamepad: Gamepad});
+      
     }
+
+
 }

@@ -25,7 +25,7 @@ export default class MainGame{
             rollingFriction: 0.3,
             restitution: 1.5,
             damping: new Vector2(0.2, 0.1),
-            radius: 0.125,
+            radius: 0.175,
             model: './assets/models/soccerball.glb'
         });
 
@@ -41,7 +41,7 @@ export default class MainGame{
             cameraNear: 0.1,
             cameraFar: 500,
             shadowBias: -0.00025,
-            shadowCameraSize: 100,
+            shadowCameraSize: 75,
             target: new Vector3(-5, -5, -5)
         });
 
@@ -58,11 +58,11 @@ export default class MainGame{
 
     Load = async () => {
         return await new Promise((resolve, reject) => {
-            this.player = new Player('player', null, true, true, true, new Vector3(0, 1, 0));
+            this.player = new Player('player', null, true, true, true, new Vector3(0, 1, 0), Quaternion.FromEuler(0, 180, 0));
             this.player.LoadModel('player', './assets/models/chris.glb', true)
             .then(() => {
                 this.player.addRigidBody({
-                    friction: 1,
+                    friction: 0.5,
                     rollingFriction: 0,
                     restitution: 0.5,
                     mass: 1
@@ -158,24 +158,54 @@ export default class MainGame{
                             }, shape, new Vector3(0, 0, -10));
                         });
                 });
-
-                this.mightychickentv = new GameObject('mightychickentv', null, false, true, true, true);
-
-                this.mightychickentv.LoadModel('mightychickentv', './assets/models/mightychickentv.glb', true)
-                .then(() => {
-                    Physics.createMeshShape(this.mightychickentv.model.mesh)
-                        .then(shape => {
-                            this.mightychickentv.addRigidBody({
-                                friction: 1,
-                                rollingFriction: 1,
-                                restitution: 0.0,
-                                mass: 0
-                            }, shape, new Vector3(0, 0, -10));
-                        });
-                });
+ 
 
             InfoStationManager.addInfoStation(new Vector3(-19.921, 0, -7.5799), 'roadracer');
             InfoStationManager.addInfoStation(new Vector3(-41.183, 0, -0.5502), 'mightychicken');
+
+            this.racetrack = new GameObject('racetrack', null, false, false, true, true);
+            this.racetrack.LoadModel('racetrack', './assets/models/racetrack.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.racetrack.model.mesh)
+                        .then(shape => {
+                            this.racetrack.addRigidBody({
+                                friction: 0.5,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(-50, 0.05, -50));
+                        });
+                });
+
+/*
+            this.racetrackbarrie1 = new GameObject('racetrackbarrier1', null, false, false, true, true);
+            this.racetrackbarrie1.LoadModel('racetrackbarrier1', './assets/models/racetrackbarrier1.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.racetrackbarrie1.model.mesh)
+                        .then(shape => {
+                            this.racetrackbarrie1.addRigidBody({
+                                friction: 0.5,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(-50, 0.0, -50));
+                        });
+                });
+
+                this.racetrackbarrier2 = new GameObject('racetrackbarrier2', null, false, false, true, true);
+                this.racetrackbarrier2.LoadModel('racetrackbarrier2', './assets/models/racetrackbarrier2.glb', true)
+                    .then(() => {
+                        Physics.createMeshShape(this.racetrackbarrier2.model.mesh)
+                            .then(shape => {
+                                this.racetrackbarrier2.addRigidBody({
+                                    friction: 0.5,
+                                    rollingFriction: 1,
+                                    restitution: 0.0,
+                                    mass: 0
+                                }, shape, new Vector3(-50, 0.0, -50));
+                            });
+                    });
+    */
 
             this.parkinglotcurb = new GameObject('parkinglotcurb', null, false, true, true, true);
             this.parkinglotcurb.LoadModel('parkinglotcurb', './assets/models/parkinglotcurb.glb', true)
@@ -262,9 +292,10 @@ export default class MainGame{
                 });
 
    
-            Camera.target = this.player;
+
             this.cameraController = new CameraController( new Vector3(0, 3.0, 5.0));
             Camera.controller = this.cameraController;
+            Camera.target = this.player;
 
             this.vehicle2 = new Vehicle({
                 breakForce: 25,
@@ -273,9 +304,9 @@ export default class MainGame{
                 accelRate: 3,
                 downForce: 0.02,
                 topSpeed: 120,
-                bodyWidth: 1.0,
-                bodyHeight: 0.5,
-                bodyLength: 2.128,
+                bodyWidth: 0.956,
+                bodyHeight: 0.738,
+                bodyLength: 2.28,
                 mass: 100,
                 enginePitch: 25,
                 position: new Vector3(-38.62, 0.56, -9.23),
@@ -292,10 +323,10 @@ export default class MainGame{
                 roll: .25,
                 radius: 0.25,
                 suspensionLen: 0.095,
-                backLeftPos: new Vector3(-0.4, -0.2, -0.654),
-                backRightPos: new Vector3(0.4, -0.2, -0.654),
-                frontRightPos: new Vector3(0.38, -0.2, 0.719),
-                frontLeftPos: new Vector3(-0.38, -0.2, 0.719),
+                backLeftPos: new Vector3(-0.4, -0.35, -0.654),
+                backRightPos: new Vector3(0.4, -0.35, -0.654),
+                frontRightPos: new Vector3(0.38, -0.35, 0.719),
+                frontLeftPos: new Vector3(-0.38, -0.35, 0.719),
             });
 
             this.vehicle = new Vehicle({
@@ -335,7 +366,7 @@ export default class MainGame{
                 accelForceFront: 180,
                 accelForceBack: 250,
                 accelRate: 1,
-                downForce: 0.25,
+                downForce: 0.1,
                 topSpeed: 200,
                 bodyWidth: 1.15,
                 bodyHeight: 0.5,
@@ -349,10 +380,10 @@ export default class MainGame{
                 wheelLeftModel: './assets/models/sportscarwheelLeft.glb',
                 wheelRightModel: './assets/models/sportscarwheelRight.glb',
                 stiffness: 100.0,
-                damping: 2.3,
-                compression: 2,
-                backFriction: 1.25,
-                frontFriction: 1.5,
+                damping: 10,
+                compression: 2.5,
+                backFriction: .95,
+                frontFriction: 1.0,
                 roll: 0.25,
                 radius: 0.25,
                 suspensionLen: 0.075,
@@ -462,6 +493,7 @@ export default class MainGame{
     }
 
     update(){
+      
         VehicleManager.checkVehicleInRange(this.player.position);
         InfoStationManager.update(this.player.position);
     }

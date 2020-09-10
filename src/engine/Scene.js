@@ -47,6 +47,10 @@ class SceneManager {
         }
     }
 
+    deleteObject(obj){
+        const object = this.scene.getObjectByProperty( 'uuid', obj.objID );
+    }
+
     update() {
 
         for (let obj in this.enabledObjects) {

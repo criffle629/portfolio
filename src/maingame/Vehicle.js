@@ -23,6 +23,9 @@ export default class Vehicle extends GameObject {
         this.recieveShadow = true;
         this.skinnedMesh = false;
 
+        this.btPos = new Ammo.btVector3(0,0,0);
+        this.btQuat = new Ammo.btQuaternion(0,0,0,1);
+        this.btDownForce = new Ammo.btVector3(0,0,0);
         this.topSpeed = options.topSpeed;
         this.steeringRate = 25.0;
         this.accelRate = options.accelRate;
@@ -144,8 +147,10 @@ export default class Vehicle extends GameObject {
                 const rotation = new Quaternion(0.0, this.rotation.y, 0.0, this.rotation.w);
                 const quat = new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
 
-                this.body.getWorldTransform().setOrigin(position.to_btVector3());
-                this.body.getWorldTransform().setRotation(quat);
+                this.btPos.setValue(position.x, position.y, position.z);
+                this.btQuat.setValue(quat.x, quat.y, quat.z, quat.w);
+                this.body.getWorldTransform().setOrigin(this.btPos);
+                this.body.getWorldTransform().setRotation(this.btQuat);
                 this.body.getMotionState().setWorldTransform(this.body.getWorldTransform());
             }
         }
@@ -305,7 +310,8 @@ export default class Vehicle extends GameObject {
     applyDownforce() {
         const downForce = this.constantDownforce ? -this.downForce : -(Math.abs(this.speed) * this.downForce);
         this.downForceVel = new Vector3(0, downForce,0);
-        this.body.applyCentralImpulse(this.downForceVel.to_btVector3());
+        this.btDownForce.setValue(this.downForceVel.x, this.downForceVel.y, this.downForceVel.z);
+        this.body.applyCentralImpulse(this.btDownForce);
     }
     resetMovementWhenNotInUse() {
         if (!this.inUse) {

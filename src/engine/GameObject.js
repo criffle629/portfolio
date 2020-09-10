@@ -91,15 +91,15 @@ export default class GameObject {
             this.rigidBody.setPosition(this.position);
     }
 
-    move() {
+    move(moveDir) {
 
         if (this.rigidBody !== null) {
             this.position = this.rigidBody.GetPosition();
-            this.position = Vector3.Add(this.position, this.moveDir);
+            this.position = Vector3.Add(this.position, moveDir);
             this.rigidBody.setPosition(this.position);
         }
         else {
-            this.position = Vector3.Add(this.position,  this.moveDir);
+            this.position = Vector3.Add(this.position,  moveDir);
         }
     }
 

@@ -133,7 +133,7 @@ export default class RigidBody {
     }
 
     SetLinearVelocity(velocity) {
-        this.bodysetLinearVelocity(velocity.to_btVector3());
+        this.body.setLinearVelocity(velocity.to_btVector3());
     }
 
     setAngularVelocity(velocity) {

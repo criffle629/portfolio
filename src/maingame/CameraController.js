@@ -1,6 +1,7 @@
 import Vector3 from '../engine/Vector3';
 import Camera from '../engine/Camera';
 import Quaternion from '../engine/Quaternion';
+import MathTools from '../engine/MathTools';
 
 export default class CameraController{
     constructor(offset){
@@ -22,6 +23,9 @@ export default class CameraController{
         Camera.SetPosition(Camera.position);
 
         const rot = Camera.rotation.Euler();
+        rot.x *= MathTools.deg2Rad;
+        rot.y *= MathTools.deg2Rad;
+        rot.z *= MathTools.deg2Rad;
 
         Camera.Rotate(rot);
     }

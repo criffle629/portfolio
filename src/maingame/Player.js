@@ -1,13 +1,13 @@
 
 import GameObject from '../engine/GameObject';
 import Input from '../engine/Input';
-import Time from '../engine/Time';
 import Vector3 from '../engine/Vector3';
 import VehicleManager from '../engine/VehicleManager';
 import Quaternion from '../engine/Quaternion';
 import Camera from '../engine/Camera';
 import Vector2 from '../engine/Vector2';
 import Gamepad from '../engine/Gamepad';
+import Ammo from 'ammo.js';
 
 export default class Player extends GameObject {
 
@@ -16,6 +16,7 @@ export default class Player extends GameObject {
         this.vehicle = null;
         this.moveDir = new Vector3(0, 0, 0);
         this.euler = new Vector3(0, 0, 0);
+        this.btMoveVec3 = new Ammo.btVector3(0, 0, 0);
     }
 
     changeAnimation(animation) {
@@ -79,27 +80,35 @@ export default class Player extends GameObject {
             zMove = stick.y;
         }
 
-        this.moveDir.x = xMove;
-        this.moveDir.z = zMove;
+        this.moveDir.x = xMove ;
+        this.moveDir.z = zMove ;
         this.moveDir.normalize();
         
         if (!Vector3.Equals(this.moveDir, Vector3.zero)) {
             this.forward = this.moveDir.normalize();
        
-            this.moveDir.x = this.forward.x * 3 * Time.deltaTime;
-            this.moveDir.z = this.forward.z * 3 * Time.deltaTime;
-            this.move();
-
+            this.moveDir.x = this.forward.x * 3 ;
+            this.moveDir.z = this.forward.z * 3 ;
+            
+            this.euler.y = Vector3.Angle(Vector3.back, this.forward);
             this.changeAnimation('Walk');
         }
         else {
             this.changeAnimation('Rest');
         }
-        this.euler.y = Vector3.Angle(Vector3.back, this.forward);
-       
+        
+ 
+        this.movePlayer();
         this.setRotation(this.euler);
 
         super.update();
+    }
+
+    movePlayer() {
+        const moveVec = new Vector3(this.moveDir.x, this.moveDir.y, this.moveDir.z);
+        moveVec.y = this.rigidBody.GetLinearVelocity().y;
+        this.btMoveVec3.setValue(moveVec.x, moveVec.y, moveVec.z);
+        this.rigidBody.body.setLinearVelocity(this.btMoveVec3);
     }
 
     collision(col) {
