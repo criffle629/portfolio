@@ -33,11 +33,11 @@ export default class GameObject {
         Scene.addGameObject(this);
     }
 
-    LoadModel = async (name, meshPath, flatShading = false) => {
+    LoadModel = async (name, meshPath, flatShading = false, culling = true) => {
 
         if (meshPath === null) return;
 
-        await Content.LoadMesh(name, meshPath, this.skinnedMesh, this.castShadow, this.recieveShadow, flatShading)
+        await Content.LoadMesh(name, meshPath, this.skinnedMesh, this.castShadow, this.recieveShadow, flatShading, culling)
             .then(model => {
                 this.model = model;
 

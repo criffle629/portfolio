@@ -264,7 +264,7 @@ export default class MainGame{
                 });
 
             this.rrsign = new GameObject('rrsign', null, false, true, true, true);
-            this.rrsign.LoadModel('rrsign', './assets/models/rrsign.glb', true)
+            this.rrsign.LoadModel('rrsign', './assets/models/rrsign.glb', true, false)
                 .then(() => {
                     Physics.createMeshShape(this.rrsign.model.mesh)
                         .then(shape => {

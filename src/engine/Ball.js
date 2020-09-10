@@ -23,7 +23,7 @@ export default class Ball extends GameObject {
         this.body = null;
         this.tag = options.tag;
 
-        this.LoadModel(options.model, options.model, false)
+        this.LoadModel(options.model, options.model, false, false)
         .then(() => {
             
             let transform = new Ammo.btTransform();

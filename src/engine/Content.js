@@ -7,7 +7,7 @@ class ContentManager {
         this.sounds = {};
     }
 
-    LoadMesh = (name = null, path = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false) => {
+    LoadMesh = (name = null, path = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false, culling = true) => {
         if (name === null) console.log('LoadMesh requires name');
         if (path === null) console.log('LoadMesh requires a path');
 
@@ -19,7 +19,7 @@ class ContentManager {
                 resolve(model);
             }
             else {
-                let model = new Mesh(null, castShadow, recieveShadow, flatShading);
+                let model = new Mesh(null, castShadow, recieveShadow, flatShading, culling);
                 model.LoadMesh(path)
                     .then(data => {
                         this.meshes[name] = model;

@@ -7,6 +7,7 @@ import RoadRacerModal from './modal/RoadRacerModal';
 import MightyChickenModal from './modal/MightyChickenModal';
 import MainMenuStadium from '../stadiumgame/ui/mainmenu';
 import StadiumGameUI from '../stadiumgame/ui/gameui';
+import MainGameUI from './MainGameUI';
 
 export default class Game extends React.Component {
 
@@ -85,8 +86,9 @@ export default class Game extends React.Component {
     render() {
         return (
             <div  style={{   width: '100vw', height:'100vh', padding:0, margin:0, overflow:'hidden' }}>
-                
-                <canvas style={{ display: 'block', width: '100vw', height: '100vh', position:'fixed'}} tabIndex="0" onKeyDown={this.HandleKeyPress} onKeyUp={this.HandleKeyUp} ref={(c) => { this.canvas = c; this.Load(); }} onBlur={this.clearInput} />
+                <MainGameUI />
+                <canvas style={{ outline: 'none', display: 'block', width: '100vw', height: '100vh', position:'fixed'}} tabIndex="0" onKeyDown={this.HandleKeyPress} onKeyUp={this.HandleKeyUp} ref={(c) => { this.canvas = c; this.Load(); }} onBlur={this.clearInput}></canvas> />
+             
                 <RoadRacerModal isOpen={this.state.currentModal === 'roadracer'} closeModal={this.closeModal}/>
                 <MightyChickenModal isOpen={this.state.currentModal === 'mightychicken'} closeModal={this.closeModal}/>
                 <StadiumGameUI isOpen={this.state.currentModal === 'stadiumui'} closeModal={this.closeModal} openModel={this.openModal}/>

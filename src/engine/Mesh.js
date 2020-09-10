@@ -3,12 +3,13 @@ import Scene from './Scene';
 import * as THREE from 'three';
 
 export default class Mesh {
-    constructor(path = null, castShadow = false, receiveShadow = false, flatShading = false) {
+    constructor(path = null, castShadow = false, receiveShadow = false, flatShading = false, culling = true) {
         this.mixer = null;
         this.action = null;
         this.meshData = null;
         this.mesh = null;
         this.scene = null;
+        this.culling = culling;
         this.castShadow = castShadow;
         this.receiveShadow = receiveShadow;
         this.flatShading = flatShading;
@@ -43,7 +44,8 @@ export default class Mesh {
                     if (child.isMesh) {
                         child.castShadow = this.castShadow;
                         child.receiveShadow = this.receiveShadow;
-                        child.material.side = THREE.FrontSide;
+                        if (this.culling)
+                            child.material.side = THREE.FrontSide;
                         if (this.flatShading)
                             child.material.flatShading = this.flatShading;
                     }
