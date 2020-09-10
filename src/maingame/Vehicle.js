@@ -145,10 +145,9 @@ export default class Vehicle extends GameObject {
             if (Input.isKeyDown('r')) {
                 const position = new Vector3(this.position.x, this.position.y + 1.5, this.position.z);
                 const rotation = new Quaternion(0.0, this.rotation.y, 0.0, this.rotation.w);
-                const quat = new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
-
+ 
                 this.btPos.setValue(position.x, position.y, position.z);
-                this.btQuat.setValue(quat.x, quat.y, quat.z, quat.w);
+                this.btQuat.setValue(rotation.x, rotation.y, rotation.z, rotation.w);
                 this.body.getWorldTransform().setOrigin(this.btPos);
                 this.body.getWorldTransform().setRotation(this.btQuat);
                 this.body.getMotionState().setWorldTransform(this.body.getWorldTransform());

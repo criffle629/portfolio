@@ -173,11 +173,25 @@ export default class MainGame{
                                 rollingFriction: 1,
                                 restitution: 0.0,
                                 mass: 0
-                            }, shape, new Vector3(-50, 0.05, -50));
+                            }, shape, new Vector3(0, 0.075, -25));
                         });
                 });
 
-/*
+                this.racetrackstart = new GameObject('racetrackstart', null, false, true, true, false);
+                this.racetrackstart.LoadModel('racetrackstart', './assets/models/racetrackstart.glb', false)
+                    .then(() => {
+                        Physics.createMeshShape(this.racetrackstart.model.mesh)
+                            .then(shape => {
+                                this.racetrackstart.addRigidBody({
+                                    friction: 0.5,
+                                    rollingFriction: 1,
+                                    restitution: 0.0,
+                                    mass: 0
+                                }, shape, new Vector3(0, 0.075, -25));
+                            });
+                    });
+
+/*sa
             this.racetrackbarrie1 = new GameObject('racetrackbarrier1', null, false, false, true, true);
             this.racetrackbarrie1.LoadModel('racetrackbarrier1', './assets/models/racetrackbarrier1.glb', true)
                 .then(() => {
@@ -366,7 +380,7 @@ export default class MainGame{
                 accelForceFront: 180,
                 accelForceBack: 250,
                 accelRate: 1,
-                downForce: 0.1,
+                downForce: 0.15,
                 topSpeed: 200,
                 bodyWidth: 1.15,
                 bodyHeight: 0.5,
@@ -379,12 +393,12 @@ export default class MainGame{
                 bodyModel: './assets/models/sportscar.glb',
                 wheelLeftModel: './assets/models/sportscarwheelLeft.glb',
                 wheelRightModel: './assets/models/sportscarwheelRight.glb',
-                stiffness: 100.0,
+                stiffness: 250.0,
                 damping: 10,
                 compression: 2.5,
-                backFriction: .95,
+                backFriction: 1,
                 frontFriction: 1.0,
-                roll: 0.25,
+                roll: 0.1,
                 radius: 0.25,
                 suspensionLen: 0.075,
                 backLeftPos: new Vector3(-0.45, -0.23, -0.62),

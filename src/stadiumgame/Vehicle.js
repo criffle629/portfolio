@@ -283,7 +283,7 @@ export default class Vehicle extends GameObject {
             if (grounded){
                 this.wheelsOnGround = true;
             }
-            this.vehicle.updateWheelTransform(i, false);
+            this.vehicle.updateWheelTransform(i, true);
             const tm = this.vehicle.getWheelTransformWS(i);
             const p = tm.getOrigin();
             const q = tm.getRotation();
