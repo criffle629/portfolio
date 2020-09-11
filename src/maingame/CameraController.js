@@ -13,8 +13,8 @@ export default class CameraController{
     }
 
     update(){
-        if (Input.isKeyPressed('c') || Gamepad.isButtonPressed(Gamepad.Buttons.BUMPER_LEFT))
-            this.fixedCameraMode = !this.fixedCameraMode;
+        //if (Input.isKeyPressed('c') || Gamepad.isButtonPressed(Gamepad.Buttons.BUMPER_LEFT))
+          //  this.fixedCameraMode = !this.fixedCameraMode;
     }
 
     lateUpdate(){

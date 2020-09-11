@@ -1,5 +1,8 @@
 import React from 'react';
-import Input from '../engine/Input';
+import Input from '../../engine/Input';
+import Gamepad from '../../engine/Gamepad';
+import GamepadUI from './components/GamepadUI';
+
 import 'fontsource-ubuntu';
 
 export default class MainGameUI extends React.Component {
@@ -11,7 +14,12 @@ export default class MainGameUI extends React.Component {
         this.state = {
 
         }
+        Gamepad.connectedCallback = this.gamepadConnected;
         window.addEventListener('resize', this.ScreenResize);
+    }
+
+    gamepadConnected = () => {
+        this.setState({gamepadConnected: true});
     }
 
     componentDidMount() {
@@ -65,10 +73,13 @@ export default class MainGameUI extends React.Component {
     render() {
         return (
             <div style={{ fontFamily: 'Ubuntu', position: 'absolute', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
+                     <GamepadUI/>
                 <div style={{ position: 'relative', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
-                    <span style= {{backgroundColor:'white', borderRadius: '25px', padding: '10px', top: 15, left: 15, position:'absolute'}}>Menu: esc</span>
+               
+   
                 </div>
             </div>
         )
     }
+    //<span style= {{backgroundColor:'white', borderRadius: '25px', padding: '10px', top: 15, left: 15, position:'absolute'}}>Menu: esc</span>
 }

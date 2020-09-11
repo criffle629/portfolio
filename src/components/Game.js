@@ -7,7 +7,7 @@ import RoadRacerModal from './modal/RoadRacerModal';
 import MightyChickenModal from './modal/MightyChickenModal';
 import MainMenuStadium from '../stadiumgame/ui/mainmenu';
 import StadiumGameUI from '../stadiumgame/ui/gameui';
-import MainGameUI from './MainGameUI';
+import MainGameUI from './MainGameUI/MainGameUI';
 
 export default class Game extends React.Component {
 

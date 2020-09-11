@@ -41,7 +41,8 @@ export default class Vehicle extends GameObject {
         this.options = options;
         this.speed = 0;
         this.constantDownforce = options.constantDownforce;
-        this.downForceVel = new Vector3(0, -(Math.abs(this.speed) * this.downForce),0);
+        this.downForceVel = new Vector3(0, -(Math.abs(this.speed) * this.downForce), 0);
+
         Audio.LoadSound('./assets/sounds/engine.wav', true, 0.1)
             .then(sound => {
                 this.engineSound = sound;
@@ -268,10 +269,11 @@ export default class Vehicle extends GameObject {
         const p = tm.getOrigin();
         const q = tm.getRotation();
         this.rotation.set(q.x(), q.y(), q.z(), q.w());
+        this.position.set(p.x(), p.y(), p.z());
         if (this.model && this.model.mesh) {
             this.model.mesh.position.set(p.x(), p.y(), p.z());
             this.model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
-            this.position.set(p.x(), p.y(), p.z());
+     
       
         }
     }

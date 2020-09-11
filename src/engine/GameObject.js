@@ -19,7 +19,7 @@ export default class GameObject {
         this.skinnedMesh = skinnedMesh;
         this.forward = Vector3.forward;
         this.objID = uuidv4();
-
+    
         this.rigidBody = null;
         this.castShadow = castShadow;
         this.recieveShadow = recieveShadow;

@@ -25,6 +25,8 @@ export default class GamepadManager {
             BUTTON_CONTROL_MIDDLE: 16,
         };
 
+        this.statusCallback = null;
+
         this.buttonsDown = new Map();
         this.buttonsPressed = new Map();
 
@@ -44,6 +46,10 @@ export default class GamepadManager {
             Gamepads.addEventListener('connect', e => {
                 this.connected = true;
                 this.gamepad = e.gamepad;
+                
+                if (this.statusCallback !== null){
+                    this.statusCallback('connected');
+                }
 
                 e.gamepad.addEventListener('joystickmove', e => {
                     // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
@@ -82,6 +88,10 @@ export default class GamepadManager {
 
             Gamepads.addEventListener('disconnect', e => {
                 this.connected = false;
+                if (this.statusCallback !== null){
+                    this.statusCallback('disconnected');
+                }
+                
             });
         }
     }
