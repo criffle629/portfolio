@@ -2,6 +2,9 @@ import React from 'react';
 import Input from '../../engine/Input';
 import Gamepad from '../../engine/Gamepad';
 import GamepadUI from './components/GamepadUI';
+import Scene from '../../engine/Scene';
+import Camera from '../../engine/Camera';
+import GameEngine from '../../engine/GameEngine';
 
 import 'fontsource-ubuntu';
 
@@ -19,20 +22,14 @@ export default class MainGameUI extends React.Component {
     }
 
     gamepadConnected = () => {
-        this.setState({gamepadConnected: true});
+        this.setState({ gamepadConnected: true });
     }
 
-    componentDidMount() {
+    ScreenResize() {
+        Scene.setScreenSize(document.body.clientWidth, document.body.clientHeight);
+        Camera.Configure(60, Scene.aspectRatio, 0.1, 1000.0);
 
-
-    }
-
-    Load = () => {
-
-    }
-
-    ScreenResize = () => {
-
+        GameEngine.GetRenderer().setSize(Scene.screenWidth, Scene.screenHeight);
     }
 
     gamepadConnected(e) {
@@ -42,21 +39,7 @@ export default class MainGameUI extends React.Component {
     gamepadeDisconnected(e) {
         console.log(e);
     }
-    HandleKeyPress(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        Input.addKey(e.key);
-    }
 
-    HandleKeyUp(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        Input.removeKey(e.key);
-    }
-
-    clearInput = () => {
-        Input.clearKeys();
-    }
 
     closeModal = () => {
         this.setState({ currentModal: 'none' });
@@ -73,10 +56,10 @@ export default class MainGameUI extends React.Component {
     render() {
         return (
             <div style={{ fontFamily: 'Ubuntu', position: 'absolute', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
-                     <GamepadUI/>
+                <GamepadUI />
                 <div style={{ position: 'relative', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
-               
-   
+
+
                 </div>
             </div>
         )

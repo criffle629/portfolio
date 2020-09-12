@@ -40,7 +40,9 @@ export default class GamepadManager {
 
         this.rightTriggerValue = 0.0;
         this.leftTriggerValue = 0.0;
+
         this.gamepad = null;
+
         if (!noListener) {
             Gamepads.start();
             Gamepads.addEventListener('connect', e => {
@@ -53,15 +55,15 @@ export default class GamepadManager {
 
                 e.gamepad.addEventListener('joystickmove', e => {
                     // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
-                    this.leftAxis.x = e.horizontalValue * 1.12;
-                    this.leftAxis.y = e.verticalValue * 1.12;
+                    this.leftAxis.x = e.horizontalValue;
+                    this.leftAxis.y = e.verticalValue;
 
                 }, [0, 1]);
 
                 e.gamepad.addEventListener('joystickmove', e => {
                     // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
-                    this.rightAxis.x = e.horizontalValue * 1.12;
-                    this.rightAxis.y = e.verticalValue * 1.12;
+                    this.rightAxis.x = e.horizontalValue;
+                    this.rightAxis.y = e.verticalValue ;
                 }, [2, 3]);
 
                 e.gamepad.addEventListener('buttonpress', e => {

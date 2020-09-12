@@ -22,10 +22,11 @@ export default props => {
         },
         image: {
             backgroundImage: "url(" + roadracerbanner + ")",
-            backgorundSize: "cover",
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
+            backgroundSize: 'contain',
             width: "100%",
+            minWidth: '80%',
             height: "30%",
             margin: '10px'
         },
@@ -60,7 +61,8 @@ export default props => {
     const useStyles = makeStyles((theme) => ({
         main: {
             position: 'absolute',
-            width: 600,
+            width: '600px',
+            minWidth: '400px',
             height: '75%',
             backgroundColor: 'rgb(40.9%, 38.5%, 52.3%)',
             border: '0px solid #000',

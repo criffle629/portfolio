@@ -162,6 +162,22 @@ export default class MainGame{
 
             InfoStationManager.addInfoStation(new Vector3(-19.921, 0, -7.5799), 'roadracer');
             InfoStationManager.addInfoStation(new Vector3(-41.183, 0, -0.5502), 'mightychicken');
+            InfoStationManager.addInfoStation(new Vector3(28.144, 0, -10.426), 'pawsnfind');
+
+            this.pawsnfind = new GameObject('pawsnfind', null, false, true, true, false);
+            this.pawsnfind.LoadModel('pawsnfind', './assets/models/pawsnfind.glb', false)
+                .then(() => {
+                    Physics.createMeshShape(this.pawsnfind.model.mesh)
+                        .then(shape => {
+                            this.pawsnfind.addRigidBody({
+                                friction: 0.5,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0.0, -10));
+                        });
+                });
+
 
             this.racetrack = new GameObject('racetrack', null, false, false, true, true);
             this.racetrack.LoadModel('racetrack', './assets/models/racetrack.glb', true)
