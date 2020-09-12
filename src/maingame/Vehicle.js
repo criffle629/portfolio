@@ -143,7 +143,7 @@ export default class Vehicle extends GameObject {
     }
     updateInput() {
         if (this.isUpsideDown() && this.inUse) {
-            if (Input.isKeyDown('r')) {
+            if (Input.isKeyDown('r') || Gamepad.isButtonPressed(Gamepad.Buttons.BUMPER_RIGHT)) {
                 const position = new Vector3(this.position.x, this.position.y + 1.5, this.position.z);
                 const rotation = new Quaternion(0.0, this.rotation.y, 0.0, this.rotation.w);
  
@@ -270,6 +270,13 @@ export default class Vehicle extends GameObject {
         const q = tm.getRotation();
         this.rotation.set(q.x(), q.y(), q.z(), q.w());
         this.position.set(p.x(), p.y(), p.z());
+        let euler = this.rotation.Euler();
+        euler.x *= MathTools.deg2Rad;
+        euler.y *= MathTools.deg2Rad;
+        euler.z *= MathTools.deg2Rad;
+        this.rotation = Quaternion.FromEuler(euler.x, euler.y, euler.z);
+
+   
         if (this.model && this.model.mesh) {
             this.model.mesh.position.set(p.x(), p.y(), p.z());
             this.model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());

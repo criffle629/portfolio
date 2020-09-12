@@ -42,28 +42,29 @@ export default class GamepadManager {
         this.leftTriggerValue = 0.0;
 
         this.gamepad = null;
-
+       
         if (!noListener) {
             Gamepads.start();
             Gamepads.addEventListener('connect', e => {
                 this.connected = true;
                 this.gamepad = e.gamepad;
-                
+     
                 if (this.statusCallback !== null){
                     this.statusCallback('connected');
                 }
 
                 e.gamepad.addEventListener('joystickmove', e => {
                     // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
-                    this.leftAxis.x = e.horizontalValue;
-                    this.leftAxis.y = e.verticalValue;
-
+                    this.leftAxis.x = e.horizontalValue * 1.12;
+                    this.leftAxis.y = e.verticalValue * 1.12;
+                   
+          
                 }, [0, 1]);
 
                 e.gamepad.addEventListener('joystickmove', e => {
                     // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
-                    this.rightAxis.x = e.horizontalValue;
-                    this.rightAxis.y = e.verticalValue ;
+                    this.rightAxis.x = e.horizontalValue *  1.12;
+                    this.rightAxis.y = e.verticalValue * 1.12;
                 }, [2, 3]);
 
                 e.gamepad.addEventListener('buttonpress', e => {
@@ -97,29 +98,16 @@ export default class GamepadManager {
             });
         }
     }
-
-    deadzone(axis) {
-        let newAxis = axis;
-
-        if (Math.abs(newAxis.x) < 0.015)
-            newAxis.x = 0;
-
-        if (Math.abs(newAxis.y) < 0.015)
-            newAxis.y = 0;
-
-        return newAxis;
-    }
-
+ 
     leftStick() {
         if (!this.connected) return Vector2.zero;
-
-
+      
         return this.leftAxis;
     }
 
     rightStick() {
         if (!this.connected) return Vector2.zero;
-
+    
         return this.rightAxis;
     }
 
@@ -160,15 +148,16 @@ export default class GamepadManager {
     clearButtons() {
         this.buttonsDown.clear();
         this.buttonsPressed.clear();
-        this.leftAxis = Vector2.zero;
-        this.rightAxis = Vector2.zero;
+    
     }
 
     isConnected() {
         return this.connected;
     }
 
-    update() { }
+    update() {
+      
+    }
 
     json() {
         return {

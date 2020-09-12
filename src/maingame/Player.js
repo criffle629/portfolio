@@ -75,7 +75,7 @@ export default class Player extends GameObject {
         let stick = Gamepad.leftStick();
 
         if (!Vector2.Equals(stick, Vector2.zero)) {
-            stick.normalize();
+     
             xMove = stick.x;
             zMove = stick.y;
         }

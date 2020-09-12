@@ -33,23 +33,26 @@ export default class Vector3 {
 
         const d1 = 2.0 * Vector3.Dot(v, this);
         const d2 = (quat.w * quat.w - Vector3.Dot(v, v));
-        v.x *= d1;
-        v.y *= d1;
-        v.z *= d1;
+        
+        let vOut = new Vector3();
 
-        v.x += d2 * this.x;
-        v.y += d2 * this.y;
-        v.z += d2 * this.z;
+        vOut.x = d1 * v.x;
+        vOut.y = d1 * v.y;
+        vOut.z = d1 * v.z;
+
+        vOut.x += d2 * this.x;
+        vOut.y += d2 * this.y;
+        vOut.z += d2 * this.z;
 
         let c1 = Vector3.Cross(v, this);
 
-        v.x += 2.0 * quat.w * c1.x;
-        v.y += 2.0 * quat.w * c1.y;
-        v.z += 2.0 * quat.w * c1.z;
+        vOut.x += 2.0 * quat.w * c1.x;
+        vOut.y += 2.0 * quat.w * c1.y;
+        vOut.z += 2.0 * quat.w * c1.z;
 
-        this.x = v.x;
-        this.y = v.y;
-        this.z = v.z;
+        this.x = vOut.x;
+        this.y = vOut.y;
+        this.z = vOut.z;
     }
 
     normalize() {

@@ -16,7 +16,7 @@ export default class SkinnedMesh {
         this.currentAnimation = '';
         this.bones = [];
         this.ragdollActivated = false;
-
+      
         this.castShadow = castShadow;
         this.receiveShadow = receiveShadow;
         this.flatShading = flatShading;
@@ -56,7 +56,7 @@ export default class SkinnedMesh {
         });
     }
     async LoadMesh(path, flatShading = false) {
-
+        Scene.objectLoading++;
         let loader = new GLTFLoader();
 
         this.flatShading = flatShading;
@@ -101,10 +101,11 @@ export default class SkinnedMesh {
             this.meshData = gltf.scene.children;
             this.mesh = gltf.scene;
             this.anim = gltf;
-
+            Scene.objectLoaded++;
             Scene.add(gltf.scene);
 
         }, undefined, function (error) {
+            Scene.objectLoading--;
             console.error(error);
         });
     }

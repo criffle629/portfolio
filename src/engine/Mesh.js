@@ -13,6 +13,7 @@ export default class Mesh {
         this.castShadow = castShadow;
         this.receiveShadow = receiveShadow;
         this.flatShading = flatShading;
+     
         if (path !== null)
             this.LoadMesh(path);
     }
@@ -36,6 +37,8 @@ export default class Mesh {
     }
 
     LoadMesh(path) {
+        Scene.objectLoading++;
+
         return new Promise((resolve, reject) => {
             let loader = new GLTFLoader();
             loader.load(path, (gltf) => {
@@ -56,14 +59,19 @@ export default class Mesh {
                 this.mesh = gltf.scene;
                 this.mesh.doubleSided = false;
                 Scene.add(gltf.scene);
-
+                Scene.objectLoaded++;
                 resolve(this);
 
             }, undefined, function (error) {
                 console.error(error);
+                Scene.objectLoading--;
                 reject('error');
             });
         });
 
+    }
+
+    isLoaded(){
+        return this.mesh === null;
     }
 }

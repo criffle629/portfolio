@@ -14,6 +14,8 @@ class SceneManager {
         this.screenWidth = 1024;
         this.screenHeight = 600;
         this.aspectRatio = 1024 / 600;
+        this.objectLoading = 0;
+        this.objectLoaded = 0;
     }
 
     add(obj) {

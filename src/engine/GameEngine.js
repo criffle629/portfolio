@@ -13,13 +13,14 @@ class Engine {
     constructor() {
         this.fps = 0;
         this.fpsTime = 0;
-
+    
         this.mainGame = new MainGame();
+        this.mainGame.Init();
     }
 
     Init(){
     
-        this.mainGame.Init();
+   
         requestAnimationFrame(this.Animate);
     }
     SetOpenModalCallback(openModal, isModalOpen) {
