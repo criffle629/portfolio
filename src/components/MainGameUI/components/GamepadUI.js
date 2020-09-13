@@ -50,24 +50,25 @@ export default class GamepadUI extends React.Component {
     renderComponent() {
 
         const popin = keyframes`
-            from { left: 150%; }
+            from { left: 50%; }
             to { left: 50%; }
-            from { top:50%; }
-            to  { top: 50%; }       
+            from { top:150%; }
+            to  { top: 80%; }       
+            
         `;
 
         const wait = keyframes`
             from { left: 50%; }
             to { left: 50%; }
-            from { top: 50%; }
-            to { top: 50%; } 
+            from { top: 80%; }
+            to { top: 80%; } 
         `;
 
  
         const drop = keyframes`
             from { left: 50%; }
             to { left: 50%; }
-            from { top: 50%; }
+            from { top: 80%; }
             to { top: 150%; }
         `;
 
@@ -77,7 +78,9 @@ export default class GamepadUI extends React.Component {
             border: 3px solid black;
             padding: 10px;
             position: relative;
-        
+            height: 130px;
+            width: 250px;
+             
             translateZ(0);
             z-index: 150;
             backface-visibility: hidden;

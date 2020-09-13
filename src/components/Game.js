@@ -6,6 +6,7 @@ import Camera from '../engine/Camera';
 import RoadRacerModal from './modal/RoadRacerModal';
 import MightyChickenModal from './modal/MightyChickenModal';
 import PawsnfindModal from './modal/PawsnfindModal';
+import AuctionBentoModal from './modal/AuctionBentoModal';
 import MainMenuStadium from '../stadiumgame/ui/mainmenu';
 import StadiumGameUI from '../stadiumgame/ui/gameui';
 import MainGameUI from './MainGameUI/MainGameUI';
@@ -81,13 +82,15 @@ export default class Game extends React.Component {
         return (
             <div  style={{   width: '100vw', height:'100vh', padding:0, margin:0, overflow:'hidden' }}>
                 <MainGameUI />
-                <canvas style={{ outline: 'none', display: 'block', width: '100vw', height: '100vh', position:'fixed'}} tabIndex="0" ref={(c) => { this.canvas = c; this.Load(); }} onBlur={this.clearInput}></canvas> />
+                <canvas style={{ outline: 'none', display: 'block', width: '100vw', height: '100vh', position:'fixed'}} tabIndex="0" ref={(c) => { this.canvas = c; this.Load(); }} onBlur={this.clearInput}></canvas>
              
                 <RoadRacerModal isOpen={this.state.currentModal === 'roadracer'} closeModal={this.closeModal}/>
                 <MightyChickenModal isOpen={this.state.currentModal === 'mightychicken'} closeModal={this.closeModal}/>
                 <PawsnfindModal isOpen={this.state.currentModal === 'pawsnfind'} closeModal={this.closeModal}/>
+                <AuctionBentoModal isOpen={this.state.currentModal === 'auctionbento'} closeModal={this.closeModal} />
                 <StadiumGameUI isOpen={this.state.currentModal === 'stadiumui'} closeModal={this.closeModal} openModel={this.openModal}/>
                 <MainMenuStadium isOpen={this.state.currentModal === 'stadiummenu'} closeModal={this.closeModal} openModel={this.openModal}/>
+               
             </div>
         )
     }

@@ -92,7 +92,6 @@ export default class Loading extends React.Component {
         perspective: 1000;
         animation:  ${this.state.fade ? fadeOut : null} 0.5s;
         animation-timing-function: linear;
-  
     `;
         const Button = styled.button`
             position: absolute;
