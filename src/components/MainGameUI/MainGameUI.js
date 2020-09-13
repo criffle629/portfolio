@@ -1,5 +1,4 @@
 import React from 'react';
-import Input from '../../engine/Input';
 import Gamepad from '../../engine/Gamepad';
 import GamepadUI from './components/GamepadUI';
 import Scene from '../../engine/Scene';
@@ -56,11 +55,10 @@ export default class MainGameUI extends React.Component {
             <div style={{ position: 'absolute', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
                 <GamepadUI />
                 <div style={{ position: 'relative', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
-
-
+                 
                 </div>
             </div>
         )
     }
-    //<span style= {{backgroundColor:'white', borderRadius: '25px', padding: '10px', top: 15, left: 15, position:'absolute'}}>Menu: esc</span>
 }
+//   <span style= {{backgroundColor:'white', borderRadius: '25px', padding: '10px', top: 15, left: 15, position:'absolute'}}>Menu: esc</span>

@@ -10,8 +10,6 @@ export default props => {
     const top = 50;
     const left = 50;
 
-    const mediaMatch = window.matchMedia('(min-width: 600)');
-
     let styles = {
         modal: {
             display: 'flex',

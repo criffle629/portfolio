@@ -1,9 +1,6 @@
 import Vector3 from '../engine/Vector3';
 import Camera from '../engine/Camera';
-import Quaternion from '../engine/Quaternion';
 import VehicleManager from '../engine/VehicleManager';
-import MathTools from '../engine/MathTools';
-import Time from '../engine/Time';
 
 export default class CameraController{
     constructor(offset, ball){

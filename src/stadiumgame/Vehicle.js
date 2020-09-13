@@ -367,7 +367,7 @@ export default class Vehicle extends GameObject {
         if (!this.wheelsOnGround){
             let axis = this.gamepad.leftStick();
             const tm = this.body.getWorldTransform();
-            const p = tm.getOrigin();
+      
             const q = tm.getRotation();
 
             let rot = new Quaternion(q.x(), q.y(), q.z(), q.w());

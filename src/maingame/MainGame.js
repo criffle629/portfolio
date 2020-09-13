@@ -12,7 +12,6 @@ import Light from '../engine/Light';
 import Ball from '../engine/Ball';
 import VehicleManager from '../engine/VehicleManager';
 import CameraController from './CameraController';
-import GameEngine from '../engine/GameEngine';
 
 export default class MainGame{
     Init() {
@@ -29,7 +28,7 @@ export default class MainGame{
             model: './assets/models/soccerball.glb'
         });
 
-        Scene.setExpoFog('skyblue', 0.01);
+        Scene.setExpoFog('skyblue', 0.0075);
 
         this.light = new Light({
             lightType: Light.LightType.DIRECTIONAL,
@@ -203,7 +202,7 @@ export default class MainGame{
                                 rollingFriction: 1,
                                 restitution: 0.0,
                                 mass: 0
-                            }, shape, new Vector3(0, 0.075, -25));
+                            }, shape, new Vector3(0, 0.0, -25));
                         });
                 });
 

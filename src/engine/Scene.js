@@ -50,7 +50,7 @@ class SceneManager {
     }
 
     deleteObject(obj){
-        const object = this.scene.getObjectByProperty( 'uuid', obj.objID );
+       // const object = this.scene.getObjectByProperty( 'uuid', obj.objID );
     }
 
     update() {
@@ -84,6 +84,10 @@ class SceneManager {
 
     setExpoFog(color, density) {
         this.scene.fog = new THREE.FogExp2(color, density);
+    }
+
+    isLoaded(){
+        return this.objectLoaded === this.objectLoading && this.objectLoading !== 0;
     }
 }
 
