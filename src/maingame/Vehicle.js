@@ -139,7 +139,8 @@ export default class Vehicle extends GameObject {
 
     isUpsideDown() {
         const rot = this.rotation.Euler();
-        return (Math.abs(rot.x) >= 40 || Math.abs(rot.z) >= 40);
+    
+        return (Math.abs(rot.x) * MathTools.rad2Deg >= 40  || Math.abs(rot.z) * MathTools.rad2Deg >= 40 );
     }
     updateInput() {
         if (this.isUpsideDown() && this.inUse) {

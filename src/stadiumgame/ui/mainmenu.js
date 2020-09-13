@@ -2,13 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
-import 'fontsource-ubuntu';
 
 export default props => {
     const { isOpen, closeModal } = props;
-
-    const top = 50;
-    const left = 50;
 
     let styles = {
         modal: {
@@ -22,7 +18,6 @@ export default props => {
             width: '100%',
             margin: '10px',
             color: 'white',
-            fontFamily: 'Ubuntu',
             fontSize: '60px',
             textAlign: 'center',
             position: 'absolute'
@@ -32,13 +27,11 @@ export default props => {
             flexDirection: 'column',
             marginTop: '10px',
             color: 'white',
-            fontFamily: 'Ubuntu',
             justifyContent: 'center'
         },
         buttons: {
             marginTop: '10px',
             color: 'white',
-            fontFamily: 'Ubuntu',
         }
     }
 

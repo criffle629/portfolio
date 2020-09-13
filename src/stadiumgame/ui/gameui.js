@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
-import 'fontsource-ubuntu';
  
 export default props => {
     const { isOpen, closeModal } = props;
@@ -23,12 +22,10 @@ export default props => {
             width: '100%',
             margin: '10px',
             color: 'white',
-            fontFamily: 'Ubuntu',
         },
         buttons: {
             marginTop: '10px',
             color: 'white',
-            fontFamily: 'Ubuntu',
         }
     }
 

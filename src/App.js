@@ -11,8 +11,9 @@ class App extends React.Component {
     return (
    
       <div>
-         <Route exact path="/" component = {Loading} />   
-         <Route exact path="/game" component = {Game} />  
+         
+         <Game/> 
+         <Loading style={{position: 'absolute', zIndex:1}}/>  
       </div>
  
     )
