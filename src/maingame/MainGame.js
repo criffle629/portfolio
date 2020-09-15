@@ -11,7 +11,7 @@ import InfoStationManager from './InfoStationManager';
 import Light from '../engine/Light';
 import Ball from '../engine/Ball';
 import VehicleManager from '../engine/VehicleManager';
-import CameraController from './CameraController';
+import CameraController from './CameraController';  
 
 export default class MainGame{
     Init() {
@@ -162,7 +162,9 @@ export default class MainGame{
             InfoStationManager.addInfoStation(new Vector3(-19.921, 0, -7.5799), 'roadracer');
             InfoStationManager.addInfoStation(new Vector3(-41.183, 0, -0.5502), 'mightychicken');
             InfoStationManager.addInfoStation(new Vector3(28.144, 0, -10.426), 'pawsnfind');
-            InfoStationManager.addInfoStation(new Vector3(37.3217, 0, -7.9411), 'pawsnfind');
+            InfoStationManager.addInfoStation(new Vector3(37.3217, 0, -7.9411), 'auctionbento');
+            InfoStationManager.addInfoStation(new Vector3(-77.743, 0, 6.29), 'skullvalley');
+
             this.pawsnfind = new GameObject('pawsnfind', null, false, true, true, false);
             this.pawsnfind.LoadModel('pawsnfind', './assets/models/pawsnfind.glb', false)
                 .then(() => {
@@ -192,6 +194,84 @@ export default class MainGame{
                             });
                     });
 
+                    this.temple = new GameObject('temple', null, false, true, true, true);
+                    this.temple.LoadModel('temple', './assets/models/temple.glb', true)
+                        .then(() => {
+                            Physics.createMeshShape(this.temple.model.mesh)
+                                .then(shape => {
+                                    this.temple.addRigidBody({
+                                        friction: 0.5,
+                                        rollingFriction: 1,
+                                        restitution: 0.0,
+                                        mass: 0
+                                    }, shape, new Vector3(0, 0.0, -10));
+                                });
+                        });
+
+                        this.svlogo = new GameObject('svlogo', null, false, true, true, true);
+                        this.svlogo.LoadModel('svlogo', './assets/models/svlogo.glb', true)
+                            .then(() => {
+                                Physics.createMeshShape(this.svlogo.model.mesh)
+                                    .then(shape => {
+                                        this.svlogo.addRigidBody({
+                                            friction: 0.5,
+                                            rollingFriction: 1,
+                                            restitution: 0.0,
+                                            mass: 0
+                                        }, shape, new Vector3(0, 0.0, -10));
+                                    });
+                            });
+
+                            this.svlogoarrows = new GameObject('svlogoarrows', null, false, true, true, true);
+                            this.svlogoarrows.LoadModel('svlogoarrows', './assets/models/svlogoarrows.glb', true)
+                                .then(() => {
+                                    Physics.createMeshShape(this.svlogoarrows.model.mesh)
+                                        .then(shape => {
+                                            this.svlogoarrows.addRigidBody({
+                                                friction: 0.5,
+                                                rollingFriction: 1,
+                                                restitution: 0.0,
+                                                mass: 0
+                                            }, shape, new Vector3(0, 0.0, -10));
+                                        });
+                                });
+
+                   
+
+                    this.templewateredge = new GameObject('templewateredge', null, false, true, true, true);
+                    this.templewateredge.LoadModel('templewateredge', './assets/models/templewateredge.glb', true)
+                        .then(() => {
+                            Physics.createMeshShape(this.templewateredge.model.mesh)
+                                .then(shape => {
+                                    this.templewateredge.addRigidBody({
+                                        friction: 0.5,
+                                        rollingFriction: 1,
+                                        restitution: 0.0,
+                                        mass: 0
+                                    }, shape, new Vector3(0, 0.05, -10));
+                                });
+                        });
+
+                        this.templewater = new GameObject('templewater', null, false, true, true, true);
+                        this.templewater.LoadModel('templerock', './assets/models/templewater.glb', true)
+                        .then(() => {
+                            this.templewater.setPosition(new Vector3(0,0.05, -10));
+                        });
+
+                            this.templerock = new GameObject('templerock', null, false, true, true, true);
+                            this.templerock.LoadModel('templerock', './assets/models/templerock.glb', true)
+                                .then(() => {
+                                    Physics.createMeshShape(this.templerock.model.mesh)
+                                        .then(shape => {
+                                            this.templerock.addRigidBody({
+                                                friction: 0.5,
+                                                rollingFriction: 1,
+                                                restitution: 0.0,
+                                                mass: 0
+                                            }, shape, new Vector3(0, 0.0, -10));
+                                        });
+                                });
+
             this.racetrack = new GameObject('racetrack', null, false, false, true, true);
             this.racetrack.LoadModel('racetrack', './assets/models/racetrack.glb', true)
                 .then(() => {
@@ -219,36 +299,6 @@ export default class MainGame{
                                 }, shape, new Vector3(0, 0.075, -25));
                             });
                     });
-
-/*sa
-            this.racetrackbarrie1 = new GameObject('racetrackbarrier1', null, false, false, true, true);
-            this.racetrackbarrie1.LoadModel('racetrackbarrier1', './assets/models/racetrackbarrier1.glb', true)
-                .then(() => {
-                    Physics.createMeshShape(this.racetrackbarrie1.model.mesh)
-                        .then(shape => {
-                            this.racetrackbarrie1.addRigidBody({
-                                friction: 0.5,
-                                rollingFriction: 1,
-                                restitution: 0.0,
-                                mass: 0
-                            }, shape, new Vector3(-50, 0.0, -50));
-                        });
-                });
-
-                this.racetrackbarrier2 = new GameObject('racetrackbarrier2', null, false, false, true, true);
-                this.racetrackbarrier2.LoadModel('racetrackbarrier2', './assets/models/racetrackbarrier2.glb', true)
-                    .then(() => {
-                        Physics.createMeshShape(this.racetrackbarrier2.model.mesh)
-                            .then(shape => {
-                                this.racetrackbarrier2.addRigidBody({
-                                    friction: 0.5,
-                                    rollingFriction: 1,
-                                    restitution: 0.0,
-                                    mass: 0
-                                }, shape, new Vector3(-50, 0.0, -50));
-                            });
-                    });
-    */
 
             this.parkinglotcurb = new GameObject('parkinglotcurb', null, false, true, true, true);
             this.parkinglotcurb.LoadModel('parkinglotcurb', './assets/models/parkinglotcurb.glb', true)
@@ -409,7 +459,7 @@ export default class MainGame{
                 accelForceFront: 180,
                 accelForceBack: 250,
                 accelRate: 1,
-                downForce: 0.15,
+                downForce: 0.05,
                 topSpeed: 200,
                 bodyWidth: 1.15,
                 bodyHeight: 0.5,
@@ -422,12 +472,12 @@ export default class MainGame{
                 bodyModel: './assets/models/sportscar.glb',
                 wheelLeftModel: './assets/models/sportscarwheelLeft.glb',
                 wheelRightModel: './assets/models/sportscarwheelRight.glb',
-                stiffness: 250.0,
+                stiffness: 100.0,
                 damping: 10,
-                compression: 2.5,
-                backFriction: 1,
-                frontFriction: 1.0,
-                roll: 0.1,
+                compression: 1.4,
+                backFriction:0.95,
+                frontFriction: 1,
+                roll: 0.2,
                 radius: 0.25,
                 suspensionLen: 0.075,
                 backLeftPos: new Vector3(-0.45, -0.23, -0.62),
@@ -443,9 +493,9 @@ export default class MainGame{
                 accelRate: 1,
                 downForce: 0.15,
                 topSpeed: 322,
-                bodyWidth: 1.15,
-                bodyHeight: 0.35,
-                bodyLength: 2.128,
+                bodyWidth: 1.03,
+                bodyHeight: 0.395    ,
+                bodyLength: 2.21,
                 mass: 100,
                 enginePitch: 50,
                 position: new Vector3(-35.883, 0.295, -6.466),
@@ -459,13 +509,13 @@ export default class MainGame{
                 compression: 2.4,
                 backFriction: 1.95,
                 frontFriction:2,
-                roll: 0.0,
+                roll: 0.2,
                 radius: 0.25,
                 suspensionLen: 0.01,
-                backLeftPos: new Vector3(-0.4, 0, -0.8),
-                backRightPos: new Vector3(0.4, 0, -0.8),
-                frontRightPos: new Vector3(0.4, 0, 0.67),
-                frontLeftPos: new Vector3(-0.4, 0, 0.67),
+                backLeftPos: new Vector3(-0.4, -0.05, -0.8),
+                backRightPos: new Vector3(0.4, -0.05, -0.8),
+                frontRightPos: new Vector3(0.4, -0.05, 0.67),
+                frontLeftPos: new Vector3(-0.4, -0.05, 0.67),
             });
 
             this.vehicle5 = new Vehicle({
@@ -507,9 +557,9 @@ export default class MainGame{
                 accelRate: 3,
                 downForce: 0.2,
                 topSpeed: 160,
-                bodyWidth: 1.0,
-                bodyHeight: 1.0,
-                bodyLength: 2.128,
+                bodyWidth: 1,
+                bodyHeight: 0.747,
+                bodyLength: 2.45,
                 mass: 300,
                 enginePitch: -100,
                 position: new Vector3(-30.404, 0.649, -8.43),
@@ -518,7 +568,7 @@ export default class MainGame{
                 bodyModel: './assets/models/pickup.glb',
                 wheelLeftModel: './assets/models/pickupwheelLeft.glb',
                 wheelRightModel: './assets/models/pickupwheelRight.glb',
-                stiffness: 50.0,
+                stiffness: 100.0,
                 damping: 2.3,
                 compression: 1.4,
                 backFriction: 0.95,
@@ -526,10 +576,10 @@ export default class MainGame{
                 roll: .25,
                 radius: 0.25,
                 suspensionLen: 0.125,
-                backLeftPos: new Vector3(-0.425, -0.3, -0.79),
-                backRightPos: new Vector3(0.425, -0.3, -0.79),
-                frontRightPos: new Vector3(0.425, -0.3, 0.71),
-                frontLeftPos: new Vector3(-0.425, -0.3, 0.71),
+                backLeftPos: new Vector3(-0.425, -0.32, -0.79),
+                backRightPos: new Vector3(0.425, -0.32, -0.79),
+                frontRightPos: new Vector3(0.425, -0.32, 0.71),
+                frontLeftPos: new Vector3(-0.425, -0.32, 0.71),
             });
             resolve(true);  // This needs to be better
         });

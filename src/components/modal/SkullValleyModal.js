@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
-import auctionBentoBanner from '../../images/auctionbentologo.png';
+import mightychickenbanner from '../../images/mightychickenlogo.png';
 
 export default props => {
     const { isOpen, closeModal } = props;
@@ -20,13 +20,13 @@ export default props => {
             width: 'auto',
         },
         image: {
-            backgroundImage: "url(" + auctionBentoBanner + ")",
-            backgroundSize: "contain",
+            backgroundImage: "url(" + mightychickenbanner + ")",
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
+            backgroundSize: 'contain',
             width: "100%",
             height: "30%",
-            margin: '0px'
+            margin: '10px'
         },
         promoText: {
             width: '100%',
@@ -56,16 +56,16 @@ export default props => {
         main: {
             position: 'absolute',
             width: '600px',
-            minWidth: '400px',
             height: '65%',
-            backgroundColor: '#247d79',
+            backgroundColor: 'rgb(100%, 54.9%, 0%)',
             border: '0px solid #000',
             boxShadow: theme.shadows[5],
             padding: theme.spacing(2, 4, 3),
-            outline: 'none'
+            outline: 'none',
+            minWidth: '400px'
         },
         button: {
-            backgroundColor: '#558a9d',
+            backgroundColor: 'rgb(78.8%, 43.4%, 0.2%)',
             border: '0px solid #000',
             boxShadow: theme.shadows[5],
             padding: theme.spacing(2, 4, 3),
@@ -75,33 +75,46 @@ export default props => {
     }));
 
     const classes = useStyles();
-
+  
     return (
         <Modal
             open={isOpen}
             onClose={closeModal}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description">
-
+     
+            
             <div style={styles.modal} className={classes.main}>
 
                 <div style={styles.image}></div>
- 
+
                 <div style={styles.promoText}>
-                    <p>Auction Bento - eBay Sellers Fee calculator for iPhone and iPad.</p>  
-                    <div>eBay Sellers Fee calculator was an iOS app that allowed users to quickly </div>  
-                    <div> calculate profitablity by calculating eBay and paypal fees.</div>
+                    Dodge the mutant robo fish, killer bomb, spinning blades and poisonous arrow! Avoid getting sliced in half in the spear cave.
                 </div>
 
                 <div style={styles.promoText}>
-                    <div>Mobile App</div>
-                    <div style={styles.contentText}> - Objective C</div>
-                    <div style={styles.contentText}> - UIKit </div>
-                    <div>Backend</div>
-                    <div style={styles.contentText}> - PHP backend with MySQL </div>
-                    <div style={styles.contentText}> - Serve in-house ads and affiliate ads </div>
-                    <div style={styles.contentText}> - Dashboard to manage ads made with HTML, Javascript and CSS</div>
-        
+                    <div style={styles.contentText}> - Unity 3D on Android and iOS </div>
+                    <div style={styles.contentText}> - Firebase integration </div>
+                    <div style={styles.contentText}> - Admob and Unity Ads for interstitial ads and reward ads </div>
+                    <div style={styles.contentText}> - Game Center integration on iOS and Google Play Services integration on Android </div>
+                    <div style={styles.contentText}> - Push notification </div>
+                    <div style={styles.contentText}> - In App Purchases </div>
+                </div>
+
+                <div style={{ width: '100%' }}>
+
+                    <div style={styles.linkSection}>
+                        <span style={styles.linkText}>Apple App Store:</span> <a href='https://itunes.apple.com/us/app/mighty-chicken-and-friends/id1422459374?ls=1' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Mighty Chicken iOS</a>
+                    </div>
+
+                    <div style={styles.linkSection}>
+                        <span style={styles.linkText}>Google Play Store:</span>  <a href='https://play.google.com/store/apps/details?id=com.intoxic8studio.mightychicken' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Mighty Chicken Android</a>
+                    </div>
+
+                    <div style={styles.linkSection}>
+                        <span style={styles.linkText}>Website:</span>  <a href='http://www.themightychicken.com/' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Mighty Chicken</a>
+                    </div>
+
                 </div>
 
                 <Button style={styles.closeButton} className={classes.button} onClick={closeModal}>Close</Button>
