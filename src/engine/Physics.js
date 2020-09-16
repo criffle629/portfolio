@@ -133,7 +133,7 @@ class PhysicsEngine {
     update() {
         // Using fixed time step based off of frame rate.  This seems very hacky but gives a fairly stable simulation
         if (Time.physicsRate === Infinity) Time.physicsRate = 0;
-        this.world.stepSimulation( 1 / 60,Time.physicsRate, 10);
+        this.world.stepSimulation( Time.physicsRate, Time.deltaTime, 10);
     }
 }
 
