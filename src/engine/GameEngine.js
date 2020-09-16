@@ -13,7 +13,7 @@ class Engine {
     constructor() {
         this.fps = 0;
         this.fpsTime = 0;
-    
+        this.frameRate = 0;
         this.mainGame = new MainGame();
         this.mainGame.Init();
     }
@@ -45,7 +45,7 @@ class Engine {
         return this.renderer.renderer;
     }
 
-    Animate = () => {
+    Animate = (elapsed) => {
 
         if (this.isModalOpen()) {
             Gamepad.clearButtons();
@@ -53,14 +53,14 @@ class Engine {
         }
 
         Gamepad.update();
-        Time.Update();
+        Time.Update(elapsed);
 
      
        
         this.mainGame.update();
-
         Scene.update();
-
+        Physics.update();
+        
         if (PostProcessing.isUsingEffects())
             PostProcessing.render();
         else
@@ -69,12 +69,13 @@ class Engine {
         this.fpsTime += Time.deltaTime;
         this.fps++;
         if (this.fpsTime >= 1) {
-            //   document.title = this.fps + ' fps';
+               document.title = this.fps + ' fps';
+            this.frameRate = parseFloat(this.fps);
             this.fps = 0;
             this.fpsTime = 0;
         }
 
-        Physics.update();
+       
     }
 }
 

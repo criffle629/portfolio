@@ -1,5 +1,6 @@
 import Time from './Time';
 import Ammo from 'ammo.js';
+import GameEngine from './GameEngine';
 
 class PhysicsEngine {
 
@@ -130,7 +131,9 @@ class PhysicsEngine {
     }
 
     update() {
-        this.world.stepSimulation(Time.deltaTime, 10);
+        console.log(Time.physicsRate)
+        if (Time.physicsRate === Infinity) Time.physicsRate = 0;
+        this.world.stepSimulation( 1 / 60,Time.physicsRate, 10);
     }
 }
 

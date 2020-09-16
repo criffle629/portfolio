@@ -58,7 +58,7 @@ export default props => {
             width: '600px',
             minWidth: '400px',
             height: '65%',
-            backgroundColor: '#235775e0',
+            backgroundColor: '#235775',
             border: '0px solid #000',
             boxShadow: theme.shadows[5],
             padding: theme.spacing(2, 4, 3),

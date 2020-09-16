@@ -4,48 +4,42 @@ import Quaternion from '../engine/Quaternion';
 import MathTools from '../engine/MathTools';
 import Input from '../engine/Input';
 import Gamepad from '../engine/Gamepad';
+import Time from '../engine/Time';
 
-export default class CameraController{
-    constructor(offset){
+export default class CameraController {
+    constructor(offset) {
         this.offset = offset;
         this.fixedCameraMode = true;
-        
+
     }
 
-    update(){
+    update() {
         if (Input.isKeyPressed('c') || Gamepad.isButtonPressed(Gamepad.Buttons.BUMPER_LEFT))
             this.fixedCameraMode = !this.fixedCameraMode;
     }
 
-    lateUpdate(){
-           
-    if (this.fixedCameraMode)
-        this.fixedCamera();
-    else
-        this.followCamera();
-
-   
+    lateUpdate() {
+        if (this.fixedCameraMode)
+            this.fixedCamera();
+        else
+            this.followCamera();
     }
 
-    fixedCamera(){
+    fixedCamera() {
         if (Camera.target === null) return;
 
-        
-        Camera.position = Vector3.Add(Camera.target.position, this.offset);
+        const newPos = Vector3.Add(Camera.target.position, this.offset);
+
+        Camera.position = Vector3.LerpUnclamped(Camera.position, newPos,   (7 * Time.deltaTime));
         Camera.rotation = Quaternion.LookAt(Camera.position, Camera.target.position, Vector3.up);
 
         Camera.SetPosition(Camera.position);
 
-        const rot = Camera.rotation.Euler();
-        rot.x *= MathTools.deg2Rad;
-        rot.y *= MathTools.deg2Rad;
-        rot.z *= MathTools.deg2Rad;
-
-        Camera.Rotate(rot);
+        Camera.mainCamera.lookAt(Camera.target.position.x, Camera.target.position.y, Camera.target.position.z);
     }
 
-    followCamera(){
-     
+    followCamera() {
+
         if (Camera.target === null) return;
 
         Camera.rotation = Quaternion.LookAt(Camera.position, Camera.target.position, Vector3.up);
@@ -55,15 +49,16 @@ export default class CameraController{
         euler.z *= MathTools.rad2Deg;
 
         const quat = Quaternion.FromEuler(euler.x, euler.y, euler.z);
-        let forward  =  new Vector3(0, 0, -4);
+        let forward = new Vector3(0, 0, -4);
         forward.rotate(quat);
-        
+
         forward.y = Camera.target.position.y + 1;
-      
-        Camera.SetPosition(Vector3.Add(Camera.target.position,  forward));
-        
-        Camera.mainCamera.lookAt(Camera.target.position.x, Camera.target.position.y, Camera.target.position.z)
-      
- 
+        let camPos = Vector3.LerpUnclamped(Camera.position, Vector3.Add(Camera.target.position, forward),   (7 * Time.deltaTime));
+       
+        Camera.SetPosition(camPos);
+
+        Camera.mainCamera.lookAt(Camera.target.position.x, Camera.target.position.y, Camera.target.position.z);
+
+
     }
 }

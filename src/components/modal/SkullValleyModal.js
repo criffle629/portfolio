@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
-import mightychickenbanner from '../../images/mightychickenlogo.png';
+import skullvalleybanner from '../../images/skullvalleylogo.png';
 
 export default props => {
     const { isOpen, closeModal } = props;
@@ -20,7 +20,7 @@ export default props => {
             width: 'auto',
         },
         image: {
-            backgroundImage: "url(" + mightychickenbanner + ")",
+            backgroundImage: "url(" + skullvalleybanner + ")",
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'contain',
@@ -57,7 +57,7 @@ export default props => {
             position: 'absolute',
             width: '600px',
             height: '65%',
-            backgroundColor: 'rgb(100%, 54.9%, 0%)',
+            backgroundColor: '#247d79',
             border: '0px solid #000',
             boxShadow: theme.shadows[5],
             padding: theme.spacing(2, 4, 3),
@@ -65,7 +65,7 @@ export default props => {
             minWidth: '400px'
         },
         button: {
-            backgroundColor: 'rgb(78.8%, 43.4%, 0.2%)',
+            backgroundColor: '#134c49',
             border: '0px solid #000',
             boxShadow: theme.shadows[5],
             padding: theme.spacing(2, 4, 3),
@@ -89,7 +89,7 @@ export default props => {
                 <div style={styles.image}></div>
 
                 <div style={styles.promoText}>
-                    Dodge the mutant robo fish, killer bomb, spinning blades and poisonous arrow! Avoid getting sliced in half in the spear cave.
+                    Skull Valley is an iOS and Android game currently in development.  Dodge obstacles and traps to escape a clumbsy death.
                 </div>
 
                 <div style={styles.promoText}>
@@ -99,20 +99,16 @@ export default props => {
                     <div style={styles.contentText}> - Game Center integration on iOS and Google Play Services integration on Android </div>
                     <div style={styles.contentText}> - Push notification </div>
                     <div style={styles.contentText}> - In App Purchases </div>
+                    <div style={styles.contentText}> - Procedurally generated levels </div>
+                    <div style={styles.contentText}> - Native plugins coded in C++ and Objective C </div>
+                    <div style={styles.contentText}> - Timed reward events </div>
                 </div>
 
                 <div style={{ width: '100%' }}>
 
+    
                     <div style={styles.linkSection}>
-                        <span style={styles.linkText}>Apple App Store:</span> <a href='https://itunes.apple.com/us/app/mighty-chicken-and-friends/id1422459374?ls=1' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Mighty Chicken iOS</a>
-                    </div>
-
-                    <div style={styles.linkSection}>
-                        <span style={styles.linkText}>Google Play Store:</span>  <a href='https://play.google.com/store/apps/details?id=com.intoxic8studio.mightychicken' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Mighty Chicken Android</a>
-                    </div>
-
-                    <div style={styles.linkSection}>
-                        <span style={styles.linkText}>Website:</span>  <a href='http://www.themightychicken.com/' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Mighty Chicken</a>
+                        <span style={styles.linkText}>Website:</span>  <a href='http://www.skullvalleygame.com' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Skull Valley</a>
                     </div>
 
                 </div>

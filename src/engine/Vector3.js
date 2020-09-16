@@ -35,20 +35,13 @@ export default class Vector3 {
         const d2 = (quat.w * quat.w - Vector3.Dot(v, v));
         
         let vOut = new Vector3();
-
-        vOut.x = d1 * v.x;
-        vOut.y = d1 * v.y;
-        vOut.z = d1 * v.z;
-
-        vOut.x += d2 * this.x;
-        vOut.y += d2 * this.y;
-        vOut.z += d2 * this.z;
+        vOut = Vector3.MultiplyScalar(v, d1);
+        vOut = Vector3.Add(vOut, Vector3.MultiplyScalar(this, d2));
 
         let c1 = Vector3.Cross(v, this);
 
-        vOut.x += 2.0 * quat.w * c1.x;
-        vOut.y += 2.0 * quat.w * c1.y;
-        vOut.z += 2.0 * quat.w * c1.z;
+        c1 = Vector3.MultiplyScalar(c1, 2.0 * quat.w);
+        vOut = Vector3.Add(vOut, c1);
 
         this.x = vOut.x;
         this.y = vOut.y;
@@ -127,6 +120,24 @@ export default class Vector3 {
         return v;
     }
 
+    static Divide(v1, v2) {
+        let v = new Vector3(0.0, 0.0, 0.0);
+        v.x = v1.x / v2.x;
+        v.y = v1.y / v2.y;
+        v.z = v1.z / v2.z;
+
+        return v;
+    }
+
+
+    static DivideScalar(v1, scalar) {
+        let v = new Vector3(0.0, 0.0, 0.0);
+        v.x = v1.x / scalar;
+        v.y = v1.y / scalar;
+        v.z = v1.z / scalar;
+
+        return v;
+    }
 
     static AddScalar(v1, scalar) {
         let v = new Vector3(0.0, 0.0, 0.0);
@@ -173,25 +184,37 @@ export default class Vector3 {
         return distance;
     }
 
-    static Lerp(a, b, t)
+    static Lerp(from, to, dT)
     {
-        let out = b;
-        out.x = b.x - a.x;
-        out.y = b.y - a.y;
-        out.z = b.z - a.z;
+        let change = Vector3.Subtract(to, from);
+        const clampDt = MathTools.clamp(dT, 0.0, 1.0);
+        change = Vector3.MultiplyScalar(change, clampDt);
 
-        out.x *= MathTools.clamp(t, 0.0, 1.0);
-        out.y *= MathTools.clamp(t, 0.0, 1.0);
-        out.y *= MathTools.clamp(t, 0.0, 1.0);
-
-        a.x += out.x;
-        a.y += out.y;
-        a.z += out.z;
-
-        return a;
+        return Vector3.Add(from, change);
     }
 
+    static LerpUnclamped(from, to, dT)
+    {
+        let change = Vector3.Subtract(to, from);
+        change = Vector3.MultiplyScalar(change, dT);
 
+        return Vector3.Add(from, change);
+    }
+
+    static MoveTowards(from, to,  dT)
+    {
+        let vec = Vector3.Subtract(to, from);
+
+        let magnitude = vec.magnitude();
+        if (magnitude <= dT || MathTools.approximate(magnitude, 0.0))
+        {
+            return to;
+        }
+
+        vec = Vector3.Add(from, Vector3.MultiplyScalar(vec, dT));
+        return vec;
+    }
+    
     static Dot(v1, v2) {
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
