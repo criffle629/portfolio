@@ -1,6 +1,6 @@
 import Time from './Time';
 import Ammo from 'ammo.js';
-import GameEngine from './GameEngine';
+import Scene from './Scene';
 
 class PhysicsEngine {
 
@@ -39,10 +39,10 @@ class PhysicsEngine {
         return this.rigidBodies[this.rigidBodies.length - 1];
     }
 
-    removeRigidBody(body){
+    removeRigidBody(body) {
         this.world.removeRigidBody(body);
     }
-    
+
     createSphereShape(radius = 1) {
         let shape = new Ammo.btSphereShape(radius);
         shape.setMargin(0.05);
@@ -52,7 +52,7 @@ class PhysicsEngine {
 
     createBoxShape(boxSize) {
         let shape = new Ammo.btBoxShape(new Ammo.btVector3(boxSize.x * 0.5, boxSize.y * 0.5, boxSize.z * 0.5));
-        
+
         return shape;
     }
 
@@ -132,8 +132,10 @@ class PhysicsEngine {
 
     update() {
         // Using fixed time step based off of frame rate.  This seems very hacky but gives a fairly stable simulation
-        if (Time.physicsRate === Infinity) Time.physicsRate = 0;
-        this.world.stepSimulation( Time.physicsRate, Time.deltaTime, 10);
+        if (Time.physicsRate === Infinity || Time.physicsRate === 0 || !Scene.isLoaded())  
+            this.world.stepSimulation(Time.deltaTime, 10);
+        else
+            this.world.stepSimulation(Time.physicsRate, Time.deltaTime, 10);
     }
 }
 

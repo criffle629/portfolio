@@ -53,18 +53,12 @@ class Engine {
         }
 
         Gamepad.update();
-        Time.Update(elapsed);
+        Time.Update();
 
      
        
         this.mainGame.update();
         Scene.update();
-        Physics.update();
-        
-        if (PostProcessing.isUsingEffects())
-            PostProcessing.render();
-        else
-            this.renderer.Render(Scene.getScene(), Camera.mainCamera);
 
         this.fpsTime += Time.deltaTime;
         this.fps++;
@@ -74,6 +68,15 @@ class Engine {
             this.fps = 0;
             this.fpsTime = 0;
         }
+        
+        Physics.update();
+        
+        if (PostProcessing.isUsingEffects())
+            PostProcessing.render();
+        else
+            this.renderer.Render(Scene.getScene(), Camera.mainCamera);
+
+  
 
        
     }

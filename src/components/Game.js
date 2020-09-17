@@ -3,11 +3,14 @@ import Input from '../engine/Input';
 import GameEngine from '../engine/GameEngine';
 import Scene from '../engine/Scene';
 import Camera from '../engine/Camera';
+
 import RoadRacerModal from './modal/RoadRacerModal';
 import MightyChickenModal from './modal/MightyChickenModal';
 import PawsnfindModal from './modal/PawsnfindModal';
 import AuctionBentoModal from './modal/AuctionBentoModal';
 import SkullValleyModal from './modal/SkullValleyModal';
+import PortfolioModal from './modal/PortfolioModal';
+
 import MainMenuStadium from '../stadiumgame/ui/mainmenu';
 import StadiumGameUI from '../stadiumgame/ui/gameui';
 import MainGameUI from './MainGameUI/MainGameUI';
@@ -90,6 +93,7 @@ export default class Game extends React.Component {
                 <PawsnfindModal isOpen={this.state.currentModal === 'pawsnfind'} closeModal={this.closeModal}/>
                 <AuctionBentoModal isOpen={this.state.currentModal === 'auctionbento'} closeModal={this.closeModal} />
                 <SkullValleyModal isOpen={this.state.currentModal === 'skullvalley'} closeModal={this.closeModal} />
+                <PortfolioModal isOpen={this.state.currentModal === 'portfolio'} closeModal={this.closeModal} />
                 <StadiumGameUI isOpen={this.state.currentModal === 'stadiumui'} closeModal={this.closeModal} openModel={this.openModal}/>
                 <MainMenuStadium isOpen={this.state.currentModal === 'stadiummenu'} closeModal={this.closeModal} openModel={this.openModal}/>
                

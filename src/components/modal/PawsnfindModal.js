@@ -93,14 +93,16 @@ export default props => {
                 </div>
 
                 <div style={styles.promoText}>
-                    <div style={styles.contentText}> - React frontend with MaterialUI</div>
-                    <div style={styles.contentText}> - Redux </div>
-                    <div style={styles.contentText}> - Serparate dashboard for animal rescues and adopters </div>
-                    <div style={styles.contentText}> - Express.js backend with a Postgres database</div>
-                    <div style={styles.contentText}> - Stripe integration for rescues to receive donations. </div>
-                    <div style={styles.contentText}> - Bank accounts can be verified with stripe directly from Pawsnfind's dashboard </div>
-                    <div style={styles.contentText}> - Image hosting (Uploading and retrieval of images) using PHP and MySQL </div>
-                    <div style={styles.contentText}> - React frontend for image hosting for the creation of new accounts and api keys </div>
+                    <ul>
+                        <li style={styles.contentText}> React frontend with MaterialUI</li>
+                        <li style={styles.contentText}> Redux </li>
+                        <li style={styles.contentText}> Serparate dashboard for animal rescues and adopters </li>
+                        <li style={styles.contentText}> Express.js backend with a Postgres database </li>
+                        <li style={styles.contentText}> Stripe integration for rescues to receive donations. </li>
+                        <li style={styles.contentText}> Bank accounts can be verified with stripe directly from Pawsnfind's dashboard </li>
+                        <li style={styles.contentText}> Image hosting (Uploading and retrieval of images) using PHP and MySQL </li>
+                        <li style={styles.contentText}> React frontend for image hosting for the creation of new accounts and api keys </li>
+                    </ul>
                 </div>
 
                 <div style={{ width: '100%' }}>
@@ -116,7 +118,7 @@ export default props => {
                 <Button style={styles.closeButton} className={classes.button} onClick={closeModal}>Close</Button>
 
             </div>
-            
+
         </Modal>
     );
 }

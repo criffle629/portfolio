@@ -88,6 +88,9 @@ class VehicleController {
                 this.rkey.model.mesh.visible = false;
             }
         }
+        else{
+            this.rkey.model.mesh.visible = false;
+        }
     }
 
     findInRangeVehicle(pos){

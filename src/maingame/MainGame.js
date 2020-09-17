@@ -164,6 +164,7 @@ export default class MainGame{
             InfoStationManager.addInfoStation(new Vector3(28.144, 0, -10.426), 'pawsnfind');
             InfoStationManager.addInfoStation(new Vector3(37.3217, 0, -7.9411), 'auctionbento');
             InfoStationManager.addInfoStation(new Vector3(-77.743, 0, 6.29), 'skullvalley');
+            InfoStationManager.addInfoStation(new Vector3(41.966, 0, -3.468), 'portfolio');
 
             this.pawsnfind = new GameObject('pawsnfind', null, false, true, true, false);
             this.pawsnfind.LoadModel('pawsnfind', './assets/models/pawsnfind.glb', false)
@@ -193,6 +194,43 @@ export default class MainGame{
                                 }, shape, new Vector3(0, 0.0, -10));
                             });
                     });
+
+
+
+                this.portfolio = new GameObject('portfolio', null, false, true, true, false);
+                this.portfolio.LoadModel('portfolio', './assets/models/portfolio.glb', false)
+                    .then(() => {
+                        Physics.createMeshShape(this.portfolio.model.mesh)
+                            .then(shape => {
+                                this.portfolio.addRigidBody({
+                                    friction: 0.5,
+                                    rollingFriction: 1,
+                                    restitution: 0.0,
+                                    mass: 0
+                                }, shape, new Vector3(0, 0.0, -10));
+                            });
+                    });
+
+
+                this.barrier = new GameObject('barrier', null, false, true, true, false);
+                this.barrier.LoadModel('barrier', './assets/models/barrier.glb', false)
+                    .then(() => {
+                        Physics.createMeshShape(this.barrier.model.mesh)
+                            .then(shape => {
+                                this.barrier.addRigidBody({
+                                    friction: 0.5,
+                                    rollingFriction: 1,
+                                    restitution: 0.0,
+                                    mass: 0
+                                }, shape, new Vector3(0, 0.0, -10));
+                            });
+                    });
+
+
+                    this.constructionsign = new GameObject('constructionsign', null, false, true, true, false, new Vector3(0, 0.0, -10));
+                    this.constructionsign.LoadModel('constructionsign', './assets/models/constructionsign.glb', false);
+             
+
 
                     this.temple = new GameObject('temple', null, false, true, true, true);
                     this.temple.LoadModel('temple', './assets/models/temple.glb', true)

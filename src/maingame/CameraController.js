@@ -30,7 +30,7 @@ export default class CameraController {
 
         const newPos = Vector3.Add(Camera.target.position, this.offset);
 
-        Camera.position = Vector3.LerpUnclamped(Camera.position, newPos,   (7 * Time.deltaTime));
+        Camera.position = Vector3.LerpUnclamped(Camera.position, newPos,   (7 * Time.smoothDelta));
         Camera.rotation = Quaternion.LookAt(Camera.position, Camera.target.position, Vector3.up);
 
         Camera.SetPosition(Camera.position);
@@ -53,7 +53,7 @@ export default class CameraController {
         forward.rotate(quat);
 
         forward.y = Camera.target.position.y + 1;
-        let camPos = Vector3.LerpUnclamped(Camera.position, Vector3.Add(Camera.target.position, forward),   (7 * Time.deltaTime));
+        let camPos = Vector3.LerpUnclamped(Camera.position, Vector3.Add(Camera.target.position, forward),   (7 * Time.smoothDelta));
        
         Camera.SetPosition(camPos);
 

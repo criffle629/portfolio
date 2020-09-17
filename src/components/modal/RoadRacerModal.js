@@ -82,7 +82,7 @@ export default props => {
             onClose={closeModal}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description">
-                
+
             <div style={styles.modal} className={classes.main}>
 
                 <div style={styles.image}></div>
@@ -92,15 +92,17 @@ export default props => {
                 </div>
 
                 <div style={styles.promoText}>
-                    <div style={styles.contentText}> - Custom C++ engine on iOS </div>
-                    <div style={styles.contentText}> - Unity 3D on Android and Windows Phone </div>
-                    <div style={styles.contentText}> - PHP and MYSQL backend to facilitate in game events and app usage insight </div>
-                    <div style={styles.contentText}> - Firebase integration </div>
-                    <div style={styles.contentText}> - Admob for interstitial ads and reward ads </div>
-                    <div style={styles.contentText}> - Game Center integration on iOS and Google Play Services integration on Android </div>
-                    <div style={styles.contentText}> - Push notification </div>
-                    <div style={styles.contentText}> - In App Purchases (consumable and non-consumable) </div>
-                    <div style={styles.contentText}> - Procedurally generated levels </div>
+                    <ul>
+                        <li style={styles.contentText}> Custom C++ engine on iOS </li>
+                        <li style={styles.contentText}> Unity 3D on Android and Windows Phone </li>
+                        <li style={styles.contentText}> PHP and MYSQL backend to facilitate in game events and app usage insight </li>
+                        <li style={styles.contentText}> Firebase integration </li>
+                        <li style={styles.contentText}> Admob for interstitial ads and reward ads </li>
+                        <li style={styles.contentText}> Game Center integration on iOS and Google Play Services integration on Android </li>
+                        <li style={styles.contentText}> Push notification </li>
+                        <li style={styles.contentText}> In App Purchases (consumable and non-consumable) </li>
+                        <li style={styles.contentText}> Procedurally generated levels </li>
+                    </ul>
                 </div>
 
                 <div style={{ width: '100%' }}>
@@ -120,7 +122,7 @@ export default props => {
                 </div>
 
                 <Button style={styles.closeButton} className={classes.button} onClick={closeModal}>Close</Button>
-                
+
             </div>
         </Modal>
     );

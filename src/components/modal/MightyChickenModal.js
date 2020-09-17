@@ -75,15 +75,15 @@ export default props => {
     }));
 
     const classes = useStyles();
-  
+
     return (
         <Modal
             open={isOpen}
             onClose={closeModal}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description">
-     
-            
+
+
             <div style={styles.modal} className={classes.main}>
 
                 <div style={styles.image}></div>
@@ -93,12 +93,14 @@ export default props => {
                 </div>
 
                 <div style={styles.promoText}>
-                    <div style={styles.contentText}> - Unity 3D on Android and iOS </div>
-                    <div style={styles.contentText}> - Firebase integration </div>
-                    <div style={styles.contentText}> - Admob and Unity Ads for interstitial ads and reward ads </div>
-                    <div style={styles.contentText}> - Game Center integration on iOS and Google Play Services integration on Android </div>
-                    <div style={styles.contentText}> - Push notification </div>
-                    <div style={styles.contentText}> - In App Purchases </div>
+                    <ul>
+                        <li style={styles.contentText}> Unity 3D on Android and iOS </li>
+                        <li style={styles.contentText}> Firebase integration </li>
+                        <li style={styles.contentText}> Admob and Unity Ads for interstitial ads and reward ads </li>
+                        <li style={styles.contentText}> Game Center integration on iOS and Google Play Services integration on Android </li>
+                        <li style={styles.contentText}> Push notification </li>
+                        <li style={styles.contentText}> In App Purchases </li>
+                    </ul>
                 </div>
 
                 <div style={{ width: '100%' }}>
@@ -120,7 +122,7 @@ export default props => {
                 <Button style={styles.closeButton} className={classes.button} onClick={closeModal}>Close</Button>
 
             </div>
-            
+
         </Modal>
     );
 }
