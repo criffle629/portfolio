@@ -1,6 +1,5 @@
 import Time from './Time';
 import Ammo from 'ammo.js';
-import Scene from './Scene';
 
 class PhysicsEngine {
 
@@ -132,10 +131,9 @@ class PhysicsEngine {
 
     update() {
         // Using fixed time step based off of frame rate.  This seems very hacky but gives a fairly stable simulation
-        if (Time.physicsRate === Infinity || Time.physicsRate === 0 || !Scene.isLoaded())  
+ 
             this.world.stepSimulation(Time.deltaTime, 10);
-        else
-            this.world.stepSimulation(Time.physicsRate, Time.deltaTime, 10);
+ 
     }
 }
 

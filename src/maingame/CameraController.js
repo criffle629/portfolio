@@ -10,6 +10,7 @@ export default class CameraController {
     constructor(offset) {
         this.offset = offset;
         this.fixedCameraMode = true;
+        this.locked = true;
 
     }
 
@@ -30,7 +31,13 @@ export default class CameraController {
 
         const newPos = Vector3.Add(Camera.target.position, this.offset);
 
-        Camera.position = Vector3.LerpUnclamped(Camera.position, newPos,   (7 * Time.smoothDelta));
+        if (Vector3.Distance(Camera.position, newPos) > 0.2 && !this.locked)
+            Camera.position = Vector3.LerpUnclamped(Camera.position, newPos,   (30 * Time.smoothDelta));
+        else
+        {
+            this.locked = true;
+            Camera.position = newPos;
+        }
         Camera.rotation = Quaternion.LookAt(Camera.position, Camera.target.position, Vector3.up);
 
         Camera.SetPosition(Camera.position);
@@ -41,6 +48,8 @@ export default class CameraController {
     followCamera() {
 
         if (Camera.target === null) return;
+
+        this.locked = false;
 
         Camera.rotation = Quaternion.LookAt(Camera.position, Camera.target.position, Vector3.up);
         let euler = Camera.target.rotation.Euler();

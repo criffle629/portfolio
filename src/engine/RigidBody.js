@@ -78,6 +78,11 @@ export default class RigidBody {
         this.body.applyCentralForce(force.to_btVector3());
     }
 
+    AddImpulseForce(force) {
+        this.body.applyCentralImpulse(force.to_btVector3());
+    }
+
+
     AddForceAt(force, position) {
         this.body.applyForce(force.to_btVector3(), position.to_btVector3());
     }
