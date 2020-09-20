@@ -130,7 +130,6 @@ class PhysicsEngine {
     }
 
     update() {
-        // Using fixed time step based off of frame rate.  This seems very hacky but gives a fairly stable simulation
  
             this.world.stepSimulation(Time.deltaTime, 10);
  
