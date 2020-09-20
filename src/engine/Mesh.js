@@ -51,6 +51,11 @@ export default class Mesh {
                             child.material.side = THREE.FrontSide;
                         if (this.flatShading)
                             child.material.flatShading = this.flatShading;
+
+                        if (child.material.map){
+                  
+                            child.material.map.anisotropy = 16;
+                        }
                     }
                 });
 
