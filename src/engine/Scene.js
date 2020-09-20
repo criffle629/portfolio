@@ -23,7 +23,6 @@ class SceneManager {
     }
 
     addGameObject(obj) {
-
         if (obj.objID in this.disabledObjects)
             this.enableObject(obj);
         else
@@ -54,7 +53,6 @@ class SceneManager {
     }
 
     update() {
-
         for (let obj in this.enabledObjects) {
             this.enabledObjects[obj].update();
         }
@@ -92,5 +90,4 @@ class SceneManager {
 }
 
 const Scene = new SceneManager();
-
 export default Scene;

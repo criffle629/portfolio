@@ -62,9 +62,7 @@ export default props => {
         closeModal();
     }
 
-    function multiplayerClicked(){
-
-    }
+    function multiplayerClicked(){}
 
     return (
         <Modal
@@ -78,8 +76,6 @@ export default props => {
                     Road Racer League
                 </div>
                 <div style={styles.modal} className={classes.main}>
-
-
                     <div style={styles.buttonGroup}>
                         <Button style={styles.buttons} className={classes.button} onClick={practiceClicked}>Practice</Button>
                         <Button style={styles.buttons} className={classes.button} onClick={multiplayerClicked}>Multiplayer</Button>

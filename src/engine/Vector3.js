@@ -8,8 +8,6 @@ export default class Vector3 {
         this.x = x;
         this.y = y;
         this.z = z;
-        
-  
     }
 
     set(x, y, z){
@@ -129,7 +127,6 @@ export default class Vector3 {
         return v;
     }
 
-
     static DivideScalar(v1, scalar) {
         let v = new Vector3(0.0, 0.0, 0.0);
         v.x = v1.x / scalar;
@@ -184,8 +181,7 @@ export default class Vector3 {
         return distance;
     }
 
-    static Lerp(from, to, dT)
-    {
+    static Lerp(from, to, dT){
         let change = Vector3.Subtract(to, from);
         const clampDt = MathTools.clamp(dT, 0.0, 1.0);
         change = Vector3.MultiplyScalar(change, clampDt);
@@ -193,16 +189,14 @@ export default class Vector3 {
         return Vector3.Add(from, change);
     }
 
-    static LerpUnclamped(from, to, dT)
-    {
+    static LerpUnclamped(from, to, dT){
         let change = Vector3.Subtract(to, from);
         change = Vector3.MultiplyScalar(change, dT);
 
         return Vector3.Add(from, change);
     }
 
-    static MoveTowards(from, to,  dT)
-    {
+    static MoveTowards(from, to,  dT){
         let vec = Vector3.Subtract(to, from);
 
         let magnitude = vec.magnitude();

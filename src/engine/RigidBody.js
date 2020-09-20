@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from 'uuid';
 export default class RigidBody {
    
     constructor(position = new Vector3(0, 0, 0), shape, rotation = Quaternion.Identity(), options = { mass: 0, friction: 1, rollingFriction: 1, restitution: 0.8 }) {
-
         this.isKinematic = false;
         this.active = true;
         this.mass = options.mass;
@@ -46,7 +45,6 @@ export default class RigidBody {
         this.body.setCcdSweptSphereRadius(0.2);
         this.body.setRestitution(this.restitution);
 
-       
         this.SetKinematic(MathTools.approximate(this.mass, 0.0));
         Physics.addRigidBody(this.body);
     }
@@ -81,7 +79,6 @@ export default class RigidBody {
     AddImpulseForce(force) {
         this.body.applyCentralImpulse(force.to_btVector3());
     }
-
 
     AddForceAt(force, position) {
         this.body.applyForce(force.to_btVector3(), position.to_btVector3());

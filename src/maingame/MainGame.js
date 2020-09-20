@@ -11,11 +11,11 @@ import InfoStationManager from './InfoStationManager';
 import Light from '../engine/Light';
 import Ball from '../engine/Ball';
 import VehicleManager from '../engine/VehicleManager';
-import CameraController from './CameraController';  
+import CameraController from './CameraController';
 
-export default class MainGame{
+export default class MainGame {
     Init() {
-     
+
         this.ball = new Ball({
             position: new Vector3(0.0, 2.0, -20.0),
             rotation: Quaternion.Identity(),
@@ -50,8 +50,6 @@ export default class MainGame{
             intensity: 0.5
         });
 
-   
-
         this.Load().then(() => { });
     }
 
@@ -59,20 +57,20 @@ export default class MainGame{
         return await new Promise((resolve, reject) => {
             this.player = new Player('player', null, true, true, true, new Vector3(0, 1, 0), Quaternion.FromEuler(0, 180, 0));
             this.player.LoadModel('player', './assets/models/chris.glb', true)
-            .then(() => {
-                this.player.addRigidBody({
-                    friction: 0.5,
-                    rollingFriction: 0,
-                    restitution: 0.5,
-                    mass: 1
-                }, Physics.createCapsuleShape(0.25, 0.5, Vector3.up), new Vector3(0, 1, 0));
-            });
+                .then(() => {
+                    this.player.addRigidBody({
+                        friction: 0.5,
+                        rollingFriction: 0,
+                        restitution: 0.5,
+                        mass: 1
+                    }, Physics.createCapsuleShape(0.25, 0.5, Vector3.up), new Vector3(0, 1, 0));
+                });
 
             this.ground = new GameObject('ground', './assets/models/ground.glb', false, false, true,);
             this.ground.addRigidBody({
                 friction: 1,
                 rollingFriction: 1,
-                restitution: 0.5   ,
+                restitution: 0.5,
                 mass: 0
             }, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
 
@@ -127,8 +125,6 @@ export default class MainGame{
                 });
 
             this.mightychicken = new GameObject('mightychicken', null, false, true, true, true);
-
-
             this.mightychicken.LoadModel('mightychicken', './assets/models/mightychicken.glb', true)
                 .then(() => {
                     Physics.createMeshShape(this.mightychicken.model.mesh)
@@ -143,8 +139,6 @@ export default class MainGame{
                 });
 
             this.mightychickensign = new GameObject('mightychickensign', null, false, true, true, true);
-
-
             this.mightychickensign.LoadModel('mightychickensign', './assets/models/mightychickensign.glb', true)
                 .then(() => {
                     Physics.createMeshShape(this.mightychickensign.model.mesh)
@@ -157,7 +151,6 @@ export default class MainGame{
                             }, shape, new Vector3(0, 0, -10));
                         });
                 });
- 
 
             InfoStationManager.addInfoStation(new Vector3(-19.921, 0, -7.5799), 'roadracer');
             InfoStationManager.addInfoStation(new Vector3(-41.183, 0, -0.5502), 'mightychicken');
@@ -180,135 +173,126 @@ export default class MainGame{
                         });
                 });
 
-
-                this.bentogirl = new GameObject('bentogirl', null, false, true, true, false);
-                this.bentogirl.LoadModel('bentogirl', './assets/models/bentogirl.glb', false)
-                    .then(() => {
-                        Physics.createMeshShape(this.bentogirl.model.mesh)
-                            .then(shape => {
-                                this.bentogirl.addRigidBody({
-                                    friction: 0.5,
-                                    rollingFriction: 1,
-                                    restitution: 0.0,
-                                    mass: 0
-                                }, shape, new Vector3(0, 0.0, -10));
-                            });
-                    });
-
-
-
-                this.portfolio = new GameObject('portfolio', null, false, true, true, false);
-                this.portfolio.LoadModel('portfolio', './assets/models/portfolio.glb', false)
-                    .then(() => {
-                        Physics.createMeshShape(this.portfolio.model.mesh)
-                            .then(shape => {
-                                this.portfolio.addRigidBody({
-                                    friction: 0.5,
-                                    rollingFriction: 1,
-                                    restitution: 0.0,
-                                    mass: 0
-                                }, shape, new Vector3(0, 0.0, -10));
-                            });
-                    });
-
-
-                this.barrier = new GameObject('barrier', null, false, true, true, false);
-                this.barrier.LoadModel('barrier', './assets/models/barrier.glb', false)
-                    .then(() => {
-                        Physics.createMeshShape(this.barrier.model.mesh)
-                            .then(shape => {
-                                this.barrier.addRigidBody({
-                                    friction: 0.5,
-                                    rollingFriction: 1,
-                                    restitution: 0.0,
-                                    mass: 0
-                                }, shape, new Vector3(0, 0.0, -10));
-                            });
-                    });
-
-
-                    this.constructionsign = new GameObject('constructionsign', null, false, true, true, false, new Vector3(0, 0.0, -10));
-                    this.constructionsign.LoadModel('constructionsign', './assets/models/constructionsign.glb', false);
-             
-
-
-                    this.temple = new GameObject('temple', null, false, true, true, true);
-                    this.temple.LoadModel('temple', './assets/models/temple.glb', true)
-                        .then(() => {
-                            Physics.createMeshShape(this.temple.model.mesh)
-                                .then(shape => {
-                                    this.temple.addRigidBody({
-                                        friction: 0.5,
-                                        rollingFriction: 1,
-                                        restitution: 0.0,
-                                        mass: 0
-                                    }, shape, new Vector3(0, 0.0, -10));
-                                });
+            this.bentogirl = new GameObject('bentogirl', null, false, true, true, false);
+            this.bentogirl.LoadModel('bentogirl', './assets/models/bentogirl.glb', false)
+                .then(() => {
+                    Physics.createMeshShape(this.bentogirl.model.mesh)
+                        .then(shape => {
+                            this.bentogirl.addRigidBody({
+                                friction: 0.5,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0.0, -10));
                         });
+                });
 
-                        this.svlogo = new GameObject('svlogo', null, false, true, true, true);
-                        this.svlogo.LoadModel('svlogo', './assets/models/svlogo.glb', true)
-                            .then(() => {
-                                Physics.createMeshShape(this.svlogo.model.mesh)
-                                    .then(shape => {
-                                        this.svlogo.addRigidBody({
-                                            friction: 0.5,
-                                            rollingFriction: 1,
-                                            restitution: 0.0,
-                                            mass: 0
-                                        }, shape, new Vector3(0, 0.0, -10));
-                                    });
-                            });
-
-                            this.svlogoarrows = new GameObject('svlogoarrows', null, false, true, true, true);
-                            this.svlogoarrows.LoadModel('svlogoarrows', './assets/models/svlogoarrows.glb', true)
-                                .then(() => {
-                                    Physics.createMeshShape(this.svlogoarrows.model.mesh)
-                                        .then(shape => {
-                                            this.svlogoarrows.addRigidBody({
-                                                friction: 0.5,
-                                                rollingFriction: 1,
-                                                restitution: 0.0,
-                                                mass: 0
-                                            }, shape, new Vector3(0, 0.0, -10));
-                                        });
-                                });
-
-                   
-
-                    this.templewateredge = new GameObject('templewateredge', null, false, true, true, true);
-                    this.templewateredge.LoadModel('templewateredge', './assets/models/templewateredge.glb', true)
-                        .then(() => {
-                            Physics.createMeshShape(this.templewateredge.model.mesh)
-                                .then(shape => {
-                                    this.templewateredge.addRigidBody({
-                                        friction: 0.5,
-                                        rollingFriction: 1,
-                                        restitution: 0.0,
-                                        mass: 0
-                                    }, shape, new Vector3(0, 0.05, -10));
-                                });
+            this.portfolio = new GameObject('portfolio', null, false, true, true, false);
+            this.portfolio.LoadModel('portfolio', './assets/models/portfolio.glb', false)
+                .then(() => {
+                    Physics.createMeshShape(this.portfolio.model.mesh)
+                        .then(shape => {
+                            this.portfolio.addRigidBody({
+                                friction: 0.5,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0.0, -10));
                         });
+                });
 
-                        this.templewater = new GameObject('templewater', null, false, true, true, true);
-                        this.templewater.LoadModel('templerock', './assets/models/templewater.glb', true)
-                        .then(() => {
-                            this.templewater.setPosition(new Vector3(0,0.05, -10));
+            this.barrier = new GameObject('barrier', null, false, true, true, false);
+            this.barrier.LoadModel('barrier', './assets/models/barrier.glb', false)
+                .then(() => {
+                    Physics.createMeshShape(this.barrier.model.mesh)
+                        .then(shape => {
+                            this.barrier.addRigidBody({
+                                friction: 0.5,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0.0, -10));
                         });
+                });
 
-                            this.templerock = new GameObject('templerock', null, false, true, true, true);
-                            this.templerock.LoadModel('templerock', './assets/models/templerock.glb', true)
-                                .then(() => {
-                                    Physics.createMeshShape(this.templerock.model.mesh)
-                                        .then(shape => {
-                                            this.templerock.addRigidBody({
-                                                friction: 0.5,
-                                                rollingFriction: 1,
-                                                restitution: 0.0,
-                                                mass: 0
-                                            }, shape, new Vector3(0, 0.0, -10));
-                                        });
-                                });
+            this.constructionsign = new GameObject('constructionsign', null, false, true, true, false, new Vector3(0, 0.0, -10));
+            this.constructionsign.LoadModel('constructionsign', './assets/models/constructionsign.glb', false);
+
+            this.temple = new GameObject('temple', null, false, true, true, true);
+            this.temple.LoadModel('temple', './assets/models/temple.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.temple.model.mesh)
+                        .then(shape => {
+                            this.temple.addRigidBody({
+                                friction: 0.5,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0.0, -10));
+                        });
+                });
+
+            this.svlogo = new GameObject('svlogo', null, false, true, true, true);
+            this.svlogo.LoadModel('svlogo', './assets/models/svlogo.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.svlogo.model.mesh)
+                        .then(shape => {
+                            this.svlogo.addRigidBody({
+                                friction: 0.5,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0.0, -10));
+                        });
+                });
+
+            this.svlogoarrows = new GameObject('svlogoarrows', null, false, true, true, true);
+            this.svlogoarrows.LoadModel('svlogoarrows', './assets/models/svlogoarrows.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.svlogoarrows.model.mesh)
+                        .then(shape => {
+                            this.svlogoarrows.addRigidBody({
+                                friction: 0.5,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0.0, -10));
+                        });
+                });
+
+            this.templewateredge = new GameObject('templewateredge', null, false, true, true, true);
+            this.templewateredge.LoadModel('templewateredge', './assets/models/templewateredge.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.templewateredge.model.mesh)
+                        .then(shape => {
+                            this.templewateredge.addRigidBody({
+                                friction: 0.5,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0.05, -10));
+                        });
+                });
+
+            this.templewater = new GameObject('templewater', null, false, true, true, true);
+            this.templewater.LoadModel('templerock', './assets/models/templewater.glb', true)
+                .then(() => {
+                    this.templewater.setPosition(new Vector3(0, 0.05, -10));
+                });
+
+            this.templerock = new GameObject('templerock', null, false, true, true, true);
+            this.templerock.LoadModel('templerock', './assets/models/templerock.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.templerock.model.mesh)
+                        .then(shape => {
+                            this.templerock.addRigidBody({
+                                friction: 0.5,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0.0, -10));
+                        });
+                });
 
             this.racetrack = new GameObject('racetrack', null, false, false, true, true);
             this.racetrack.LoadModel('racetrack', './assets/models/racetrack.glb', true)
@@ -324,19 +308,19 @@ export default class MainGame{
                         });
                 });
 
-                this.racetrackstart = new GameObject('racetrackstart', null, false, true, true, false);
-                this.racetrackstart.LoadModel('racetrackstart', './assets/models/racetrackstart.glb', false)
-                    .then(() => {
-                        Physics.createMeshShape(this.racetrackstart.model.mesh)
-                            .then(shape => {
-                                this.racetrackstart.addRigidBody({
-                                    friction: 0.5,
-                                    rollingFriction: 1,
-                                    restitution: 0.0,
-                                    mass: 0
-                                }, shape, new Vector3(0, 0.075, -25));
-                            });
-                    });
+            this.racetrackstart = new GameObject('racetrackstart', null, false, true, true, false);
+            this.racetrackstart.LoadModel('racetrackstart', './assets/models/racetrackstart.glb', false)
+                .then(() => {
+                    Physics.createMeshShape(this.racetrackstart.model.mesh)
+                        .then(shape => {
+                            this.racetrackstart.addRigidBody({
+                                friction: 0.5,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0.075, -25));
+                        });
+                });
 
             this.parkinglotcurb = new GameObject('parkinglotcurb', null, false, true, true, true);
             this.parkinglotcurb.LoadModel('parkinglotcurb', './assets/models/parkinglotcurb.glb', true)
@@ -422,9 +406,7 @@ export default class MainGame{
                         });
                 });
 
-   
-
-            this.cameraController = new CameraController( new Vector3(0, 3.0, 5.0));
+            this.cameraController = new CameraController(new Vector3(0, 3.0, 5.0));
             Camera.controller = this.cameraController;
             Camera.target = this.player;
 
@@ -513,7 +495,7 @@ export default class MainGame{
                 stiffness: 100.0,
                 damping: 10,
                 compression: 1.4,
-                backFriction:0.95,
+                backFriction: 0.95,
                 frontFriction: 1,
                 roll: 0.2,
                 radius: 0.25,
@@ -532,7 +514,7 @@ export default class MainGame{
                 downForce: 0.15,
                 topSpeed: 322,
                 bodyWidth: 1.03,
-                bodyHeight: 0.395    ,
+                bodyHeight: 0.395,
                 bodyLength: 2.21,
                 mass: 100,
                 enginePitch: 50,
@@ -546,7 +528,7 @@ export default class MainGame{
                 damping: 2.3,
                 compression: 2.4,
                 backFriction: 1.95,
-                frontFriction:2,
+                frontFriction: 2,
                 roll: 0.2,
                 radius: 0.25,
                 suspensionLen: 0.01,
@@ -623,8 +605,8 @@ export default class MainGame{
         });
     }
 
-    update(){
-      
+    update() {
+
         VehicleManager.checkVehicleInRange(this.player.position);
         InfoStationManager.update(this.player.position);
     }

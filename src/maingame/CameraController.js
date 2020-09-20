@@ -13,7 +13,6 @@ export default class CameraController {
         this.locked = true;
         this.followDistance = 3;
         this.followHeight = 1;
-
     }
 
     update() {
@@ -42,12 +41,10 @@ export default class CameraController {
         }
  
         Camera.SetPosition(Camera.position);
-
         Camera.mainCamera.lookAt(Camera.target.position.x, Camera.target.position.y, Camera.target.position.z);
     }
 
     followCamera() {
-
         if (Camera.target === null) return;
 
         this.locked = false;

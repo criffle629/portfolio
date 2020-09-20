@@ -14,9 +14,7 @@ export default class CameraController{
         Camera.target = ball;
     }
 
-    update(){
-
-    }
+    update(){}
 
     lateUpdate(){
                     

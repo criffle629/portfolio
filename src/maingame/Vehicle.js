@@ -23,9 +23,9 @@ export default class Vehicle extends GameObject {
         this.recieveShadow = true;
         this.skinnedMesh = false;
 
-        this.btPos = new Ammo.btVector3(0,0,0);
-        this.btQuat = new Ammo.btQuaternion(0,0,0,1);
-        this.btDownForce = new Ammo.btVector3(0,0,0);
+        this.btPos = new Ammo.btVector3(0, 0, 0);
+        this.btQuat = new Ammo.btQuaternion(0, 0, 0, 1);
+        this.btDownForce = new Ammo.btVector3(0, 0, 0);
         this.topSpeed = options.topSpeed;
         this.steeringRate = 25.0;
         this.accelRate = options.accelRate;
@@ -94,7 +94,6 @@ export default class Vehicle extends GameObject {
         Physics.world.addAction(this.vehicle);
         Scene.addGameObject(this);
 
-
         this.wheelModels = [];
         this.wheelModels.push(new GameObject(options.wheelLeftModel, options.wheelLeftModel, false, true, true));
         this.wheelModels.push(new GameObject(options.wheelRightModel, options.wheelRightModel, false, true, true));
@@ -117,13 +116,11 @@ export default class Vehicle extends GameObject {
         this.currentBrakingFront = 0;
         this.currentBrakingBack = 0;
         this.steeringAngle = 0;
- 
 
         VehicleManager.addVehicle(this);
     }
 
     createWheel(options, front, wheelPos, wheelDir, wheelAxle) {
-
         let wheel = this.vehicle.addWheel(wheelPos.to_btVector3(), wheelDir.to_btVector3(), wheelAxle.to_btVector3(), options.suspensionLen, options.radius, this.tuning, front);
 
         wheel.set_m_suspensionStiffness(options.stiffness);
@@ -139,9 +136,10 @@ export default class Vehicle extends GameObject {
 
     isUpsideDown() {
         const rot = this.rotation.Euler();
-    
-        return (Math.abs(rot.x) * MathTools.rad2Deg >= 40  || Math.abs(rot.z) * MathTools.rad2Deg >= 40 );
+
+        return (Math.abs(rot.x) * MathTools.rad2Deg >= 40 || Math.abs(rot.z) * MathTools.rad2Deg >= 40);
     }
+
     updateInput() {
         if (this.isUpsideDown() && this.inUse) {
             if (Input.isKeyDown('r') || Gamepad.isButtonPressed(Gamepad.Buttons.BUMPER_RIGHT)) {
@@ -149,7 +147,7 @@ export default class Vehicle extends GameObject {
                 const rotation = new Quaternion(0.0, this.rotation.y, 0.0, this.rotation.w);
                 const quat = new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
 
-                this.body.setLinearVelocity(new Ammo.btVector3(0, 0 ,0));
+                this.body.setLinearVelocity(new Ammo.btVector3(0, 0, 0));
                 this.body.setAngularVelocity(new Ammo.btVector3(0, 0, 0));
 
                 this.body.getWorldTransform().setOrigin(position.to_btVector3());
@@ -158,12 +156,12 @@ export default class Vehicle extends GameObject {
             }
         }
 
-        if (!this.inUse && MathTools.approximate(this.speed, 0.0)){
+        if (!this.inUse && MathTools.approximate(this.speed, 0.0)) {
             if (this.engineSound !== null && this.engineSound.isPlaying)
-            this.engineSound.stop();
+                this.engineSound.stop();
         }
 
-        if (!this.inUse  ) return;
+        if (!this.inUse) return;
 
         if (Gamepad.isConnected()) {
             let axis = Gamepad.leftStick();
@@ -246,7 +244,6 @@ export default class Vehicle extends GameObject {
 
                 this.engineSound.setDetune((Math.abs(this.speed) + this.enginePitch) * 10);
                 this.engineSound.panner.setPosition(this.model.mesh.position.x, this.model.mesh.position.y, this.model.mesh.position.z);
-
             }
         }
     }
@@ -279,12 +276,9 @@ export default class Vehicle extends GameObject {
         euler.z *= MathTools.deg2Rad;
         this.rotation = Quaternion.FromEuler(euler.x, euler.y, euler.z);
 
-   
         if (this.model && this.model.mesh) {
             this.model.mesh.position.set(p.x(), p.y(), p.z());
             this.model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
-     
-      
         }
     }
 
@@ -311,7 +305,6 @@ export default class Vehicle extends GameObject {
     }
 
     updateSteering() {
-
         this.vehicle.setSteeringValue(0, 3);
         this.vehicle.setSteeringValue(0, 2);
         this.vehicle.setSteeringValue(this.steeringAngle * MathTools.deg2Rad, 0);
@@ -320,10 +313,11 @@ export default class Vehicle extends GameObject {
 
     applyDownforce() {
         const downForce = this.constantDownforce ? -this.downForce : -(Math.abs(this.speed) * this.downForce);
-        this.downForceVel = new Vector3(0, downForce,0);
+        this.downForceVel = new Vector3(0, downForce, 0);
         this.btDownForce.setValue(this.downForceVel.x, this.downForceVel.y, this.downForceVel.z);
         this.body.applyCentralImpulse(this.btDownForce);
     }
+    
     resetMovementWhenNotInUse() {
         if (!this.inUse) {
             this.currentBrakingFront = this.breakForce * 0.25;

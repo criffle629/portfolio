@@ -8,12 +8,10 @@ import GameEngine from '../../engine/GameEngine';
 export default class MainGameUI extends React.Component {
 
     constructor(props) {
-        super(props);
+        super();
         this.canvas = null;
         this.isLoaded = false;
-        this.state = {
-
-        }
+        this.state = {}
         Gamepad.connectedCallback = this.gamepadConnected;
         window.addEventListener('resize', this.ScreenResize);
     }
@@ -55,10 +53,9 @@ export default class MainGameUI extends React.Component {
             <div style={{ position: 'absolute', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
                 <GamepadUI />
                 <div style={{ position: 'relative', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
-                 
+
                 </div>
             </div>
         )
     }
 }
-//   <span style= {{backgroundColor:'white', borderRadius: '25px', padding: '10px', top: 15, left: 15, position:'absolute'}}>Menu: esc</span>

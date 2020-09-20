@@ -15,13 +15,13 @@ import GameEngine from '../engine/GameEngine';
 import Gamepad from '../engine/Gamepad';
 import Input from '../engine/Input';
 
-export default class StadiumGame{
- 
-    Init(){
+export default class StadiumGame {
+
+    Init() {
         Multiplayer.connect()
-        .then(socket => {
-            console.log(socket);
-        });
+            .then(socket => {
+                console.log(socket);
+            });
 
         Scene.setExpoFog('skyblue', 0.001);
 
@@ -62,34 +62,33 @@ export default class StadiumGame{
 
     Load = async () => {
         return await new Promise((resolve, reject) => {
- 
-            this.soccerfield = new GameObject('ground', null    , false, false, true,);
+
+            this.soccerfield = new GameObject('ground', null, false, false, true,);
             this.soccerfield.addRigidBody({
                 friction: 1,
                 rollingFriction: 1,
                 restitution: 0.5,
                 mass: 0
             }, Physics.createPlaneShape(Vector3.up), new Vector3(0, 0.0, 0));
-            
-                this.soccerfielddome = new GameObject('soccerfielddome', null, false, false, true, true);
-                this.soccerfielddome.LoadModel('soccerfielddome', './assets/models/soccerfielddome.glb', false)
-                    .then(() => {
-                        Physics.createMeshShape(this.soccerfielddome.model.mesh)
-                            .then(shape => {
-                                Camera.Configure(60, Scene.aspectRatio, 0.1, 1000.0);
-                                this.soccerfielddome.addRigidBody(
-                                    {
-                                        friction: 0.25,
-                                        rollingFriction: 0.25,
-                                        restitution: 0.5,
-                                        mass: 0
-                                    }, shape, new Vector3(0, 0, 0));
-                            });
-                    });
 
-                  
+            this.soccerfielddome = new GameObject('soccerfielddome', null, false, false, true, true);
+            this.soccerfielddome.LoadModel('soccerfielddome', './assets/models/soccerfielddome.glb', false)
+                .then(() => {
+                    Physics.createMeshShape(this.soccerfielddome.model.mesh)
+                        .then(shape => {
+                            Camera.Configure(60, Scene.aspectRatio, 0.1, 1000.0);
+                            this.soccerfielddome.addRigidBody(
+                                {
+                                    friction: 0.25,
+                                    rollingFriction: 0.25,
+                                    restitution: 0.5,
+                                    mass: 0
+                                }, shape, new Vector3(0, 0, 0));
+                        });
+                });
+
             Camera.target = this.player;
-            Camera.controller = new CameraController( new Vector3(0, 3.0, 5.0), this.ball);
+            Camera.controller = new CameraController(new Vector3(0, 3.0, 5.0), this.ball);
 
             this.vehicle2 = new Vehicle({
                 isPlayer: true,
@@ -123,16 +122,12 @@ export default class StadiumGame{
                 frontLeftPos: new Vector3(-0.38, -0.35, 0.719),
             });
             VehicleManager.controllVehicle(this.vehicle2);
-           
+
             resolve(true);  // This needs to be better
         });
     }
 
-    update(){
-     
-        Multiplayer.updateInputWithHost({keyboard: Input, gamepad: Gamepad});
-      
+    update() {
+        Multiplayer.updateInputWithHost({ keyboard: Input, gamepad: Gamepad });
     }
-
-
 }

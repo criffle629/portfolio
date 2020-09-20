@@ -73,7 +73,6 @@ export default props => {
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description">
 
-
             <div style={styles.modal} className={classes.main}>
 
                 <div style={styles.promoText}>

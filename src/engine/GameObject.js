@@ -5,9 +5,8 @@ import Quaternion from './Quaternion';
 import Content from './Content';
 import Ammo from 'ammo.js';
 import { v4 as uuidv4 } from 'uuid';
-export default class GameObject {
 
- 
+export default class GameObject {
 
     constructor(name = null, meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false, position = Vector3.zero, rotation = Quaternion.Identity()) {
         this.position = position;
@@ -26,8 +25,6 @@ export default class GameObject {
         this.allowUpdate = true;
         this.name = name;
         this.tag = {};
-
- 
 
         this.LoadModel(name, meshPath, flatShading);
         Scene.addGameObject(this);
@@ -92,7 +89,6 @@ export default class GameObject {
     }
 
     move(moveDir) {
-
         if (this.rigidBody !== null) {
             this.position = this.rigidBody.GetPosition();
             this.position = Vector3.Add(this.position, moveDir);
@@ -114,7 +110,6 @@ export default class GameObject {
     }
 
     update() {
-
         if (!this.allowUpdate) return;
 
         if (this.rigidBody !== null) {

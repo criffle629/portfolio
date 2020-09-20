@@ -18,7 +18,7 @@ import MainGameUI from './MainGameUI/MainGameUI';
 export default class Game extends React.Component {
 
     constructor(props) {
-        super(props);
+        super();
         this.canvas = null;
         this.isLoaded = false;
         this.state = {
@@ -30,13 +30,11 @@ export default class Game extends React.Component {
     }
 
     componentDidMount(){
-        
         GameEngine.SetOpenModalCallback(this.openModal, this.isModalOpen);
         GameEngine.Init();
     }
 
     Load = () => {
-
         if (this.isLoaded) return;
 
         this.isLoaded = true;

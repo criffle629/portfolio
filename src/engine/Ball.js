@@ -1,13 +1,10 @@
 import Scene from './Scene';
 import Physics from './Physics';
 import GameObject from './GameObject';
-
 import Vector3 from './Vector3';
-
 import Ammo from 'ammo.js';
 import Quaternion from './Quaternion';
 import  Vector2  from './Vector2';
-
 
 export default class Ball extends GameObject {
     constructor(options = { position: Vector3.zero, rotation: Quaternion.Identity(), mass: 1, friction: 1, rollingFriction: 0.8, damping: new Vector2(0.2, 0.1), restitution: 0.8, radius: 1,  model: ''}) {
@@ -44,8 +41,6 @@ export default class Ball extends GameObject {
             Physics.world.addRigidBody(this.body);
             Scene.addGameObject(this);
         });
-    
-
     }
 
     update() {

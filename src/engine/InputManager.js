@@ -21,7 +21,6 @@ export default class InputManager {
     }
 
     isKeyPressed(key) {
-
         if (this.keyPressed.has(key.toLowerCase()) && this.keyPressed.get(key.toLowerCase()) === 1) {
             this.keyPressed.set(key.toLowerCase(), 2);
             return true;

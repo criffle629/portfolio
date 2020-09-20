@@ -23,15 +23,14 @@ export default class Vehicle extends GameObject {
         this.isPlayer = options.isPlayer;
         this.uuid = options.uuid;
 
-        if (!this.isPlayer){
+        if (!this.isPlayer) {
             this.input = new InputManager();
-            this.gamepad =new  GamepadManager(true);
+            this.gamepad = new GamepadManager(true);
         }
-        else
-       {
-           this.input = Input;
-           this.gamepad = Gamepad;
-       }
+        else {
+            this.input = Input;
+            this.gamepad = Gamepad;
+        }
 
         this.inUse = false;
         this.castShadow = true;
@@ -52,9 +51,9 @@ export default class Vehicle extends GameObject {
         this.options = options;
         this.speed = 0;
         this.constantDownforce = options.constantDownforce;
-        this.downForceVel = new Vector3(0, -(Math.abs(this.speed) * this.downForce),0);
-        this.jumpForce =  500;
-        this.rocketForce = new Vector3(0,0, -1);
+        this.downForceVel = new Vector3(0, -(Math.abs(this.speed) * this.downForce), 0);
+        this.jumpForce = 500;
+        this.rocketForce = new Vector3(0, 0, -1);
         this.wheelsOnGround = false;
 
         Audio.LoadSound('./assets/sounds/engine.wav', true, 0.1)
@@ -66,12 +65,10 @@ export default class Vehicle extends GameObject {
                         this.engineSound.parrent = this.model;
                         this.setPosition(this.position);
                         this.setRotation(this.rotation);
-
                     })
                     .catch(e => {
                         console.log(e);
                     });
-
             })
             .catch(e => {
                 console.log(e)
@@ -119,10 +116,10 @@ export default class Vehicle extends GameObject {
         }
 
         this.wheelInfo = [];
-        this.wheelInfo.push(this.createWheel(options, true, options.frontLeftPos,  new Vector3(0, -1, 0), new Vector3(-1, 0, 0)));
+        this.wheelInfo.push(this.createWheel(options, true, options.frontLeftPos, new Vector3(0, -1, 0), new Vector3(-1, 0, 0)));
         this.wheelInfo.push(this.createWheel(options, true, options.frontRightPos, new Vector3(0, -1, 0), new Vector3(-1, 0, 0)));
         this.wheelInfo.push(this.createWheel(options, false, options.backRightPos, new Vector3(0, -1, 0), new Vector3(-1, 0, 0)));
-        this.wheelInfo.push(this.createWheel(options, false, options.backLeftPos,  new Vector3(0, -1, 0), new Vector3(-1, 0, 0)));
+        this.wheelInfo.push(this.createWheel(options, false, options.backLeftPos, new Vector3(0, -1, 0), new Vector3(-1, 0, 0)));
 
         this.currentAccelFront = 0;
         this.currentAccelBack = 0;
@@ -135,7 +132,6 @@ export default class Vehicle extends GameObject {
     }
 
     createWheel(options, front, wheelPos, wheelDir, wheelAxle) {
-
         let wheel = this.vehicle.addWheel(wheelPos.to_btVector3(), wheelDir.to_btVector3(), wheelAxle.to_btVector3(), options.suspensionLen, options.radius, this.tuning, front);
 
         wheel.set_m_suspensionStiffness(options.stiffness);
@@ -153,6 +149,7 @@ export default class Vehicle extends GameObject {
         const rot = this.rotation.Euler();
         return (Math.abs(rot.x) >= 40 || Math.abs(rot.z) >= 40);
     }
+
     updateInput() {
         if (this.isUpsideDown() && this.inUse) {
             if (this.input.isKeyDown('r') || this.gamepad.isButtonPressed(this.gamepad.Buttons.BUTTON_TOP)) {
@@ -160,7 +157,7 @@ export default class Vehicle extends GameObject {
                 const rotation = new Quaternion(0.0, this.rotation.y, 0.0, this.rotation.w);
                 const quat = new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
 
-                this.body.setLinearVelocity(new Ammo.btVector3(0, 0 ,0));
+                this.body.setLinearVelocity(new Ammo.btVector3(0, 0, 0));
                 this.body.setAngularVelocity(new Ammo.btVector3(0, 0, 0));
 
                 this.body.getWorldTransform().setOrigin(position.to_btVector3());
@@ -168,26 +165,26 @@ export default class Vehicle extends GameObject {
                 this.body.getMotionState().setWorldTransform(this.body.getWorldTransform());
             }
         }
-        
+
         let vUp = Vector3.up;
 
         vUp.rotate(this.rotation);
-     
+
         vUp.x *= this.jumpForce;
         vUp.y *= this.jumpForce;
         vUp.z *= this.jumpForce;
 
-        if ((this.gamepad.isButtonPressed(this.gamepad.Buttons.BUTTON_BOTTOM) || this.input.isKeyPressed(' ')) && this.jumpCount < 2){
+        if ((this.gamepad.isButtonPressed(this.gamepad.Buttons.BUTTON_BOTTOM) || this.input.isKeyPressed(' ')) && this.jumpCount < 2) {
             this.body.applyCentralImpulse(vUp.to_btVector3());
             ++this.jumpCount;
         }
 
-        if (!this.inUse && MathTools.approximate(this.speed, 0.0)){
+        if (!this.inUse && MathTools.approximate(this.speed, 0.0)) {
             if (this.engineSound !== null && this.engineSound.isPlaying)
-            this.engineSound.stop();
+                this.engineSound.stop();
         }
 
-        if (!this.inUse  ) return;
+        if (!this.inUse) return;
 
         if (this.gamepad.isConnected()) {
             let axis = this.gamepad.leftStick();
@@ -272,15 +269,12 @@ export default class Vehicle extends GameObject {
         }
     }
 
-    
     updateWheels() {
-     
+
         this.wheelsOnGround = false;
         for (let i = 0; i < this.vehicle.getNumWheels(); i++) {
-        
-            
             const grounded = this.wheelInfo[i].get_m_raycastInfo().get_m_isInContact();
-            if (grounded){
+            if (grounded) {
                 this.wheelsOnGround = true;
             }
             this.vehicle.updateWheelTransform(i, true);
@@ -338,7 +332,6 @@ export default class Vehicle extends GameObject {
     }
 
     applyDownforce() {
-
         if (!this.wheelsOnGround) return;
 
         const downForce = this.constantDownforce ? -this.downForce : -(Math.abs(this.speed) * this.downForce);
@@ -349,7 +342,7 @@ export default class Vehicle extends GameObject {
         vDown.x *= downForce;
         vDown.y *= downForce;
         vDown.z *= downForce;
-        
+
         this.downForceVel = vDown;
         this.body.applyCentralImpulse(this.downForceVel.to_btVector3());
     }
@@ -363,11 +356,11 @@ export default class Vehicle extends GameObject {
         }
     }
 
-    updateMidAirRotation(){
-        if (!this.wheelsOnGround){
+    updateMidAirRotation() {
+        if (!this.wheelsOnGround) {
             let axis = this.gamepad.leftStick();
             const tm = this.body.getWorldTransform();
-      
+
             const q = tm.getRotation();
 
             let rot = new Quaternion(q.x(), q.y(), q.z(), q.w());
@@ -375,7 +368,7 @@ export default class Vehicle extends GameObject {
 
             euler.x += -axis.y * 200.0 * Time.deltaTime;
             euler.y += -axis.x * 200.0 * Time.deltaTime;
-            
+
             euler.x = MathTools.clamp(euler.x, -88, 88);
 
             rot = Quaternion.FromEuler(euler.x, euler.y, euler.z);
@@ -396,17 +389,16 @@ export default class Vehicle extends GameObject {
         this.updateMovement();
         this.updateSteering();
         this.updateWheels();
-    
-        if (this.wheelsOnGround && lastGrounded!== true){
+
+        if (this.wheelsOnGround && lastGrounded !== true) {
             this.jumpCount = 0;
         }
         this.updateMidAirRotation();
         this.updateRigidBody();
         this.updateSpeed();
-
-    
     }
-    destroy(){
+    
+    destroy() {
         this.tireSquealSound.stop();
         this.engineSound.stop();
     }

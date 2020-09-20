@@ -35,6 +35,7 @@ const vehicle = {
     frontRightPos: new Vector3(0.38, -0.35, 0.719),
     frontLeftPos: new Vector3(-0.38, -0.35, 0.719),
 };
+
 class MultiplayerManager {
     constructor() {
         this.isHost = false;
@@ -129,7 +130,6 @@ class MultiplayerManager {
         });
     }
 
-
     sendStateUpdate() {
         this.socket.emit('updateState', { matchUUID: this.match.uuid, hostUUID: this.match.uuid, clients: this.clients, ball: this.ball });
     }
@@ -162,9 +162,7 @@ class MultiplayerManager {
             this.socket.emit('updateInput', { input: input, cliendUUID: this.uuid, matchUUID: this.match.uuid });
     }
 
-    update() {
-
-    }
+    update() {}
 }
 
 const Multiplayer = new MultiplayerManager();

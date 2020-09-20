@@ -19,7 +19,6 @@ export default class Mesh {
     }
 
     setShadows() {
-
         this.scene.traverse(child => {
             if (child.isMesh) {
                 child.castShadow = this.castShadow;
@@ -53,7 +52,6 @@ export default class Mesh {
                             child.material.flatShading = this.flatShading;
 
                         if (child.material.map){
-                  
                             child.material.map.anisotropy = 16;
                         }
                     }

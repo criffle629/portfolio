@@ -33,7 +33,6 @@ export default class MathTools {
     }
 
     static moveTowards(from, to, deltaTime) {
-
         if (Math.abs(from - to) <= deltaTime) return to;
 
         return from + ((to - from) * deltaTime);

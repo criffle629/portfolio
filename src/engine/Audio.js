@@ -10,7 +10,6 @@ class AudioManager {
     InitAudio(){
         this.listener = new THREE.AudioListener();
         Camera.mainCamera.add(this.listener);
-        
     }
 
     LoadSound(path, loop = false, volume = 0.5) {

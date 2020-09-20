@@ -29,7 +29,6 @@ class PhysicsEngine {
     }
 
     addRigidBody(body) {
-
         if (body === null) return;
 
         this.world.addRigidBody(body);
@@ -130,9 +129,7 @@ class PhysicsEngine {
     }
 
     update() {
- 
-            this.world.stepSimulation(Time.deltaTime, 10);
- 
+        this.world.stepSimulation(Time.deltaTime, 10);
     }
 }
 

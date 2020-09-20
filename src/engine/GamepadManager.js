@@ -94,7 +94,6 @@ export default class GamepadManager {
                 if (this.statusCallback !== null){
                     this.statusCallback('disconnected');
                 }
-                
             });
         }
     }
@@ -128,7 +127,6 @@ export default class GamepadManager {
     }
 
     isButtonPressed(button) {
-
         if (this.buttonsPressed.has(button) && this.buttonsPressed.get(button) === 1) {
             this.buttonsPressed.set(button, 2);
             return true;
@@ -155,9 +153,7 @@ export default class GamepadManager {
         return this.connected;
     }
 
-    update() {
-      
-    }
+    update() {}
 
     json() {
         return {

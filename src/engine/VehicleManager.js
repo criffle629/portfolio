@@ -72,7 +72,6 @@ class VehicleController {
             let lookAt = Quaternion.LookRotation(Vector3.Subtract(camPos, eKeyPos), Vector3.up);
             this.ekey.setRotation(Vector3.MultiplyScalar(lookAt.Euler(), MathTools.deg2Rad));
         }
-
     }
 
     updateRKey(){
@@ -109,7 +108,6 @@ class VehicleController {
     }
     
     checkVehicleInRange(pos) {
-
         if (!this.isReady) return;
 
         this.findInRangeVehicle(pos);

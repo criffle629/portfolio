@@ -7,7 +7,7 @@ import Time from '../engine/Time';
 export default class Loading extends React.Component {
 
     constructor(props) {
-        super(props);
+        super();
         this.state = {
             loadingCounter: 0,
             loaded: false,
@@ -16,7 +16,6 @@ export default class Loading extends React.Component {
         };
         this.enterWasClicked = false;
         this.timer = 0.0;
-
     }
 
     componentDidMount() {
@@ -65,15 +64,14 @@ export default class Loading extends React.Component {
     }
 
     enterClicked = (e) => {
-
         e.stopPropagation();
         if (this.enterWasClicked) return;
         this.enterWasClicked = true;
         this.playSound(); // Must play sound muted on user interaction to prevent browser from blocking audio.
         this.setState({ fade: true });
     }
-    renderFade() {
 
+    renderFade() {
         const fadeOut = keyframes`
             from { opacity: 1; }
             to { opacity: 0; }    
@@ -110,16 +108,13 @@ export default class Loading extends React.Component {
         `;
 
         return (
-
             <Fade onAnimationEnd={this.onAnimationEnd}>
                 <Button onClick={this.enterClicked}> Enter </Button>
             </Fade>
-
         );
     }
 
     render() {
-
         return !this.state.loaded ? this.renderLoading() : !this.state.finished ? this.renderFade() : null;
     }
 }

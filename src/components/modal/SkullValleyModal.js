@@ -83,7 +83,6 @@ export default props => {
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description">
 
-
             <div style={styles.modal} className={classes.main}>
 
                 <div style={styles.image}></div>
@@ -107,12 +106,9 @@ export default props => {
                 </div>
 
                 <div style={{ width: '100%' }}>
-
-
                     <div style={styles.linkSection}>
                         <span style={styles.linkText}>Website:</span>  <a href='http://www.skullvalleygame.com' target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>Skull Valley</a>
                     </div>
-
                 </div>
 
                 <Button style={styles.closeButton} className={classes.button} onClick={closeModal}>Close</Button>

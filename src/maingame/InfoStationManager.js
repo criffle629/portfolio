@@ -42,5 +42,4 @@ class InfoStationsController {
 }
 
 const InfoStationManager = new InfoStationsController();
-
 export default InfoStationManager; 

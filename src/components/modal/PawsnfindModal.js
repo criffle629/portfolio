@@ -71,7 +71,6 @@ export default props => {
             padding: theme.spacing(2, 4, 3),
             outline: 'none'
         },
-
     }));
 
     const classes = useStyles();

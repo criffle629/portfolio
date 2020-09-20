@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
- 
+
 export default props => {
     const { isOpen, closeModal } = props;
 
@@ -58,15 +58,12 @@ export default props => {
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
         >
-
             <div style={styles.modal} className={classes.main}>
-
                 <div style={styles.title}>
-                        Road Racer League
+                    Road Racer League
                 </div>
-
                 <Button style={styles.buttons} className={classes.button} onClick={closeModal}>Close</Button>
-                
+
             </div>
         </Modal>
     );

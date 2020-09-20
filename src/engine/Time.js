@@ -23,15 +23,13 @@ class TimeManager{
 
         this.smoothDelta = this.SmoothDelta();
 
-        this.physicsRate = parseFloat(1.0 / GameEngine.frameRate);
+        this.physicsRate = 1.0 / GameEngine.frameRate;
 
         if (this.physicsRate === Infinity)
             this.physicsRate = this.deltaTime;
 
         if (this.physicsRate < Time.MIN_PHYSICS_RATE)
             this.physicsRate = this.deltaTime;
-
-      
     }
 
     SmoothDelta(){

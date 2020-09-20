@@ -55,6 +55,7 @@ export default class SkinnedMesh {
             }
         });
     }
+
     async LoadMesh(path, flatShading = false) {
         Scene.objectLoading++;
         let loader = new GLTFLoader();
@@ -111,7 +112,6 @@ export default class SkinnedMesh {
     }
 
     playAnimation(animation) {
-
         if (this.meshData === null)
             return;
 
@@ -130,7 +130,6 @@ export default class SkinnedMesh {
     }
 
     SetRagdollActive(value){
-
         this.ragdollActivated = value;
         for (let i = 0; i < this.bones.length; i++)
         {   
@@ -142,7 +141,6 @@ export default class SkinnedMesh {
     }
 
     Animate() {
-
      /*
 
         for (let i = 0; i < this.bones.length; i++)

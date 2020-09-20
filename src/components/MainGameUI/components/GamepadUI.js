@@ -7,25 +7,25 @@ import Gamepad from '../../../engine/Gamepad';
 export default class GamepadUI extends React.Component {
 
     constructor(props) {
-        super(props);
+        super();
         this.state = {
             popup: 'none'
         };
         this.animCount = 0;
         Gamepad.statusCallback = this.setStatus;
     }
-    
-    setStatus = (status) =>{
+
+    setStatus = (status) => {
         this.animCount = 0;
-        this.setState({popup: status});
+        this.setState({ popup: status });
     }
 
     onAnimationEnd = () => {
         this.animCount++;
 
-        if (this.animCount >= 2){
+        if (this.animCount >= 2) {
             this.animCount = 0;
-            this.setState({popup: 'none'});
+            this.setState({ popup: 'none' });
         }
     }
 
@@ -64,7 +64,7 @@ export default class GamepadUI extends React.Component {
             to { top: 80%; } 
         `;
 
- 
+
         const drop = keyframes`
             from { left: 50%; }
             to { left: 50%; }
@@ -91,8 +91,8 @@ export default class GamepadUI extends React.Component {
         `;
 
         return (
-            <PopUp onAnimationEnd={this.onAnimationEnd}> 
-                <FontAwesomeIcon color="##495057" size='lg' icon={faGamepad} /> Gamepad {this.state.popup} 
+            <PopUp onAnimationEnd={this.onAnimationEnd}>
+                <FontAwesomeIcon color="##495057" size='lg' icon={faGamepad} /> Gamepad {this.state.popup}
             </PopUp>
         );
     }

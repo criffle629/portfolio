@@ -19,10 +19,9 @@ class Engine {
     }
 
     Init(){
-    
-   
         requestAnimationFrame(this.Animate);
     }
+
     SetOpenModalCallback(openModal, isModalOpen) {
         this.openModal = openModal;
         this.isModalOpen = isModalOpen;
@@ -54,9 +53,6 @@ class Engine {
 
         Gamepad.update();
         Time.Update();
-
-     
-       
         this.mainGame.update();
         Scene.update();
 
@@ -75,10 +71,6 @@ class Engine {
             PostProcessing.render();
         else
             this.renderer.Render(Scene.getScene(), Camera.mainCamera);
-
-  
-
-       
     }
 }
 

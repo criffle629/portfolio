@@ -97,7 +97,6 @@ export default class Player extends GameObject {
             this.changeAnimation('Rest');
         }
         
- 
         this.movePlayer();
         this.setRotation(this.euler);
 

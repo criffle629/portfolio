@@ -14,7 +14,6 @@ export default class Light extends GameObject {
         AMBIENT: 3,
     }
 
-
     constructor(options = { lightType: Light.LightType.DirectionalLight, 
                             color: 0xffffff, 
                             intensity: 1, 
@@ -118,7 +117,6 @@ export default class Light extends GameObject {
     }
 
     update() {
-
         if (this.light === null) return;
 
         if (this.options.lightType === Light.LightType.DIRECTIONAL) {
