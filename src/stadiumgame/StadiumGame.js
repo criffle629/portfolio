@@ -56,7 +56,7 @@ export default class StadiumGame {
             color: 0xffffff,
             intensity: 0.5
         });
-        GameEngine.openModal('stadiummenu');
+
         this.Load().then(() => { });
     }
 

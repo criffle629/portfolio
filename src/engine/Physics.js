@@ -20,6 +20,8 @@ class PhysicsEngine {
         this.world = new Ammo.btDiscreteDynamicsWorld(this.dispatcher, this.broadphase, this.solver, this.collisionConfig);
 
         this.world.setGravity(new Ammo.btVector3(0, -9.8, 0));
+        this.elapsedTime = 0.0;
+        this.phsyicsRate = 1.0 / 240.0;
 
         this.rigidBodies = [];
     }
@@ -55,7 +57,7 @@ class PhysicsEngine {
     }
 
     createPlaneShape(normal) {
-        let shape = new Ammo.btStaticPlaneShape(new Ammo.btVector3(normal.x, normal.y, normal.z), 0.0001);
+        let shape = new Ammo.btStaticPlaneShape(new Ammo.btVector3(normal.x, normal.y, normal.z), 0);
 
         return shape;
     }
@@ -129,7 +131,9 @@ class PhysicsEngine {
     }
 
     update() {
-        this.world.stepSimulation(Time.deltaTime, 10);
+ 
+            this.world.stepSimulation(Time.deltaTime, 10, this.phsyicsRate);
+      
     }
 }
 

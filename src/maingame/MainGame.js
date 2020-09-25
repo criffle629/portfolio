@@ -63,12 +63,12 @@ export default class MainGame {
                         rollingFriction: 0,
                         restitution: 0.5,
                         mass: 1
-                    }, Physics.createCapsuleShape(0.25, 0.5, Vector3.up), new Vector3(0, 1, 0));
+                    }, Physics.createCapsuleShape(0.23, 0.5, Vector3.up), new Vector3(0, 1, 0));
                 });
 
             this.ground = new GameObject('ground', './assets/models/ground.glb', false, false, true,);
             this.ground.addRigidBody({
-                friction: 1,
+                friction: 0.5,
                 rollingFriction: 1,
                 restitution: 0.5,
                 mass: 0
@@ -304,7 +304,7 @@ export default class MainGame {
                                 rollingFriction: 1,
                                 restitution: 0.0,
                                 mass: 0
-                            }, shape, new Vector3(0, 0.0, -25));
+                            }, shape, new Vector3(0, 0.0, -38));
                         });
                 });
 
@@ -318,7 +318,7 @@ export default class MainGame {
                                 rollingFriction: 1,
                                 restitution: 0.0,
                                 mass: 0
-                            }, shape, new Vector3(0, 0.075, -25));
+                            }, shape, new Vector3(0, 0.075, -38));
                         });
                 });
 
@@ -392,12 +392,12 @@ export default class MainGame {
                         });
                 });
 
-            this.fenceleft = new GameObject('fenceleft', null, false, true, true, true);
-            this.fenceleft.LoadModel('fenceleft', './assets/models/fenceleft.glb', true)
+            this.fence = new GameObject('fence', null, false, true, true, true);
+            this.fence.LoadModel('fence', './assets/models/fence.glb', true)
                 .then(() => {
-                    Physics.createMeshShape(this.fenceleft.model.mesh)
+                    Physics.createMeshShape(this.fence.model.mesh)
                         .then(shape => {
-                            this.fenceleft.addRigidBody({
+                            this.fence.addRigidBody({
                                 friction: 1,
                                 rollingFriction: 1,
                                 restitution: 0.0,
@@ -411,7 +411,7 @@ export default class MainGame {
             Camera.target = this.player;
 
             this.vehicle2 = new Vehicle({
-                breakForce: 25,
+                breakForce: 5,
                 accelForceFront: 20,
                 accelForceBack: 100,
                 accelRate: 3,
@@ -443,7 +443,7 @@ export default class MainGame {
             });
 
             this.vehicle = new Vehicle({
-                breakForce: 25,
+                breakForce: 10,
                 accelForceFront: 50,
                 accelForceBack: 150,
                 downForce: 0.15,
@@ -475,7 +475,7 @@ export default class MainGame {
             });
 
             this.vehicle3 = new Vehicle({
-                breakForce: 25,
+                breakForce: 15,
                 accelForceFront: 180,
                 accelForceBack: 250,
                 accelRate: 1,
@@ -507,7 +507,7 @@ export default class MainGame {
             });
 
             this.vehicle4 = new Vehicle({
-                breakForce: 35,
+                breakForce: 15,
                 accelForceFront: 0,
                 accelForceBack: 500,
                 accelRate: 1,
@@ -571,7 +571,7 @@ export default class MainGame {
             });
 
             this.vehicle5 = new Vehicle({
-                breakForce: 20,
+                breakForce: 10,
                 accelForceFront: 0,
                 accelForceBack: 225,
                 accelRate: 3,

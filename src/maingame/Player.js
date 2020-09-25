@@ -8,6 +8,8 @@ import Camera from '../engine/Camera';
 import Vector2 from '../engine/Vector2';
 import Gamepad from '../engine/Gamepad';
 import Ammo from 'ammo.js';
+import MathTools from '../engine/MathTools';
+import Time from '../engine/Time';
 
 export default class Player extends GameObject {
 
@@ -67,47 +69,68 @@ export default class Player extends GameObject {
         if (Input.isKeyDown('d') || Input.isKeyDown('ArrowRight'))
             xMove = 1;
 
-    //    if (Input.isKeyPressed('l')){
-    //        this.model.ragdollActive = !this.model.ragdollActive;
-    //        this.model.SetRagdollActive(this.model.ragdollActive);
-    //    }
+        //    if (Input.isKeyPressed('l')){
+        //        this.model.ragdollActive = !this.model.ragdollActive;
+        //        this.model.SetRagdollActive(this.model.ragdollActive);
+        //    }
 
         let stick = Gamepad.leftStick();
 
         if (!Vector2.Equals(stick, Vector2.zero)) {
-     
+
             xMove = stick.x;
             zMove = stick.y;
         }
 
-        this.moveDir.x = xMove ;
-        this.moveDir.z = zMove ;
+        this.moveDir.x = xMove;
+        this.moveDir.z = zMove;
         this.moveDir.normalize();
-        
+
         if (!Vector3.Equals(this.moveDir, Vector3.zero)) {
             this.forward = this.moveDir.normalize();
-       
-            this.moveDir.x = this.forward.x * 3 ;
-            this.moveDir.z = this.forward.z * 3 ;
-            
+
+            this.moveDir.x = this.forward.x * 3;
+            this.moveDir.z = this.forward.z * 3;
+
             this.euler.y = Vector3.Angle(Vector3.back, this.forward);
             this.changeAnimation('Walk');
         }
         else {
             this.changeAnimation('Rest');
         }
-        
+
         this.movePlayer();
-        this.setRotation(this.euler);
+       
 
         super.update();
     }
 
-    movePlayer() {
-        const moveVec = new Vector3(this.moveDir.x, this.moveDir.y, this.moveDir.z);
-        moveVec.y = this.rigidBody.GetLinearVelocity().y;
-        this.btMoveVec3.setValue(moveVec.x, moveVec.y, moveVec.z);
-        this.rigidBody.body.setLinearVelocity(this.btMoveVec3);
+    movePlayer() {  
+
+        if (Camera.controller.fixedCameraMode) {
+            const moveVec = new Vector3(this.moveDir.x, this.moveDir.y, this.moveDir.z);
+            moveVec.y = this.rigidBody.GetLinearVelocity().y;
+            this.btMoveVec3.setValue(moveVec.x, moveVec.y, moveVec.z);
+            this.rigidBody.body.setLinearVelocity(this.btMoveVec3);
+            this.setRotation(this.euler);
+        }
+        else{
+            this.forward = new Vector3(0, 0, -1);
+            let rot = this.rotation.Euler();
+            rot.x = 0;
+            rot.z = 0;
+            rot.y -= this.moveDir.x * Time.deltaTime;
+            const quat = Quaternion.FromEuler(rot.x * MathTools.rad2Deg, rot.y * MathTools.rad2Deg, rot.z * MathTools.rad2Deg);
+            this.forward.rotate(quat);
+
+            let moveVec = new Vector3(this.forward.x, this.forward.y, this.forward.z);
+            moveVec = Vector3.MultiplyScalar(moveVec, this.moveDir.z );
+            moveVec.y = this.rigidBody.GetLinearVelocity().y;
+            this.btMoveVec3.setValue(moveVec.x, moveVec.y, moveVec.z);
+            this.rigidBody.body.setLinearVelocity(this.btMoveVec3);
+            this.setRotation(rot);
+
+        }
     }
 
     collision(col) {

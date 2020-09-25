@@ -277,7 +277,7 @@ export default class Vehicle extends GameObject {
             if (grounded) {
                 this.wheelsOnGround = true;
             }
-            this.vehicle.updateWheelTransform(i, true);
+            this.vehicle.updateWheelTransform(i);
             const tm = this.vehicle.getWheelTransformWS(i);
             const p = tm.getOrigin();
             const q = tm.getRotation();
@@ -287,6 +287,7 @@ export default class Vehicle extends GameObject {
                 this.wheelModels[i].model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
             }
         }
+        
     }
 
     updateRigidBody() {

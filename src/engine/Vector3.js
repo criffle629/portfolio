@@ -77,7 +77,7 @@ export default class Vector3 {
     to_btVector3() {
         return new Ammo.btVector3(this.x, this.y, this.z);
     }
-
+ƒ
     toString() {
         return '( x: ' + this.x + '  y: ' + this.y + '  z: ' + this.z + ' )';
     }
