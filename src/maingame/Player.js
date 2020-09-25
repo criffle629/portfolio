@@ -122,6 +122,9 @@ export default class Player extends GameObject {
             rot.y -= this.moveDir.x * Time.deltaTime;
             const quat = Quaternion.FromEuler(rot.x * MathTools.rad2Deg, rot.y * MathTools.rad2Deg, rot.z * MathTools.rad2Deg);
             this.forward.rotate(quat);
+            if (this.moveDir.z > 0) this.moveDir.z = 3;
+            else
+            if (this.moveDir.z < 0) this.moveDir.z = -3;
 
             let moveVec = new Vector3(this.forward.x, this.forward.y, this.forward.z);
             moveVec = Vector3.MultiplyScalar(moveVec, this.moveDir.z );
