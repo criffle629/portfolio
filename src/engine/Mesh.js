@@ -1,7 +1,7 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Scene from './Scene';
 import * as THREE from 'three';
-
+import { isAndroid } from 'react-device-detect';
 export default class Mesh {
     constructor(path = null, castShadow = false, receiveShadow = false, flatShading = false, culling = true) {
         this.mixer = null;
@@ -50,9 +50,13 @@ export default class Mesh {
                             child.material.side = THREE.FrontSide;
                         if (this.flatShading)
                             child.material.flatShading = this.flatShading;
-
-                        if (child.material.map){
+console.log('Android:', isAndroid)
+                        if (child.material.map && !isAndroid){
                             child.material.map.anisotropy = 16;
+                        }
+                        else
+                        if (child.material.map && isAndroid){
+                            child.material.map.anisotropy = 0;
                         }
                     }
                 });

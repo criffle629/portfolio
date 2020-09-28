@@ -1,5 +1,6 @@
 import Vector2 from './Vector2';
 import Gamepads from 'gamepads';
+import { isMobile } from 'react-device-detect';
 
 export default class GamepadManager {
 
@@ -36,6 +37,7 @@ export default class GamepadManager {
         this.inputAxisSmoothAmount = 10;
         this.leftAxis = new Vector2(0, 0);
 
+        this.touchAxis = new Vector2(0, 0);
         this.rightAxis = new Vector2(0, 0);
 
         this.rightTriggerValue = 0.0;
@@ -99,6 +101,10 @@ export default class GamepadManager {
     }
  
     leftStick() {
+
+        if (!Vector2.Equals(this.touchAxis, Vector2.zero))
+            return this.touchAxis;
+
         if (!this.connected) return Vector2.zero;
       
         return this.leftAxis;
@@ -150,7 +156,7 @@ export default class GamepadManager {
     }
 
     isConnected() {
-        return this.connected;
+        return this.connected || isMobile;
     }
 
     update() {}

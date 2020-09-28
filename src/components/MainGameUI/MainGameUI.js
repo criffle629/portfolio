@@ -4,7 +4,7 @@ import GamepadUI from './components/GamepadUI';
 import Scene from '../../engine/Scene';
 import Camera from '../../engine/Camera';
 import GameEngine from '../../engine/GameEngine';
-
+import TouchControls from '../TouchControls';
 export default class MainGameUI extends React.Component {
 
     constructor(props) {
@@ -51,6 +51,7 @@ export default class MainGameUI extends React.Component {
     render() {
         return (
             <div style={{ position: 'absolute', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
+                <TouchControls />
                 <GamepadUI />
                 <div style={{ position: 'relative', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
 

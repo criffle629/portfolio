@@ -2,7 +2,8 @@ import * as THREE from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Scene from './Scene';
 import Time from './Time';
- 
+import { isAndroid } from 'react-device-detect';
+
 
 export default class SkinnedMesh {
 
@@ -16,7 +17,7 @@ export default class SkinnedMesh {
         this.currentAnimation = '';
         this.bones = [];
         this.ragdollActivated = false;
-      
+
         this.castShadow = castShadow;
         this.receiveShadow = receiveShadow;
         this.flatShading = flatShading;
@@ -42,8 +43,8 @@ export default class SkinnedMesh {
         this.updateScene();
     }
 
-    updateScene(){
-       this.scene.traverse(child => {
+    updateScene() {
+        this.scene.traverse(child => {
 
             if (child.isMesh) {
 
@@ -66,28 +67,28 @@ export default class SkinnedMesh {
 
             this.mixer = new THREE.AnimationMixer(gltf.scene);
             this.mixer.timeScale = 1;
- 
+
             gltf.scene.traverse(child => {
-/*
-                if (child.isBone) {
-                    console.log(child);
-
-                    const quat = child.quaternion;
-                    let pos = child.position;
-                    pos = new Vector3(pos.x, pos.y, pos.z);
-            
-
-                    this.bones.push({
-                        bone:child,
-                        body: new RigidBody(new Vector3(pos.x, pos.y, pos.z), Phsyics.createCapsuleShape(0.051, 0.051, Vector3.forward), new Quaternion(quat.x, quat.y, quat.z, quat.w), {
-                        mass: 0.0,
-                        friction: 1,
-                        rollingFriction: 0,
-                        restitution: 0
-                        })
-                        });
-                }
-*/
+                /*
+                                if (child.isBone) {
+                                    console.log(child);
+                
+                                    const quat = child.quaternion;
+                                    let pos = child.position;
+                                    pos = new Vector3(pos.x, pos.y, pos.z);
+                            
+                
+                                    this.bones.push({
+                                        bone:child,
+                                        body: new RigidBody(new Vector3(pos.x, pos.y, pos.z), Phsyics.createCapsuleShape(0.051, 0.051, Vector3.forward), new Quaternion(quat.x, quat.y, quat.z, quat.w), {
+                                        mass: 0.0,
+                                        friction: 1,
+                                        rollingFriction: 0,
+                                        restitution: 0
+                                        })
+                                        });
+                                }
+                */
                 if (child.isMesh) {
 
                     child.castShadow = this.castShadow;
@@ -95,6 +96,14 @@ export default class SkinnedMesh {
 
                     if (flatShading)
                         child.material.flatShading = flatShading;
+
+                    if (child.material.map && !isAndroid) {
+                        child.material.map.anisotropy = 16;
+                    }
+                    else
+                        if (child.material.map && isAndroid) {
+                            child.material.map.anisotropy = 0;
+                        }
                 }
             });
 
@@ -129,11 +138,10 @@ export default class SkinnedMesh {
         }
     }
 
-    SetRagdollActive(value){
+    SetRagdollActive(value) {
         this.ragdollActivated = value;
-        for (let i = 0; i < this.bones.length; i++)
-        {   
-            if (this.bones[i].body !== null){
+        for (let i = 0; i < this.bones.length; i++) {
+            if (this.bones[i].body !== null) {
                 const mass = value ? 0.25 : 0;
                 this.bones[i].body.setMass(mass);
             }
@@ -141,19 +149,19 @@ export default class SkinnedMesh {
     }
 
     Animate() {
-     /*
-
-        for (let i = 0; i < this.bones.length; i++)
-        {
-            if (this.bones[i].body !== null && this.bones[i].body.mass > 0){
-            
-                const rot = this.bones[i].body.GetRotation().Euler();
-                const pos = this.bones[i].body.GetPosition();
-                this.bones[i].bone.rotation.set(rot.x, rot.y, rot.z);
-                this.bones[i].bone.position.set(pos.x, pos.y, pos.z);
-            }
-        }
-*/
+        /*
+   
+           for (let i = 0; i < this.bones.length; i++)
+           {
+               if (this.bones[i].body !== null && this.bones[i].body.mass > 0){
+               
+                   const rot = this.bones[i].body.GetRotation().Euler();
+                   const pos = this.bones[i].body.GetPosition();
+                   this.bones[i].bone.rotation.set(rot.x, rot.y, rot.z);
+                   this.bones[i].bone.position.set(pos.x, pos.y, pos.z);
+               }
+           }
+   */
         if (this.mixer !== null && !this.ragdollActivated) {
             this.mixer.update(Time.deltaTime);
         }

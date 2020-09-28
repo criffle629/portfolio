@@ -7,6 +7,7 @@ import PostProcessing from './PostProcessing';
 import Input from './Input';
 import Gamepad from './Gamepad';
 import MainGame from '../maingame/MainGame';
+import { isChrome, isMobile} from 'react-device-detect';
 //import StadiumGame from '../stadiumgame/StadiumGame';
 
 class Engine {
@@ -14,11 +15,16 @@ class Engine {
         this.fps = 0;
         this.fpsTime = 0;
         this.frameRate = 0;
+        this.renderRate = 1 / 90;
+        this.renderTimer = 0;
+        console.log('chrome', isChrome)
+        if (isChrome && !isMobile)
+            this.renderRate = 0;
         this.mainGame = new MainGame();
         this.mainGame.Init();
     }
 
-    Init(){
+    Init() {
         requestAnimationFrame(this.Animate);
     }
 
@@ -30,9 +36,9 @@ class Engine {
     InitRenderer = (canvas, width, height) => {
         this.renderer = new Renderer();
         this.renderer.InitRenderer(canvas, width, height, this.Animate).then(renderer => {
-           // PostProcessing.init(renderer);
-           //  PostProcessing.addFXAA();
-           //  PostProcessing.addBloom();
+            // PostProcessing.init(renderer);
+            //  PostProcessing.addFXAA();
+            //  PostProcessing.addBloom();
             // PostProcessing.addBokeh(); 
         })
             .then(() => {
@@ -59,18 +65,23 @@ class Engine {
         this.fpsTime += Time.deltaTime;
         this.fps++;
         if (this.fpsTime >= 1) {
-               document.title = this.fps + ' fps';
+            document.title = this.fps + ' fps';
             this.frameRate = parseFloat(this.fps);
             this.fps = 0;
             this.fpsTime = 0;
         }
-        
+
         Physics.update();
-        
-        if (PostProcessing.isUsingEffects())
-            PostProcessing.render();
-        else
-            this.renderer.Render(Scene.getScene(), Camera.mainCamera);
+
+        this.renderTimer += Time.deltaTime;
+        if (this.renderTimer >= this.renderRate) {
+            this.renderTimer = 0;
+            if (PostProcessing.isUsingEffects())
+                PostProcessing.render();
+            else {
+                this.renderer.Render(Scene.getScene(), Camera.mainCamera);
+            }
+        }
     }
 }
 

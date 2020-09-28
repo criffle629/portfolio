@@ -162,12 +162,11 @@ export default class Vehicle extends GameObject {
         }
 
         if (!this.inUse) return;
-
+        let axis = Vector2.zero;
         if (Gamepad.isConnected()) {
-            let axis = Gamepad.leftStick();
+            axis = Gamepad.leftStick();
 
-            if (!Vector2.Equals(axis, Vector2.zero))
-                this.steeringAngle = -30 * axis.x;
+            this.steeringAngle = -30 * axis.x;
         }
 
         if (this.engineSound !== null && !this.engineSound.isPlaying)
@@ -212,11 +211,13 @@ export default class Vehicle extends GameObject {
             if (Input.isKeyDown('d') || Input.isKeyDown('ArrowRight')) {
                 this.steeringAngle -= 15 * this.steeringRate * Time.deltaTime;
             }
-            else {
+            else 
+            if (Vector2.Equals(axis, Vector2.zero)){
                 this.steeringAngle = MathTools.moveTowards(this.steeringAngle, 0.0, this.steeringRate * Time.deltaTime);
             }
 
         this.steeringAngle = MathTools.clamp(this.steeringAngle, -25, 25);
+    
     }
 
     updateSound() {

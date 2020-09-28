@@ -14,6 +14,7 @@ import PortfolioModal from './modal/PortfolioModal';
 import MainMenuStadium from '../stadiumgame/ui/mainmenu';
 import StadiumGameUI from '../stadiumgame/ui/gameui';
 import MainGameUI from './MainGameUI/MainGameUI';
+ 
 
 export default class Game extends React.Component {
 
@@ -39,7 +40,7 @@ export default class Game extends React.Component {
 
         this.isLoaded = true;
         Scene.setScreenSize(document.body.clientWidth, document.body.clientHeight );
-        Camera.Configure(60, Scene.aspectRatio, 0.1, 1000.0);
+        Camera.Configure(60, Scene.aspectRatio, 1, 500.0);
         GameEngine.InitRenderer(this.canvas, Scene.screenWidth, Scene.screenHeight);
 
         this.canvas.focus();
@@ -83,9 +84,13 @@ export default class Game extends React.Component {
     render() {
         return (
             <div  style={{   width: '100vw', height:'100vh', padding:0, margin:0, overflow:'hidden' }}>
-                <MainGameUI />
-                <canvas style={{ outline: 'none', display: 'block', width: '100vw', height: '100vh', position:'fixed'}} tabIndex="0" ref={(c) => { this.canvas = c; this.Load(); }} onBlur={this.clearInput}></canvas>
-             
+                        
+          
+                <MainGameUI/>
+               
+                <canvas id='game' style={{ outline: 'none', display: 'block', width: '100vw', height: '100vh', position:'fixed', zIndex:-1}} tabIndex="0" ref={(c) => { this.canvas = c; this.Load(); }} onBlur={this.clearInput}></canvas>
+           
+
                 <RoadRacerModal isOpen={this.state.currentModal === 'roadracer'} closeModal={this.closeModal}/>
                 <MightyChickenModal isOpen={this.state.currentModal === 'mightychicken'} closeModal={this.closeModal}/>
                 <PawsnfindModal isOpen={this.state.currentModal === 'pawsnfind'} closeModal={this.closeModal}/>

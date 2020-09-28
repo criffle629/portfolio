@@ -30,9 +30,16 @@ export default class Player extends GameObject {
 
     update() {
 
+
         const ePressed = Input.isKeyPressed('e') || Gamepad.isButtonPressed(Gamepad.Buttons.BUTTON_TOP);
-        if (ePressed && this.vehicle === null)
+        if (ePressed && this.vehicle === null){
             this.vehicle = VehicleManager.useVehicle();
+
+            if (this.vehicle !== null){
+                this.setPosition(new Vector3(0.0, -1000, 0.0));
+                super.update();
+            }
+        }
         else
             if (ePressed && this.vehicle !== null) {
                 this.vehicle.inUse = false;
@@ -44,12 +51,8 @@ export default class Player extends GameObject {
 
             }
 
-        if (this.vehicle !== null && this.vehicle !== 'undefined' && this.position.y > -90) {
-            this.setPosition(new Vector3(0.0, -100, 0.0));
-
-            super.update();
+        if (this.vehicle !== null && this.vehicle !== 'undefined') 
             return;
-        }
 
         if (this.model && this.model.hasOwnProperty('mixer') && this.model.mixer !== null)
             this.model.mixer.timeScale = 1.0;
@@ -89,8 +92,8 @@ export default class Player extends GameObject {
         if (!Vector3.Equals(this.moveDir, Vector3.zero)) {
             this.forward = this.moveDir.normalize();
 
-            this.moveDir.x = this.forward.x * 3;
-            this.moveDir.z = this.forward.z * 3;
+            this.moveDir.x = this.forward.x;
+            this.moveDir.z = this.forward.z;
 
             this.euler.y = Vector3.Angle(Vector3.back, this.forward);
             this.changeAnimation('Walk');
@@ -100,34 +103,43 @@ export default class Player extends GameObject {
         }
 
         this.movePlayer();
-       
+
 
         super.update();
     }
 
-    movePlayer() {  
+    movePlayer() {
 
         if (Camera.controller.fixedCameraMode) {
+            this.moveDir.x *= 3;
+            this.moveDir.z *= 3;
             const moveVec = new Vector3(this.moveDir.x, this.moveDir.y, this.moveDir.z);
             moveVec.y = this.rigidBody.GetLinearVelocity().y;
             this.btMoveVec3.setValue(moveVec.x, moveVec.y, moveVec.z);
             this.rigidBody.body.setLinearVelocity(this.btMoveVec3);
             this.setRotation(this.euler);
         }
-        else{
+        else {
             this.forward = new Vector3(0, 0, -1);
             let rot = this.rotation.Euler();
             rot.x = 0;
             rot.z = 0;
-            rot.y -= this.moveDir.x * Time.deltaTime;
+            rot.y -= this.moveDir.x * 2.0 * Time.deltaTime;
             const quat = Quaternion.FromEuler(rot.x * MathTools.rad2Deg, rot.y * MathTools.rad2Deg, rot.z * MathTools.rad2Deg);
             this.forward.rotate(quat);
-            if (this.moveDir.z > 0) this.moveDir.z = 3;
+
+
+            if (this.moveDir.z < 0.15 && this.moveDir.z > 0.0)
+                this.moveDir.z = 0;
+            
+            if (this.moveDir.z > 0)
+                this.moveDir.z = 1.5;
             else
-            if (this.moveDir.z < 0) this.moveDir.z = -3;
+            if (this.moveDir.z < 0)
+                this.moveDir.z = -3;
 
             let moveVec = new Vector3(this.forward.x, this.forward.y, this.forward.z);
-            moveVec = Vector3.MultiplyScalar(moveVec, this.moveDir.z );
+            moveVec = Vector3.MultiplyScalar(moveVec, this.moveDir.z);
             moveVec.y = this.rigidBody.GetLinearVelocity().y;
             this.btMoveVec3.setValue(moveVec.x, moveVec.y, moveVec.z);
             this.rigidBody.body.setLinearVelocity(this.btMoveVec3);

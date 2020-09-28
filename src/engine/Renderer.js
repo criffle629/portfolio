@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-
+import { isChrome, isMobile} from 'react-device-detect';
 class Renderer {
     constructor() {
         this.renderer = null;
@@ -8,18 +8,16 @@ class Renderer {
     InitRenderer(canvas, width, height, loopCallback) {
 
         return new Promise((resolve, reject) => {
-            this.renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: false, antialias: true, precision: 'highp', powerPreference:'high-performance' });
+            this.renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: false, antialias: true, precision: 'mediump', powerPreference:'high-performance' });
             this.renderer.setSize(width, height);
             this.renderer.shadowMap.enabled = true;
             this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             this.renderer.cullFace = THREE.CullFaceBack;
           
             this.renderer.outputEncoding = THREE.GammaEncoding;
-       
-            this.renderer.autoClear = true;
-    
             this.renderer.setClearColor('skyblue', 1.0);
-            this.renderer.clearAlpha = 1;
+    
+            
             this.renderer.setAnimationLoop(loopCallback);
             
             if (this.renderer !== null)

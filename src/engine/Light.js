@@ -114,6 +114,7 @@ export default class Light extends GameObject {
         this.light.shadow.camera.bottom = -this.options.shadowCameraSize;
         this.light.shadow.camera.left = -this.options.shadowCameraSize;
         this.light.shadow.camera.right = this.options.shadowCameraSize;
+        this.light.shadow.camera.zoom = 0.55;
     }
 
     update() {
@@ -121,8 +122,8 @@ export default class Light extends GameObject {
 
         if (this.options.lightType === Light.LightType.DIRECTIONAL) {
             const camPos = Camera.position;
-            this.light.position.set(camPos.x, 1, camPos.z + 5);
-            this.light.target.position.set(this.options.target.x + camPos.x, this.options.target.y, this.options.target.z + camPos.z);
+            this.light.position.set(camPos.x, 100, camPos.z + 5);
+            this.light.target.position.set(this.options.target.x* 15 + camPos.x, this.options.target.y, this.options.target.z * 15 + camPos.z);
         }
         else
         if(this.options.lightType === Light.LightType.SPOT){

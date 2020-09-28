@@ -34,8 +34,7 @@ export default class CameraController {
 
         if (Vector3.Distance(Camera.position, newPos) > 0.2 && !this.locked)
             Camera.position = Vector3.MoveTowards(Camera.position, newPos,   0.1);
-        else
-        {
+        else{
             this.locked = true;
             Camera.position = newPos;
         }

@@ -412,11 +412,11 @@ export default class MainGame {
 
             this.vehicle2 = new Vehicle({
                 breakForce: 5,
-                accelForceFront: 20,
+                accelForceFront: 0,
                 accelForceBack: 100,
-                accelRate: 3,
+                accelRate: 4,
                 downForce: 0.02,
-                topSpeed: 120,
+                topSpeed: 150,
                 bodyWidth: 0.956,
                 bodyHeight: 0.738,
                 bodyLength: 2.28,
@@ -429,7 +429,7 @@ export default class MainGame {
                 wheelLeftModel: './assets/models/classicbugwheelLeft.glb',
                 wheelRightModel: './assets/models/classicbugwheelRight.glb',
                 stiffness: 50.0,
-                damping: 1.75,
+                damping: 5.75,
                 compression: 2.4,
                 backFriction: 0.95,
                 frontFriction: 1,
