@@ -102,7 +102,9 @@ export default class SkinnedMesh {
                     }
                     else
                         if (child.material.map && isAndroid) {
-                            child.material.map.anisotropy = 0;
+                            child.material.map.anisotropy = 1;
+                            child.material.map.minFilter = THREE.NearestFilter;
+                            child.material.map.magFilter = THREE.NearestFilter;
                         }
                 }
             });

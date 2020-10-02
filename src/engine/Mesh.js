@@ -1,7 +1,7 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Scene from './Scene';
 import * as THREE from 'three';
-import { isAndroid } from 'react-device-detect';
+import { isMobile } from 'react-device-detect';
 export default class Mesh {
     constructor(path = null, castShadow = false, receiveShadow = false, flatShading = false, culling = true) {
         this.mixer = null;
@@ -34,14 +34,16 @@ export default class Mesh {
     receiveShadow(value) {
         this.receiveShadow = value;
     }
-
+ 
     LoadMesh(path) {
         Scene.objectLoading++;
 
         return new Promise((resolve, reject) => {
             let loader = new GLTFLoader();
             loader.load(path, (gltf) => {
-
+             
+            
+              
                 gltf.scene.traverse(child => {
                     if (child.isMesh) {
                         child.castShadow = this.castShadow;
@@ -50,13 +52,16 @@ export default class Mesh {
                             child.material.side = THREE.FrontSide;
                         if (this.flatShading)
                             child.material.flatShading = this.flatShading;
-console.log('Android:', isAndroid)
-                        if (child.material.map && !isAndroid){
-                            child.material.map.anisotropy = 16;
+ 
+                        if (child.material.map && !isMobile){
+                            child.material.map.anisotropy = 16
                         }
                         else
-                        if (child.material.map && isAndroid){
-                            child.material.map.anisotropy = 0;
+                        if (child.material.map && isMobile){
+                            
+                            child.material.map.anisotropy = 1;
+                            child.material.map.minFilter = THREE.NearestFilter;
+                            child.material.map.magFilter = THREE.NearestFilter;
                         }
                     }
                 });

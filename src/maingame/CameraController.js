@@ -13,7 +13,7 @@ export default class CameraController {
         this.locked = true;
         this.followDistance = 3;
         this.followHeight = 1;
-    }
+    } 
 
     update() {
         if (Input.isKeyPressed('c') || Gamepad.isButtonPressed(Gamepad.Buttons.BUMPER_LEFT))

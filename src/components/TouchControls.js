@@ -1,6 +1,5 @@
 import React from 'react';
-import { Circle, Layer, Stage } from 'react-konva';
-import Gamepad from '../engine/Gamepad';
+ import Gamepad from '../engine/Gamepad';
 import Input from '../engine/Input';
 import MathTools from '../engine/MathTools';
 import Vector2 from '../engine/Vector2';
@@ -11,24 +10,31 @@ export default class Game extends React.Component {
     constructor(props) {
         super();
 
-        this.state = {
-            joystickCoord: {
+        this.joystickCoord= {
                 x: 100,
                 y: 85,
-            },
-            mouseDown: false,
-        };
+            };
 
-
+        this.mouseDown = false;
+        
+        this.stickRef = React.createRef();
+       
         document.addEventListener("touchmove", this.onDrag, true);
+     
         document.addEventListener("touchend", this.onDragEnd, true);
         document.addEventListener("touchcancel", this.onDragEnd, true);
+    
     }
 
     componentDidMount() {
-
+        if(this.strickRef){
+            this.stickRef.beginPath();
+            this.stickRef.arc(0, 0, 40, 0, 2 * Math.PI);
+            this.stickRef.lineWidth = 3;
+            this.stickRef.translate(0.5, 0.5);
+            this.stickRef.stroke();
+        }
     }
-
 
     distance(coord1, coord2) {
         const delta = {
@@ -40,12 +46,12 @@ export default class Game extends React.Component {
     }
 
     onDragStart = (e) => {
-        this.setState({ mouseDown: true });
+        this.mouseDown = true;
     }
 
     onDrag = (e) => {
 
-        if (!this.state.mouseDown) return;
+        if (!this.mouseDown) return;
 
         const xCoord = e.touches[0].clientX;
         const yCoord = window.innerHeight - e.touches[0].clientY;
@@ -56,7 +62,7 @@ export default class Game extends React.Component {
         };
 
         const coord2 = {
-            x: 100,
+            x: window.innerHeight - 150,
             y: 85
         };
         const dist = this.distance(coord1, coord2);
@@ -65,24 +71,20 @@ export default class Game extends React.Component {
         const yVal = MathTools.clamp((coord1.y - coord2.y) / 75, -1.0, 1.0) * -1;
 
         Gamepad.touchAxis = new Vector2(xVal, yVal);
-        if (dist <= 75) {
-            this.setState({
-                joystickCoord: {
-                    x: xCoord,
-                    y: yCoord
-                }
-            });
+        if (dist <= 75 && this.stickRef  ) {
+
+            this.stickRef.current.style.cssText = `top:${(window.innerHeight - 150) + xVal}; left: ${85 + yVal}; width: '100px'; height: '100px'; position: 'absolute'; zIndex:5;`;
+ 
         }
     }
 
     onDragEnd = (e) => {
-        this.setState({
-            joystickCoord: {
-                x: 100,
-                y: 85
-            },
-            mouseDown: false
-        });
+    if (this.stickRef && this.stickRef.current && this.stickRef.current.style && this.mouseDown){
+        this.stickRef.current.style.cssText = `top:${window.innerHeight - 150}; left: ${85 }; width: '100px'; height: '100px'; position: 'absolute'; zIndex:5;`;
+    }
+ 
+            this.mouseDown = false;
+        
         Gamepad.touchAxis = new Vector2(0, 0);
     }
 
@@ -97,31 +99,52 @@ export default class Game extends React.Component {
     render() {
         return (
             <div>
-                <Stage width={window.innerWidth} height={window.innerHeight} >
+                <div  style={{top:window.innerHeight - 150, left: 85,
+                    width: '100px', height: '100px', position: 'absolute', zIndex:5}}
+                    ref= {this.stickRef}
+                    onTouchStart={this.onDragStart}
+                    onTouchEnd={this.onDragEnd}
+                 
+                     >
+                <canvas  
+                                ref= { (ref) => {
+                                
+                                    this.canvasRef = ref.getContext('2d');
+                                    this.canvasRef.beginPath();
+                                    this.canvasRef.arc(50, 50, 30, 0, 2 * Math.PI);
+                                    this.canvasRef.lineWidth = 3;
+                                    this.canvasRef.strokeStyle ='rgb(17.6%, 43.9%, 59.2%, 50%)';
+                                    this.canvasRef.stroke();
+                                }} 
+                                width='100px'
+                                height='100px'
+                       
+                                >
 
-                    <Layer >
+                        </canvas>
+                        </div>
+                        <canvas   style={{top: window.innerHeight - 150, left: 85,
+                    width: '100px', height: '100px', position: 'absolute'}}
+                                ref= { (ref) => {
+                                    let ctx = ref.getContext('2d');
+                                    ctx.beginPath();
+                                    ctx.arc(50, 50, 40, 0, 2 * Math.PI);
+                                    ctx.lineWidth = 3;
+                                    ctx.strokeStyle ='rgb(17.6%, 43.9%, 59.2%, 50%)';
+                                    ctx.stroke();
+                                }} 
+                                width='100px'
+                                height='100px'
+                                onTouchStart={this.onDragStart}
+                                onTouchEnd={this.onDragEnd}>
 
-                        <Circle
-                            width='100px'
-                            height='100px'
-                            x={100} y={window.innerHeight - 85} radius={60}
-                            fill='transparent' stroke='rgb(17.6%, 43.9%, 59.2%)'
-                            strokeWidth='3'
-                        />
+                        </canvas>
 
-                        <Circle
+ 
+           
+          
 
-                            width='100px'
-                            height='100px'
-                            x={this.state.joystickCoord.x} y={window.innerHeight - this.state.joystickCoord.y} radius={40}
-                            fill='transparent' stroke='rgb(17.6%, 43.9%, 59.2%)'
-                            strokeWidth='3'
-                            onTouchStart={this.onDragStart}
-                        />
-
-                    </Layer>
-
-                </Stage>
+            
                 <div style={{width: '100%', height:'100%'}}>
                     <FontAwesomeIcon color="#495057" 
                                      size='5x' 

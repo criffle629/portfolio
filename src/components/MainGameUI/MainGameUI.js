@@ -5,6 +5,7 @@ import Scene from '../../engine/Scene';
 import Camera from '../../engine/Camera';
 import GameEngine from '../../engine/GameEngine';
 import TouchControls from '../TouchControls';
+import { isMobile } from 'react-device-detect';
 export default class MainGameUI extends React.Component {
 
     constructor(props) {
@@ -48,10 +49,15 @@ export default class MainGameUI extends React.Component {
         return this.state.currentModal !== 'none';
     }
 
+    renderTouchControl () { 
+       // if (isMobile)
+            return (<TouchControls />);
+    }
     render() {
         return (
             <div style={{ position: 'absolute', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
-                <TouchControls />
+             
+                {this.renderTouchControl()}
                 <GamepadUI />
                 <div style={{ position: 'relative', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
 
