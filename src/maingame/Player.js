@@ -33,7 +33,7 @@ export default class Player extends GameObject {
 
         const ePressed = Input.isKeyPressed('e') || Gamepad.isButtonPressed(Gamepad.Buttons.BUTTON_TOP);
         if (ePressed && this.vehicle === null){
-            this.vehicle = VehicleManager.useVehicle();
+            this.vehicle = VehicleManager.getInVehicle();
 
             if (this.vehicle !== null){
                 this.setPosition(new Vector3(0.0, -1000, 0.0));

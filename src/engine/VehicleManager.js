@@ -31,7 +31,7 @@ class VehicleController {
         this.vehicles.push(vehicle);
     }
 
-    useVehicle(player) {
+    getInVehicle(player) {
         if (this.inRangeVehicle === null) return null;
 
         this.inRangeVehicle.inUse = true;
