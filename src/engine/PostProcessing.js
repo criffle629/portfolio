@@ -21,6 +21,7 @@ class PostProcessingManager {
         this.bokeh = null;
         this.bloom = null;
         this.ffxa = null;
+        
         this.renderer = renderer;
     }
 
@@ -36,8 +37,8 @@ class PostProcessingManager {
 
     addBokeh() {
         this.bokeh = new BokehPass(Scene.scene, Camera.mainCamera, {
-            focus: 3000.0,
-            aperture: 0.002,
+            focus: 1.0,
+            aperture: 1.0,
             maxblur: 0.0025,
 
             width: Scene.width,

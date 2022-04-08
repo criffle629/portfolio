@@ -63,7 +63,7 @@ export default class MainGame {
                         rollingFriction: 0,
                         restitution: 0.5,
                         mass: 1
-                    }, Physics.createCapsuleShape(0.23, 0.5, Vector3.up), new Vector3(0, 1, 0));
+                    }, Physics.createCapsuleShape(0.23, 0.48, Vector3.up), new Vector3(0, 1, 0));
                 });
 
             this.ground = new GameObject('ground', './assets/models/ground.glb', false, false, true,);
@@ -415,7 +415,7 @@ export default class MainGame {
                 accelForceFront: 0,
                 accelForceBack: 100,
                 accelRate: 4,
-                downForce: 0.02,
+                downForce: 0.075,
                 topSpeed: 150,
                 bodyWidth: 0.956,
                 bodyHeight: 0.738,
@@ -428,7 +428,7 @@ export default class MainGame {
                 bodyModel: './assets/models/classicbug.glb',
                 wheelLeftModel: './assets/models/classicbugwheelLeft.glb',
                 wheelRightModel: './assets/models/classicbugwheelRight.glb',
-                stiffness: 50.0,
+                stiffness: 100.0,
                 damping: 5.75,
                 compression: 2.4,
                 backFriction: 0.95,

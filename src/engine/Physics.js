@@ -21,7 +21,7 @@ class PhysicsEngine {
 
         this.world.setGravity(new Ammo.btVector3(0, -9.8, 0));
         this.elapsedTime = 0.0;
-        this.phsyicsRate = 1.0 / 240.0;
+        this.physicsRate = 1.0 / 120.0;
 
         this.rigidBodies = [];
     }
@@ -132,7 +132,7 @@ class PhysicsEngine {
 
     update() {
  
-            this.world.stepSimulation(Time.deltaTime, 10, this.phsyicsRate);
+            this.world.stepSimulation(Time.deltaTime, 10);
       
     }
 }

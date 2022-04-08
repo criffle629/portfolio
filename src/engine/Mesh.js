@@ -41,8 +41,6 @@ export default class Mesh {
         return new Promise((resolve, reject) => {
             let loader = new GLTFLoader();
             loader.load(path, (gltf) => {
-             
-            
               
                 gltf.scene.traverse(child => {
                     if (child.isMesh) {

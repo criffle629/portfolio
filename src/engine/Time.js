@@ -6,20 +6,25 @@ class TimeManager{
 
     constructor(){
         this.clock = new Clock(true);
-
+        this.smoothAmount = 20;
         this.deltaBuffer = [];
         this.dtBufferIndex = 0;
         this.deltaBuffer.fill(0, 0, 10);
         this.deltaTime = 0;
         this.smoothDelta = 0;
         this.physicsRate = 1.0 / 60.0;
+        for (let i = 0; i < this.deltaBuffer.length; i++){
+            this.deltaBuffer[i] = this.deltaTime;
+        }
+
     }
 
     Update(){
         this.deltaTime = this.clock.getDelta();  
 
+        
         this.deltaBuffer[this.dtBufferIndex] = this.deltaTime;
-        this.dtBufferIndex = (this.dtBufferIndex + 1) % this.deltaBuffer.length;
+        this.dtBufferIndex = (this.dtBufferIndex + 1) % this.smoothAmount;
 
         this.smoothDelta = this.SmoothDelta();
 
@@ -35,11 +40,11 @@ class TimeManager{
     SmoothDelta(){
         let sum = 0;
 
-        for (let i = 0; i < this.deltaBuffer.length; i++){
+        for (let i = 0; i < this.smoothAmount; i++){
             sum += this.deltaBuffer[i];
         }
 
-        return sum / this.deltaBuffer.length;
+        return sum / this.smoothAmount;
     }
 
     DeltaTime(){

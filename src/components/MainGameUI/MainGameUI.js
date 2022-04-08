@@ -50,7 +50,7 @@ export default class MainGameUI extends React.Component {
     }
 
     renderTouchControl () { 
-       // if (isMobile)
+        if (isMobile)
             return (<TouchControls />);
     }
     render() {

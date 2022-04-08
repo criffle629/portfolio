@@ -14,7 +14,9 @@ class Renderer {
             this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             this.renderer.cullFace = THREE.CullFaceBack;
             this.renderer.setPixelRatio(window.devicePixelRatio);
-            this.renderer.outputEncoding = THREE.GammaEncoding;
+                 this.renderer.gammaFactor = 2.2
+        this.renderer.gammaOutPut = true
+            this.renderer.outputEncoding = THREE.sRGBEncoding;
             this.renderer.setClearColor('skyblue', 1.0);
     
             this.renderer.setAnimationLoop(loopCallback);

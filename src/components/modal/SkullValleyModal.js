@@ -97,10 +97,12 @@ export default props => {
                         <li style={styles.contentText}> Firebase integration </li>
                         <li style={styles.contentText}> Admob and Unity Ads for interstitial ads and reward ads </li>
                         <li style={styles.contentText}> Game Center integration on iOS and Google Play Services integration on Android </li>
+                        <li style={styles.contentText}> Sharable video replays encoded with ffmpeg on both Android and iOS </li>
                         <li style={styles.contentText}> Push notification </li>
                         <li style={styles.contentText}> In App Purchases </li>
                         <li style={styles.contentText}> Procedurally generated levels </li>
-                        <li style={styles.contentText}> Native plugins coded in C++ and Objective C </li>
+                        <li style={styles.contentText}> Native plugins coded in C++ and Objective C on iOS </li>
+                        <li style={styles.contentText}> Native plugins include, native gesture processing, image and video sharing, video encoding </li>
                         <li style={styles.contentText}> Timed reward events </li>
                     </ul>
                 </div>

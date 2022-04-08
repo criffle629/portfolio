@@ -7,7 +7,7 @@ import PostProcessing from './PostProcessing';
 import Input from './Input';
 import Gamepad from './Gamepad';
 import MainGame from '../maingame/MainGame';
-import { isChrome, isMobile} from 'react-device-detect';
+import { isChrome, isFirefox, isSafari, isMobile} from 'react-device-detect';
 //import StadiumGame from '../stadiumgame/StadiumGame';
 
 class Engine {
@@ -18,14 +18,14 @@ class Engine {
         this.renderRate = 1 / 90;
         this.renderTimer = 0;
         console.log('chrome', isChrome)
-        if (isChrome && !isMobile)
+        if ((isChrome || isFirefox || isSafari) && !isMobile)
             this.renderRate = 0;
         this.mainGame = new MainGame();
         this.mainGame.Init();
     }
 
     Init() {
-        requestAnimationFrame(this.Animate);
+       // requestAnimationFrame(this.Animate);
     }
 
     SetOpenModalCallback(openModal, isModalOpen) {
@@ -36,10 +36,11 @@ class Engine {
     InitRenderer = (canvas, width, height) => {
         this.renderer = new Renderer();
         this.renderer.InitRenderer(canvas, width, height, this.Animate).then(renderer => {
-            // PostProcessing.init(renderer);
-            //  PostProcessing.addFXAA();
-            //  PostProcessing.addBloom();
-            // PostProcessing.addBokeh(); 
+//             PostProcessing.init(renderer);
+            //  PostProcessing.addFXAA();n
+  //           
+    //         PostProcessing.addBokeh(); 
+      //       PostProcessing.addBloom();
         })
             .then(() => {
                 //    this.renderer.compile(Scene.scene, Camera.mainCamera); 
@@ -57,6 +58,7 @@ class Engine {
             Input.clearKeys();
         }
 
+        Physics.update();
         Gamepad.update();
         Time.Update();
         this.mainGame.update();
@@ -71,18 +73,17 @@ class Engine {
             this.fpsTime = 0;
         }
 
-        Physics.update();
 
-        this.renderTimer += Time.deltaTime;
-        if (this.renderTimer >= this.renderRate) {
-            this.renderTimer = 0;
+        
             if (PostProcessing.isUsingEffects())
                 PostProcessing.render();
             else {
                 this.renderer.Render(Scene.getScene(), Camera.mainCamera);
             }
+
+            
         }
-    }
+  
 }
 
 const GameEngine = new Engine();
