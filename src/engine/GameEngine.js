@@ -36,11 +36,11 @@ class Engine {
     InitRenderer = (canvas, width, height) => {
         this.renderer = new Renderer();
         this.renderer.InitRenderer(canvas, width, height, this.Animate).then(renderer => {
-//             PostProcessing.init(renderer);
+         //    PostProcessing.init(renderer);
             //  PostProcessing.addFXAA();n
-  //           
-    //         PostProcessing.addBokeh(); 
-      //       PostProcessing.addBloom();
+             
+        //     PostProcessing.addBokeh(); 
+       //      PostProcessing.addBloom();
         })
             .then(() => {
                 //    this.renderer.compile(Scene.scene, Camera.mainCamera); 

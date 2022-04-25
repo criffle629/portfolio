@@ -18,7 +18,7 @@ export default class GameObject {
         this.skinnedMesh = skinnedMesh;
         this.forward = Vector3.forward;
         this.objID = uuidv4();
-    
+
         this.rigidBody = null;
         this.castShadow = castShadow;
         this.recieveShadow = recieveShadow;
@@ -46,6 +46,13 @@ export default class GameObject {
             });
     }
 
+    destroyModel() {
+         
+        Scene.deleteObject(this.model.scene);
+
+        if (this.rigidBody !== null)
+            this.rigidBody.removeRigidBody();
+    }
     setEnabled(value) {
         this.isEnabled = value;
 
@@ -95,7 +102,7 @@ export default class GameObject {
             this.rigidBody.setPosition(this.position);
         }
         else {
-            this.position = Vector3.Add(this.position,  moveDir);
+            this.position = Vector3.Add(this.position, moveDir);
         }
     }
 
@@ -124,14 +131,14 @@ export default class GameObject {
             return;
 
         const rot = this.rotation.Euler();
-    
+
         this.model.mesh.position.set(this.position.x, this.position.y, this.position.z);
         this.model.mesh.rotation.set(rot.x, rot.y, rot.z);
     }
 
     lateUpdate() { }
 
-    addRigidBody(options = {mass: 0, friction: 1, rollingFriction: 1, restitution: 0.8}, shape = null, position = Vector3.zero, rotation = Quaternion.Identity()) {
+    addRigidBody(options = { mass: 0, friction: 1, rollingFriction: 1, restitution: 0.8 }, shape = null, position = Vector3.zero, rotation = Quaternion.Identity()) {
         this.rigidBody = new RigidBody(position, shape, rotation, options);
     }
 

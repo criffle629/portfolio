@@ -49,6 +49,9 @@ export default class RigidBody {
         Physics.addRigidBody(this.body);
     }
 
+    removeRigidBody(){
+        Physics.removeRigidBody(this.body);
+    }
 
     setMass(mass) {
         if (this.body) {

@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { isChrome, isMobile} from 'react-device-detect';
 class Renderer {
     constructor() {
         this.renderer = null;

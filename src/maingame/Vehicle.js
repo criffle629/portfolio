@@ -13,16 +13,17 @@ import Ammo from 'ammo.js';
 import VehicleManager from '../engine/VehicleManager';
 import Gamepad from '../engine/Gamepad';
 import Vector2 from '../engine/Vector2';
+import Multiplayer from './Multiplayer';
 
 export default class Vehicle extends GameObject {
     constructor(options) {
         super();
-
+        this.name = options.name;
         this.inUse = false;
         this.castShadow = true;
         this.recieveShadow = true;
         this.skinnedMesh = false;
-
+        this.lastPosition = new Vector3(options.position.x, options.position.y, options.position.z);
         this.btPos = new Ammo.btVector3(0, 0, 0);
         this.btQuat = new Ammo.btQuaternion(0, 0, 0, 1);
         this.btDownForce = new Ammo.btVector3(0, 0, 0);
@@ -42,7 +43,9 @@ export default class Vehicle extends GameObject {
         this.speed = 0;
         this.constantDownforce = options.constantDownforce;
         this.downForceVel = new Vector3(0, -(Math.abs(this.speed) * this.downForce), 0);
-
+        this.playerControlled = false;
+        this.netContinuedUpdateTrigger = 2.0;
+        this.netContinuedUpdateTimer = this.netContinuedUpdateTrigger;
         Audio.LoadSound('./assets/sounds/engine.wav', true, 0.1)
             .then(sound => {
                 this.engineSound = sound;
@@ -211,13 +214,13 @@ export default class Vehicle extends GameObject {
             if (Input.isKeyDown('d') || Input.isKeyDown('ArrowRight')) {
                 this.steeringAngle -= 15 * this.steeringRate * Time.deltaTime;
             }
-            else 
-            if (Vector2.Equals(axis, Vector2.zero)){
-                this.steeringAngle = MathTools.moveTowards(this.steeringAngle, 0.0, this.steeringRate * Time.deltaTime);
-            }
+            else
+                if (Vector2.Equals(axis, Vector2.zero)) {
+                    this.steeringAngle = MathTools.moveTowards(this.steeringAngle, 0.0, this.steeringRate * Time.deltaTime);
+                }
 
         this.steeringAngle = MathTools.clamp(this.steeringAngle, -25, 25);
-    
+
     }
 
     updateSound() {
@@ -318,7 +321,7 @@ export default class Vehicle extends GameObject {
         this.btDownForce.setValue(this.downForceVel.x, this.downForceVel.y, this.downForceVel.z);
         this.body.applyCentralImpulse(this.btDownForce);
     }
-    
+
     resetMovementWhenNotInUse() {
         if (!this.inUse) {
             this.currentBrakingFront = this.breakForce * 0.25;
@@ -328,7 +331,23 @@ export default class Vehicle extends GameObject {
         }
     }
 
+    netUpdate(vehicleUpdate) {
+
+        this.inUse = true;
+        this.body.setLinearVelocity(new Ammo.btVector3(vehicleUpdate.linearVelocity.x, vehicleUpdate.linearVelocity.y, vehicleUpdate.linearVelocity.z));
+        this.body.setAngularVelocity(new Ammo.btVector3(vehicleUpdate.angularVelocity.x, vehicleUpdate.angularVelocity.y, vehicleUpdate.angularVelocity.z));
+        let newPos =  vehicleUpdate.position;
+        this.body.getWorldTransform().setOrigin(new Ammo.btVector3(newPos.x, newPos.y, newPos.z));
+        this.steeringAngle = vehicleUpdate.steeringAngle;
+        this.rotation =  Quaternion.FromEuler(vehicleUpdate.rotation.x, vehicleUpdate.rotation.y, vehicleUpdate.rotation.z);
+        this.vehicle.setSteeringValue(0, 3);
+        this.vehicle.setSteeringValue(0, 2);
+        this.vehicle.setSteeringValue(vehicleUpdate.steeringAngle * MathTools.deg2Rad, 0);
+        this.vehicle.setSteeringValue(vehicleUpdate.steeringAngle * MathTools.deg2Rad, 1);
+    }
+
     update() {
+
         Camera.mainCamera.add(Audio.listener);
         this.applyDownforce();
         this.resetMovementWhenNotInUse();
@@ -339,5 +358,39 @@ export default class Vehicle extends GameObject {
         this.updateWheels();
         this.updateRigidBody();
         this.updateSpeed();
+
+        if(this.engineSound !== null && this.engineSound.isPlaying && this.playerControlled){
+                console.log("Car update");
+            if (this.inUse)
+                this.netContinuedUpdateTimer = 0;
+
+            if (!this.inUse)
+                this.netContinuedUpdateTimer += Time.deltaTime;
+
+            if (this.netContinuedUpdateTimer >= this.netContinuedUpdateTime) 
+                this.playerControlled = false;
+                
+            let btPos = this.body.getWorldTransform().getOrigin();
+            let currentPos = new Vector3(btPos.x(), btPos.y(), btPos.z());
+         
+            if (!Vector3.Equals(this.lastPosition, currentPos)) {
+
+                let linearVelocity = this.body.getLinearVelocity();
+                let angularVelocity = this.body.getAngularVelocity();
+
+                Multiplayer.updateVehicleWithServer({
+                    key: this.name,
+                    linearVelocity: new Vector3(linearVelocity.x(), linearVelocity.y(), linearVelocity.z()),
+                    angularVelocity: new Vector3(angularVelocity.x(), angularVelocity.y(), angularVelocity.z()),
+                    position: currentPos,
+                    rotation: this.rotation,
+                    steeringAngle: this.steeringAngle
+                });
+
+                this.lastPosition = currentPos;
+            }
+        }
+     
+
     }
 }

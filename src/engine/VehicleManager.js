@@ -33,11 +33,11 @@ class VehicleController {
 
     getInVehicle(player) {
         if (this.inRangeVehicle === null) return null;
-
+        
         this.inRangeVehicle.inUse = true;
         Camera.target = this.inRangeVehicle;
         this.vehicleInUse = this.inRangeVehicle;
-
+        this.vehicleInUse.playerControlled = true;
         return this.inRangeVehicle;
     }
 
@@ -52,6 +52,7 @@ class VehicleController {
     }
 
     leaveVehicle(){
+        this.vehicleInUse.inUse = false;
         this.vehicleInUse = null;
     }
 

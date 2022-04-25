@@ -107,8 +107,7 @@ class MultiplayerManager {
             });
 
             this.socket.on('reveiveInput', (input) => {
-                console.log(input);
-            });
+             });
 
             this.socket.on('receiveInput', (data) => {
                 if (data.cliendUUID === this.uuid && this.players[data.cliendUUID] !== undefined) return;

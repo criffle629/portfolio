@@ -12,6 +12,7 @@ import Light from '../engine/Light';
 import Ball from '../engine/Ball';
 import VehicleManager from '../engine/VehicleManager';
 import CameraController from './CameraController';
+import Multiplayer from './Multiplayer';
 
 export default class MainGame {
     Init() {
@@ -410,39 +411,9 @@ export default class MainGame {
             Camera.controller = this.cameraController;
             Camera.target = this.player;
 
-            this.vehicle2 = new Vehicle({
-                breakForce: 5,
-                accelForceFront: 0,
-                accelForceBack: 100,
-                accelRate: 4,
-                downForce: 0.075,
-                topSpeed: 150,
-                bodyWidth: 0.956,
-                bodyHeight: 0.738,
-                bodyLength: 2.28,
-                mass: 100,
-                enginePitch: 25,
-                position: new Vector3(-38.62, 0.56, -9.23),
-                rotation: new Quaternion(0, 0.191, 0, 0.982),
-                centerOfMass: new Vector3(0, -1, 0),
-                bodyModel: './assets/models/classicbug.glb',
-                wheelLeftModel: './assets/models/classicbugwheelLeft.glb',
-                wheelRightModel: './assets/models/classicbugwheelRight.glb',
-                stiffness: 100.0,
-                damping: 5.75,
-                compression: 2.4,
-                backFriction: 0.95,
-                frontFriction: 1,
-                roll: .25,
-                radius: 0.25,
-                suspensionLen: 0.095,
-                backLeftPos: new Vector3(-0.4, -0.35, -0.654),
-                backRightPos: new Vector3(0.4, -0.35, -0.654),
-                frontRightPos: new Vector3(0.38, -0.35, 0.719),
-                frontLeftPos: new Vector3(-0.38, -0.35, 0.719),
-            });
 
             this.vehicle = new Vehicle({
+                name: 'hotrod',
                 breakForce: 10,
                 accelForceFront: 50,
                 accelForceBack: 150,
@@ -473,8 +444,46 @@ export default class MainGame {
                 frontRightPos: new Vector3(0.524, -0.309, 0.719),
                 frontLeftPos: new Vector3(-0.524, -0.309, 0.719),
             });
+            Multiplayer.addVehicle('hotrod', this.vehicle);
+
+            this.vehicle2 = new Vehicle({
+                name: 'classicbug',
+                breakForce: 5,
+                accelForceFront: 0,
+                accelForceBack: 100,
+                accelRate: 4,
+                downForce: 0.075,
+                topSpeed: 150,
+                bodyWidth: 0.956,
+                bodyHeight: 0.738,
+                bodyLength: 2.28,
+                mass: 100,
+                enginePitch: 25,
+                position: new Vector3(-38.62, 0.56, -9.23),
+                rotation: new Quaternion(0, 0.191, 0, 0.982),
+                centerOfMass: new Vector3(0, -1, 0),
+                bodyModel: './assets/models/classicbug.glb',
+                wheelLeftModel: './assets/models/classicbugwheelLeft.glb',
+                wheelRightModel: './assets/models/classicbugwheelRight.glb',
+                stiffness: 100.0,
+                damping: 5.75,
+                compression: 2.4,
+                backFriction: 0.95,
+                frontFriction: 1,
+                roll: .25,
+                radius: 0.25,
+                suspensionLen: 0.095,
+                backLeftPos: new Vector3(-0.4, -0.35, -0.654),
+                backRightPos: new Vector3(0.4, -0.35, -0.654),
+                frontRightPos: new Vector3(0.38, -0.35, 0.719),
+                frontLeftPos: new Vector3(-0.38, -0.35, 0.719),
+            });
+            Multiplayer.addVehicle('classicbug', this.vehicle2);
+
+           
 
             this.vehicle3 = new Vehicle({
+                name:'sportscar',
                 breakForce: 15,
                 accelForceFront: 180,
                 accelForceBack: 250,
@@ -505,8 +514,10 @@ export default class MainGame {
                 frontRightPos: new Vector3(0.45, -0.23, 0.69),
                 frontLeftPos: new Vector3(-0.45, -0.23, 0.69),
             });
+            Multiplayer.addVehicle('sportscar', this.vehicle3);
 
             this.vehicle4 = new Vehicle({
+                name: 'racecar',
                 breakForce: 15,
                 accelForceFront: 0,
                 accelForceBack: 500,
@@ -537,8 +548,10 @@ export default class MainGame {
                 frontRightPos: new Vector3(0.4, -0.05, 0.67),
                 frontLeftPos: new Vector3(-0.4, -0.05, 0.67),
             });
+            Multiplayer.addVehicle('racecar', this.vehicle4);
 
             this.vehicle5 = new Vehicle({
+                name: 'truck',
                 breakForce: 10,
                 accelForceFront: 0,
                 accelForceBack: 250,
@@ -569,8 +582,10 @@ export default class MainGame {
                 frontRightPos: new Vector3(0.45, -0.5, 0.95),
                 frontLeftPos: new Vector3(-0.45, -0.5, 0.95),
             });
+            Multiplayer.addVehicle('truck', this.vehicle5);
 
-            this.vehicle5 = new Vehicle({
+            this.vehicle6 = new Vehicle({
+                name: 'pickup',
                 breakForce: 10,
                 accelForceFront: 0,
                 accelForceBack: 225,
@@ -601,6 +616,8 @@ export default class MainGame {
                 frontRightPos: new Vector3(0.425, -0.32, 0.71),
                 frontLeftPos: new Vector3(-0.425, -0.32, 0.71),
             });
+            Multiplayer.addVehicle('pickup', this.vehicle6);
+
             resolve(true);  // This needs to be better
         });
     }
