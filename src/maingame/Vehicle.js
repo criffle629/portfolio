@@ -46,6 +46,8 @@ export default class Vehicle extends GameObject {
         this.playerControlled = false;
         this.netContinuedUpdateTrigger = 2.0;
         this.netContinuedUpdateTimer = this.netContinuedUpdateTrigger;
+        this.inNetUse = false;
+
         Audio.LoadSound('./assets/sounds/engine.wav', true, 0.1)
             .then(sound => {
                 this.engineSound = sound;
@@ -144,7 +146,7 @@ export default class Vehicle extends GameObject {
     }
 
     updateInput() {
-        if (this.isUpsideDown() && this.inUse) {
+        if (this.isUpsideDown() && this.inUse && !this.inNetUse) {
             if (Input.isKeyDown('r') || Gamepad.isButtonPressed(Gamepad.Buttons.BUMPER_RIGHT)) {
                 const position = new Vector3(this.position.x, this.position.y + 1.5, this.position.z);
                 const rotation = new Quaternion(0.0, this.rotation.y, 0.0, this.rotation.w);
@@ -249,6 +251,7 @@ export default class Vehicle extends GameObject {
                 this.engineSound.setDetune((Math.abs(this.speed) + this.enginePitch) * 10);
                 this.engineSound.panner.setPosition(this.model.mesh.position.x, this.model.mesh.position.y, this.model.mesh.position.z);
             }
+  
         }
     }
 
@@ -333,19 +336,28 @@ export default class Vehicle extends GameObject {
 
     netUpdate(vehicleUpdate) {
 
-        this.inUse = true;
+        
         this.body.setLinearVelocity(new Ammo.btVector3(vehicleUpdate.linearVelocity.x, vehicleUpdate.linearVelocity.y, vehicleUpdate.linearVelocity.z));
         this.body.setAngularVelocity(new Ammo.btVector3(vehicleUpdate.angularVelocity.x, vehicleUpdate.angularVelocity.y, vehicleUpdate.angularVelocity.z));
-        let newPos =  vehicleUpdate.position;
+        let newPos = vehicleUpdate.position;
         this.body.getWorldTransform().setOrigin(new Ammo.btVector3(newPos.x, newPos.y, newPos.z));
         this.steeringAngle = vehicleUpdate.steeringAngle;
-        this.rotation =  Quaternion.FromEuler(vehicleUpdate.rotation.x, vehicleUpdate.rotation.y, vehicleUpdate.rotation.z);
+        this.rotation = Quaternion.FromEuler(vehicleUpdate.rotation.x, vehicleUpdate.rotation.y, vehicleUpdate.rotation.z);
         this.vehicle.setSteeringValue(0, 3);
         this.vehicle.setSteeringValue(0, 2);
         this.vehicle.setSteeringValue(vehicleUpdate.steeringAngle * MathTools.deg2Rad, 0);
         this.vehicle.setSteeringValue(vehicleUpdate.steeringAngle * MathTools.deg2Rad, 1);
     }
-
+    netVehicleEnter(){
+        this.inNetUse = true;
+        this.inUse = true;
+        
+    }
+    netVehicleExit() {
+        this.inNetUse = false;
+        this.inUse = false;
+     
+    }
     update() {
 
         Camera.mainCamera.add(Audio.listener);
@@ -359,20 +371,20 @@ export default class Vehicle extends GameObject {
         this.updateRigidBody();
         this.updateSpeed();
 
-        if(this.engineSound !== null && this.engineSound.isPlaying && this.playerControlled){
-                console.log("Car update");
+        if (this.engineSound !== null && this.engineSound.isPlaying && this.playerControlled) {
+
             if (this.inUse)
                 this.netContinuedUpdateTimer = 0;
 
             if (!this.inUse)
                 this.netContinuedUpdateTimer += Time.deltaTime;
 
-            if (this.netContinuedUpdateTimer >= this.netContinuedUpdateTime) 
+            if (this.netContinuedUpdateTimer >= this.netContinuedUpdateTime)
                 this.playerControlled = false;
-                
+
             let btPos = this.body.getWorldTransform().getOrigin();
             let currentPos = new Vector3(btPos.x(), btPos.y(), btPos.z());
-         
+
             if (!Vector3.Equals(this.lastPosition, currentPos)) {
 
                 let linearVelocity = this.body.getLinearVelocity();
@@ -389,8 +401,9 @@ export default class Vehicle extends GameObject {
 
                 this.lastPosition = currentPos;
             }
+      
         }
-     
+
 
     }
 }

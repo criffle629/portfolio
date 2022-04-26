@@ -3,6 +3,7 @@ import GameObject from './GameObject';
 import Quaternion from './Quaternion';
 import Camera from './Camera';
 import MathTools from './MathTools';
+import Multiplayer from '../maingame/Multiplayer';
 
 class VehicleController {
     constructor() {
@@ -32,11 +33,15 @@ class VehicleController {
     }
 
     getInVehicle(player) {
-        if (this.inRangeVehicle === null) return null;
+        
+        if (this.inRangeVehicle === null || this.inRangeVehicle.inNetUse) return null;
         
         this.inRangeVehicle.inUse = true;
         Camera.target = this.inRangeVehicle;
+        
         this.vehicleInUse = this.inRangeVehicle;
+        Multiplayer.enterVehicle(this.vehicleInUse.name);
+
         this.vehicleInUse.playerControlled = true;
         return this.inRangeVehicle;
     }
@@ -45,6 +50,7 @@ class VehicleController {
         if (vehicle === null) return null;
 
         vehicle.inUse = true;
+        
         Camera.target = vehicle;
         this.vehicleInUse = vehicle;
 
@@ -53,11 +59,14 @@ class VehicleController {
 
     leaveVehicle(){
         this.vehicleInUse.inUse = false;
+        Multiplayer.exitVehicle(this.vehicleInUse.name);
         this.vehicleInUse = null;
+
+        
     }
 
     updateEKey(){
-        if (this.inRangeVehicle !== null) {
+        if (this.inRangeVehicle !== null && !this.inRangeVehicle.inNetUse) {
 
             let vehiclePos = this.inRangeVehicle.position;
             this.ekey.setPosition(new Vector3(vehiclePos.x, vehiclePos.y + 1, vehiclePos.z));

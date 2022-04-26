@@ -76,9 +76,7 @@ class MultiplayerManager {
                 this.players.delete(data.uuid);
             });
 
-            this.socket.on('reveiveInput', (input) => {
-         
-            });
+      
 
             this.socket.on('receiveInput', (data) => {
 
@@ -88,6 +86,18 @@ class MultiplayerManager {
                 this.vehicles.get(data.key).netUpdate(data);
             });
 
+     
+            this.socket.on('vehicleExit', (data) => {
+                this.vehicles.get(data.vehicle).netVehicleExit();
+         
+
+            });
+
+            this.socket.on('vehicleEnter', (data) => {
+                this.vehicles.get(data.vehicle).netVehicleEnter();
+             
+
+            });
 
             this.socket.on('playerUpdate', (data) => {
                 
@@ -125,6 +135,14 @@ class MultiplayerManager {
          
         this.socket.emit('updateVehicle', vehicleUpdate);
      }
+
+     enterVehicle(vehicle) {
+        this.socket.emit('vehicleEnter', { vehicle: vehicle });
+    } 
+
+    exitVehicle(vehicle) {
+        this.socket.emit('vehicleExit', { vehicle: vehicle });
+    }
     addVehicle(key, vehicle) {
         this.vehicles.set(key, vehicle);
     }
