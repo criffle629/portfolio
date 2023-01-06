@@ -178,6 +178,29 @@ export default class  Quaternion {
         return result;
     }
 
+    static FromEulerRad(x, y, z) {
+        let yaw = y;
+        let pitch = x;
+        let roll = z;
+
+        let rollOver2 = roll * 0.5;
+        let sinRollOver2 = Math.sin(rollOver2);
+        let cosRollOver2 = Math.cos(rollOver2);
+        let pitchOver2 = pitch * 0.5;
+        let sinPitchOver2 = Math.sin(pitchOver2);
+        let cosPitchOver2 = Math.cos(pitchOver2);
+        let yawOver2 = yaw * 0.5;
+        let sinYawOver2 = Math.sin(yawOver2);
+        let cosYawOver2 = Math.cos(yawOver2);
+        let result = new Quaternion();
+        result.w = cosYawOver2 * cosPitchOver2 * cosRollOver2 + sinYawOver2 * sinPitchOver2 * sinRollOver2;
+        result.x = cosYawOver2 * sinPitchOver2 * cosRollOver2 + sinYawOver2 * cosPitchOver2 * sinRollOver2;
+        result.y = sinYawOver2 * cosPitchOver2 * cosRollOver2 - cosYawOver2 * sinPitchOver2 * sinRollOver2;
+        result.z = cosYawOver2 * cosPitchOver2 * sinRollOver2 - sinYawOver2 * sinPitchOver2 * cosRollOver2;
+
+        return result;
+    }
+
     static Dot(q1, q2) {
         return q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
     }

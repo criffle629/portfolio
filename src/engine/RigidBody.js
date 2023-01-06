@@ -32,7 +32,7 @@ export default class RigidBody {
         this.motionState = new Ammo.btDefaultMotionState(this.transform);
 
         let localInertia = new Ammo.btVector3(0.0, 0.0, 0.0);
-        localInertia = this.shape.calculateLocalInertia(this.mass, localInertia);
+        //localInertia = this.shape.calculateLocalInertia(this.mass, localInertia);
         let ri = new Ammo.btRigidBodyConstructionInfo(this.mass, this.motionState, this.shape, localInertia);
         this.position = position;
         this.rotation = rotation;

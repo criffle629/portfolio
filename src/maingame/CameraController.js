@@ -4,7 +4,7 @@ import Input from '../engine/Input';
 import MathTools from '../engine/MathTools';
 import Quaternion from '../engine/Quaternion';
 import Vector3 from '../engine/Vector3';
-  
+import Time from '../engine/Time';
 
 export default class CameraController {
     constructor(offset) {
@@ -12,6 +12,8 @@ export default class CameraController {
         this.fixedCameraMode = true;
         this.locked = true;
         this.followDistance = 3;
+        this.maxDistance = 5;
+        this.minDistance = 1;
         this.followHeight = 1;
         this.newTargetPos = new Vector3();
     } 
@@ -52,19 +54,36 @@ export default class CameraController {
 
         this.locked = false;
 
-         let euler = Camera.target.rotation.Euler();
-        euler.x *= MathTools.rad2Deg;
-        euler.y *= MathTools.rad2Deg;
-        euler.z *= MathTools.rad2Deg;
+        const euler = Camera.target.rotation.Euler();
 
-        const quat = Quaternion.FromEuler(euler.x, euler.y, euler.z);
-        let forward = new Vector3(0, 0, -1);
-        forward.rotate(quat);
-
-        forward = Vector3.MultiplyScalar(forward, 4.0);
-        forward.y = Camera.target.position.y + 1;   
+        const quat = Quaternion.FromEulerRad(euler.x, euler.y, euler.z);
+        let forward = new Vector3(0, 1, -4);
+        forward.rotate(quat);   
  
-        Camera.SetPosition(Vector3.Add(Camera.target.position, forward));
+        let newPos = Vector3.Add(Camera.target.position, forward);
+        let camPos = Vector3.Lerp(Camera.position, newPos, 5.0 * 0.0125);
+
+        let dist = Vector3.Distance(Camera.target.position, camPos);
+        dist = MathTools.clamp(dist, this.minDistance, this.maxDistance);
+
+        if (dist < this.minDistance){
+            forward = new Vector3(0, 1, -this.minDistance);
+            forward.rotate(quat);  
+            newPos = Vector3.Add(Camera.target.position, forward);
+            camPos = newPos;
+        }
+        else
+        if (dist > this.maxDistance){
+            forward = new Vector3(0, 1, -this.maxDistance);
+            forward.rotate(quat);  
+            newPos = Vector3.Add(Camera.target.position, forward);
+            camPos = newPos;
+        }
+
+        if (camPos.y < 1.0)
+            camPos.y = 1.0;
+
+        Camera.SetPosition(camPos);
 
         Camera.mainCamera.lookAt(Camera.target.position.x, Camera.target.position.y, Camera.target.position.z);
     }

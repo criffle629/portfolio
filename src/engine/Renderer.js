@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+
 class Renderer {
     constructor() {
         this.renderer = null;

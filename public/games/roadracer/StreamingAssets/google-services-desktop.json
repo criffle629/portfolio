@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "903384419774",
+    "firebase_url": "https://api-project-903384419774.firebaseio.com",
+    "project_id": "api-project-903384419774",
+    "storage_bucket": "api-project-903384419774.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903384419774:android:f1907b549d885164a27def",
+        "android_client_info": {
+          "package_name": "com.intoxic8studio.roadracer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "903384419774-73mh6nh3494hp8jmo7sgvp23kamb1ju4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkSawQO-9Ci8Ge97hJh54qaP8RoXokLjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "903384419774-73mh6nh3494hp8jmo7sgvp23kamb1ju4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "903384419774-b170pfj062t1lrmgkl4n7gft9sf1t457.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.intoxic8studio.roadracer",
+                "app_store_id": "575817068"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

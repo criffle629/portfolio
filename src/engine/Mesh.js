@@ -1,7 +1,10 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Scene from './Scene';
 import * as THREE from 'three';
-import { isMobile } from 'react-device-detect';
+//import { isMobile } from 'react-device-detect';
+
+const isMobile = false;
+
 export default class Mesh {
     constructor(path = null, castShadow = false, receiveShadow = false, flatShading = false, culling = true) {
         this.mixer = null;

@@ -1,7 +1,7 @@
 import socketIOClient from "socket.io-client";
 import Vector3 from '../engine/Vector3';
 import Quaternion from '../engine/Quaternion';
-import Vehicle from './Vehicle';
+import VehicleController from './VehicleController';
 
 const vehicle = {
     isPlayer: false,
@@ -50,7 +50,7 @@ class MultiplayerManager {
     }
 
     connect() {
-
+return;
         return new Promise((resolve) => {
             this.socket = socketIOClient(this.server);
 
@@ -67,7 +67,7 @@ class MultiplayerManager {
                         vehicleData.uuid = this.clients[i].uuid;
                         vehicleData.position = new Vector3(this.clients[i].player.position.x, this.clients[i].player.position.y, this.clients[i].player.position.z);
                         vehicleData.rotation = new Quaternion(this.clients[i].player.rotation.x, this.clients[i].player.rotation.y, this.clients[i].player.rotation.z, this.clients[i].player.rotation.w);
-                        this.players[data.uuid] = new Vehicle(vehicleData);
+                        this.players[data.uuid] = new VehicleController(vehicleData);
                     }
                 }
             });
@@ -90,7 +90,7 @@ class MultiplayerManager {
                 vehicleData.uuid = data.uuid;
                 vehicleData.position = new Vector3(data.player.position.x, data.player.position.y, data.player.position.z);
                 vehicleData.rotation = new Quaternion(data.player.rotation.x, data.player.rotation.y, data.player.rotation.z, data.player.rotation.w);
-                this.players[data.uuid] = new Vehicle(vehicleData);
+                this.players[data.uuid] = new VehicleController(vehicleData);
                 this.clients.push(data);
             });
 

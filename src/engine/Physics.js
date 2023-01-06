@@ -45,7 +45,7 @@ class PhysicsEngine {
 
     createSphereShape(radius = 1) {
         let shape = new Ammo.btSphereShape(radius);
-        shape.setMargin(0.05);
+        shape.setMargin(0.005);
 
         return shape;
     }
@@ -64,21 +64,21 @@ class PhysicsEngine {
 
     createCapsuleShape(radius, height, direction) {
         let shape = new Ammo.btCapsuleShape(radius, height, new Ammo.btVector3(direction.x, direction.y, direction.z));
-        shape.setMargin(0.05);
+        shape.setMargin(0.005);
 
         return shape;
     }
 
     createCylinderShape(radius, height, direction) {
         let shape = new Ammo.btCylinderShape(radius, height, new Ammo.btVector3(direction.x, direction.y, direction.z));
-        shape.setMargin(0.05);
+        shape.setMargin(0.005);
 
         return shape;
     }
 
     createConeShape(radius, height, direction) {
         let shape = new Ammo.btConeShape(radius, height, new Ammo.btVector3(direction.x, direction.y, direction.z));
-        shape.setMargin(0.05);
+        shape.setMargin(0.005);
 
         return shape;
     }
@@ -125,14 +125,14 @@ class PhysicsEngine {
             }
 
             const shape = new Ammo.btBvhTriangleMeshShape(triMesh, true);
-
+ 
             resolve(shape);
         });
     }
 
     update() {
  
-            this.world.stepSimulation(Time.deltaTime, 10);
+            this.world.stepSimulation(Time.deltaTime, 100);
       
     }
 }

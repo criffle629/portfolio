@@ -1,6 +1,8 @@
 import Vector2 from './Vector2';
 import Gamepads from 'gamepads';
-import { isMobile } from 'react-device-detect';
+//import { isMobile } from 'react-device-detect';
+
+const isMobile = false;
 
 export default class GamepadManager {
 

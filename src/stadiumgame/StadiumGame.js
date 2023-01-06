@@ -4,24 +4,23 @@ import Vector3 from '../engine/Vector3';
 import Vector2 from '../engine/Vector2';
 import Physics from '../engine/Physics';
 import GameObject from '../engine/GameObject';
-import Vehicle from './Vehicle';
+import VehicleController from './VehicleController';
 import Quaternion from '../engine/Quaternion';
 import Light from '../engine/Light';
 import Ball from '../engine/Ball';
-import VehicleManager from '../engine/VehicleManager';
+import Vehicle from '../engine/Vehicle';
 import CameraController from './CameraController';
 import Multiplayer from './Multiplayer';
-import GameEngine from '../engine/GameEngine';
 import Gamepad from '../engine/Gamepad';
 import Input from '../engine/Input';
 
 export default class StadiumGame {
 
     Init() {
-        Multiplayer.connect()
-            .then(socket => {
-                console.log(socket);
-            });
+   //     Multiplayer.connect()
+    //        .then(socket => {
+      //          console.log(socket);
+        //    });
 
         Scene.setExpoFog('skyblue', 0.001);
 
@@ -90,7 +89,7 @@ export default class StadiumGame {
             Camera.target = this.player;
             Camera.controller = new CameraController(new Vector3(0, 3.0, 5.0), this.ball);
 
-            this.vehicle2 = new Vehicle({
+            this.vehicle2 = new VehicleController({
                 isPlayer: true,
                 breakForce: 25,
                 accelForceFront: 100,
@@ -121,13 +120,13 @@ export default class StadiumGame {
                 frontRightPos: new Vector3(0.38, -0.35, 0.719),
                 frontLeftPos: new Vector3(-0.38, -0.35, 0.719),
             });
-            VehicleManager.controllVehicle(this.vehicle2);
+            Vehicle.controllVehicle(this.vehicle2);
 
             resolve(true);  // This needs to be better
         });
     }
 
     update() {
-        Multiplayer.updateInputWithHost({ keyboard: Input, gamepad: Gamepad });
+    //    Multiplayer.updateInputWithHost({ keyboard: Input, gamepad: Gamepad });
     }
 }

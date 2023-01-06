@@ -2,7 +2,7 @@
 import GameObject from '../engine/GameObject';
 import Input from '../engine/Input';
 import Vector3 from '../engine/Vector3';
-import VehicleManager from '../engine/VehicleManager';
+import Vehicle from '../engine/Vehicle';
 import Quaternion from '../engine/Quaternion';
 import Camera from '../engine/Camera';
 import Vector2 from '../engine/Vector2';
@@ -24,7 +24,8 @@ export default class Player extends GameObject {
         this.isLocal = true;
         this.lastPos = this.position;
         this.netAnimTimer = 0;
-        this.netTimerTrigger = 0.15;
+       
+        this.netUpdateTimer = 0.0;
     }
 
     changeAnimation(animation) {
@@ -36,13 +37,14 @@ export default class Player extends GameObject {
 
     update() {
 
+
         this.lastPos = this.position;
         this.isMoving = false;
 
         if (!this.isLocal) {
             this.netAnimTimer += Time.DeltaTime();
 
-            if (this.netAnimTimer > this.netTimerTrigger){
+            if (this.netAnimTimer >  Multiplayer.netUpdateRate){
                
                 this.changeAnimation('Rest');
             }
@@ -51,7 +53,7 @@ export default class Player extends GameObject {
         if (this.isLocal) {
             if (ePressed && this.vehicle === null) {
 
-                this.vehicle = VehicleManager.getInVehicle();
+                this.vehicle = Vehicle.getInVehicle();
                 
                 if (this.vehicle !== null) {
                     this.setPosition(new Vector3(0.0, -1000, 0.0));
@@ -61,7 +63,7 @@ export default class Player extends GameObject {
             else
                 if (ePressed && this.vehicle !== null) {
                     this.vehicle.inUse = false;
-                    VehicleManager.leaveVehicle();
+                    Vehicle.leaveVehicle();
                     let pos = this.vehicle.position;
                     Camera.target = this;
                     this.vehicle = null;
@@ -138,13 +140,22 @@ export default class Player extends GameObject {
             this.movePlayer();
         }
      
+
+
         super.update();
-        if  (this.isMoving   && this.isLocal){
-            Multiplayer.updateWithServer(this.position, this.rotation);
+   
+
+    }
+
+    lateUpdate(){
+        this.netUpdateTimer += Time.deltaTime;
+        if  (this.netUpdateTimer >= Multiplayer.netUpdateRate  && this.isLocal){
+            this.netUpdateTimer = 0;
+        
+            Multiplayer.updateWithServer(this.rigidBody.position, this.rotation);
 
         }
     }
-
     movePlayer() {
 
         if (Camera.controller.fixedCameraMode) {
@@ -187,10 +198,13 @@ export default class Player extends GameObject {
 
     netMove(pos, rot) {
 
-        if (Vector3.Equals(this.position, pos)) return;
+      
         
         this.netAnimTimer = 0.0;
-        this.changeAnimation('Walk');
+        if (Vector3.Distance(pos, this.position) > 0.01)
+            this.changeAnimation('Walk');
+        else
+            this.changeAnimation('Rest')
          this.setPosition(pos);
         this.setRotation(rot);
     }

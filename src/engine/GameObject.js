@@ -5,7 +5,7 @@ import Quaternion from './Quaternion';
 import Content from './Content';
 import Ammo from 'ammo.js';
 import { v4 as uuidv4 } from 'uuid';
-
+ 
 export default class GameObject {
 
     constructor(name = null, meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false, position = Vector3.zero, rotation = Quaternion.Identity()) {
@@ -40,7 +40,7 @@ export default class GameObject {
 
                 this.setPosition(this.position);
                 this.setRotation(this.rotation);
-            })
+             })
             .catch(e => {
                 console.log(e);
             });

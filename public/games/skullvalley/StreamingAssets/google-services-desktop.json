@@ -1,0 +1,57 @@
+{
+  "project_info": {
+    "project_number": "477115914113",
+    "firebase_url": "https://skull-valley-2302753.firebaseio.com",
+    "project_id": "skull-valley-2302753",
+    "storage_bucket": "skull-valley-2302753.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477115914113:android:11c775f2f9794b29",
+        "android_client_info": {
+          "package_name": "com.intoxic8studio.skullvalley"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "477115914113-r10gk44igq90j03tkafgp27eor92rsd2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.intoxic8studio.skullvalley",
+            "certificate_hash": "66c7e4d85c34cdf21398861e540ed8e3d6f95e76"
+          }
+        },
+        {
+          "client_id": "477115914113-nrac20lhsbcuo9u69v3hg8ni3lkr0m8f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0S2gT7iFd-C-Da525KPEn4RYZqjViAk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477115914113-nrac20lhsbcuo9u69v3hg8ni3lkr0m8f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "477115914113-ueoosgujrevo91da1322eapbu6pau973.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.intoxic8studio.skullvalley",
+                "app_store_id": "988550485"
+              }
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-5854038883974574~5851353882"
+    }
+  ],
+  "configuration_version": "1"
+}

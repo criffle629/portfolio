@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "814731681882",
+    "firebase_url": "https://mighty-chicken-14866025.firebaseio.com",
+    "project_id": "mighty-chicken-14866025",
+    "storage_bucket": "mighty-chicken-14866025.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:814731681882:android:bfefc79d6924f3ce",
+        "android_client_info": {
+          "package_name": "com.intoxic8studio.mightychicken"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "814731681882-ssp8he02sq2rah1661v0fnn660sdoq0d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.intoxic8studio.mightychicken",
+            "certificate_hash": "20f2666206ea9923547e5b88c221960e7c6b5302"
+          }
+        },
+        {
+          "client_id": "814731681882-8n3voneepa04gnglhqneka8gbgv1dga7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9_a7iqEFJFmEQVbVYY1r9MqkhMAx4_3A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "814731681882-8n3voneepa04gnglhqneka8gbgv1dga7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "814731681882-ssd09b0rk2umhkcsbstk2rev31m7a73p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.intoxic8studio.mightychicken"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      },
+      "admob_app_id": "ca-app-pub-5854038883974574~8953245612"
+    }
+  ],
+  "configuration_version": "1"
+}

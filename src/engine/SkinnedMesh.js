@@ -2,8 +2,9 @@ import * as THREE from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Scene from './Scene';
 import Time from './Time';
-import { isAndroid } from 'react-device-detect';
+//import { isAndroid } from 'react-device-detect';
 
+const isAndroid = false;
 
 export default class SkinnedMesh {
 

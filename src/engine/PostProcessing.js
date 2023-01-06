@@ -8,6 +8,10 @@ import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+import { BokehShader } from 'three/examples/jsm//shaders/BokehShader2.js';
+import { BokehDepthShader } from 'three/examples/jsm//shaders/BokehShader2.js';
+
+import Vector3 from './Vector3';
 
 class PostProcessingManager {
     init(renderer) {
@@ -15,9 +19,9 @@ class PostProcessingManager {
         this.renderPass = new RenderPass(Scene.getScene(), Camera.mainCamera);
         this.renderPass.clearColor = new THREE.Color('skyblue');
         this.renderPass.clearAlpha = 1;
-
+ 
         this.composer.addPass(this.renderPass);
-
+ 
         this.bokeh = null;
         this.bloom = null;
         this.ffxa = null;
@@ -36,10 +40,11 @@ class PostProcessingManager {
     }
 
     addBokeh() {
+ 
         this.bokeh = new BokehPass(Scene.scene, Camera.mainCamera, {
-            focus: 1.0,
-            aperture: 1.0,
-            maxblur: 0.0025,
+            focus: 0.75,
+            aperture: 0.04,
+            maxblur: 0.01,
 
             width: Scene.width,
             height: Scene.height
@@ -47,12 +52,14 @@ class PostProcessingManager {
         this.composer.addPass(this.bokeh);
     }
 
+   
+
     addBloom() {
         this.bloom = new UnrealBloomPass(
             new THREE.Vector2(Scene.screenWidth, Scene.screenHeight),
-            .3,
+            0.35,
             0.4,
-            .8);
+            0.85);
 
         this.composer.addPass(this.bloom)
     }
