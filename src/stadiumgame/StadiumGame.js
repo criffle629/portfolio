@@ -17,9 +17,9 @@ import Input from '../engine/Input';
 export default class StadiumGame {
 
     Init() {
-   //     Multiplayer.connect()
-    //        .then(socket => {
-      //          console.log(socket);
+        //     Multiplayer.connect()
+        //        .then(socket => {
+        //          console.log(socket);
         //    });
 
         Scene.setExpoFog('skyblue', 0.001);
@@ -127,6 +127,6 @@ export default class StadiumGame {
     }
 
     update() {
-    //    Multiplayer.updateInputWithHost({ keyboard: Input, gamepad: Gamepad });
+        //    Multiplayer.updateInputWithHost({ keyboard: Input, gamepad: Gamepad });
     }
 }

@@ -1,7 +1,7 @@
 import Vector3 from './Vector3';
 import MathTools from './MathTools';
 
-export default class  Quaternion {
+export default class Quaternion {
 
     constructor(x = 0.0, y = 0.0, z = 0.0, w = 1.0) {
         this.x = x;
@@ -9,9 +9,10 @@ export default class  Quaternion {
         this.z = z;
         this.w = w;
 
-        this.euler = new Vector3(0,0,0);
+        this.euler = new Vector3(0, 0, 0);
     }
-    set(x, y, z, w){
+    
+    set(x, y, z, w) {
         this.x = x;
         this.y = y;
         this.z = z;

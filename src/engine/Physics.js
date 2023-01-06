@@ -125,15 +125,13 @@ class PhysicsEngine {
             }
 
             const shape = new Ammo.btBvhTriangleMeshShape(triMesh, true);
- 
+
             resolve(shape);
         });
     }
 
     update() {
- 
-            this.world.stepSimulation(Time.deltaTime, 100);
-      
+        this.world.stepSimulation(Time.deltaTime, 100);
     }
 }
 

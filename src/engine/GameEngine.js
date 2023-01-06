@@ -7,17 +7,14 @@ import PostProcessing from './PostProcessing';
 import Input from './Input';
 import Gamepad from './Gamepad';
 import MainGame from '../maingame/MainGame';
- 
-
 
 //import StadiumGame from '../stadiumgame/StadiumGame';
 //import { isChrome, isFirefox, isSafari, isMobile} from 'react-device-detect';
- 
+
 const isMobile = false;
 const isFirefox = false;
 const isChrome = true;
 const isSafari = false;
-
 class Engine {
     constructor() {
         this.fps = 0;
@@ -25,7 +22,7 @@ class Engine {
         this.frameRate = 0;
         this.renderRate = 1 / 90;
         this.renderTimer = 0;
-         
+
         if ((isChrome || isFirefox || isSafari) && !isMobile)
             this.renderRate = 0;
         this.mainGame = new MainGame();
@@ -34,7 +31,7 @@ class Engine {
     }
 
     Init() {
- 
+
     }
 
     SetOpenModalCallback(openModal, isModalOpen) {
@@ -46,21 +43,20 @@ class Engine {
         this.renderer = new Renderer();
         this.renderer.InitRenderer(canvas, width, height, this.Animate).then(renderer => {
             // PostProcessing.init(renderer);
-          //   PostProcessing.addFXAA();
-          //  PostProcessing.addBokeh(); 
-           //  PostProcessing.addBloom();
-    
-           
+            //   PostProcessing.addFXAA();
+            //  PostProcessing.addBokeh(); 
+            //  PostProcessing.addBloom();
+
+
         })
             .then(() => {
-       //            this.renderer.compile(Scene.scene, Camera.mainCamera); 
+                //            this.renderer.compile(Scene.scene, Camera.mainCamera); 
             });
     }
 
     GetRenderer() {
         return this.renderer.renderer;
     }
-   
 
     Animate = (elapsed) => {
 
@@ -68,8 +64,6 @@ class Engine {
             Gamepad.clearButtons();
             Input.clearKeys();
         }
-
- 
 
         Physics.update();
         Gamepad.update();
@@ -79,24 +73,20 @@ class Engine {
 
         this.fpsTime += Time.deltaTime;
         this.fps++;
+
         if (this.fpsTime >= 1) {
-         //   document.title = this.fps + ' fps';
+            //   document.title = this.fps + ' fps';
             this.frameRate = parseFloat(this.fps);
             this.fps = 0;
             this.fpsTime = 0;
         }
 
-
-        
-            if (PostProcessing.isUsingEffects())
-                PostProcessing.render();
-            else {
-                this.renderer.Render(Scene.getScene(), Camera.mainCamera);
-            }
-
-            
+        if (PostProcessing.isUsingEffects())
+            PostProcessing.render();
+        else {
+            this.renderer.Render(Scene.getScene(), Camera.mainCamera);
         }
-  
+    }
 }
 
 const GameEngine = new Engine();

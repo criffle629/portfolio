@@ -84,6 +84,7 @@ export default class Light extends GameObject {
 
         Scene.add(this.light);
     }	 
+    
     createSpotLight(){
         this.light = new THREE.SpotLight(this.options.color, this.options.intensity, this.options.distance, this.options.angle, this.options.penumbra, this.options.decay);
 

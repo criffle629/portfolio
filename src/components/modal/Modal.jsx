@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { render } from 'react-dom';
 import './modal.css';
 
 const Modal = (props) => {
-    const { isOpen, 
-            closeModal,
-            content } = props;
+    const { isOpen,
+        closeModal,
+        content } = props;
 
     const [showGame, setShowGame] = useState(false);
 
@@ -24,27 +23,24 @@ const Modal = (props) => {
         document.documentElement.style.setProperty('--game-body-height', content.gameBodyHeight);
         document.documentElement.style.setProperty('--info-body-width', content.infoBodyWidth);
         document.documentElement.style.setProperty('--info-body-height', content.infoBodyHeight);
-      });
+    });
 
     const close = () => {
         closeModal();
     }
 
     const renderGame = () => {
-  
     }
-    
+
     const renderModal = () => {
-
         if (isOpen) {
-
             return (
                 <div className='background'>
-                    <div  className='modal'>
+                    <div className='modal'>
                         <div className='main'>
                             <div className='image'>
-                              <button className='closeButton' onClick={close}>
-                                Close
+                                <button className='closeButton' onClick={close}>
+                                    Close
                                 </button></div>
 
                             <div className='promoText'>
@@ -55,17 +51,17 @@ const Modal = (props) => {
                                     <div style={{ paddingTop: '5px' }}>
                                         <ul>
                                             {content.contentText.map((text, index) => {
-                                                return(<li className='contentText' key={index}> {text} </li>);
+                                                return (<li className='contentText' key={index}> {text} </li>);
                                             })}
                                         </ul>
                                     </div>
                                     <div className='footer'>
                                         <div style={{ width: '100%' }}>
                                             {content.links.map((link, index) => {
-                                                return(
-                                                <div className='linkSection' key={index}>
-                                                    <span className='linkText'>{link.label}</span> <a href={link.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>{link.name}</a>
-                                                </div>);
+                                                return (
+                                                    <div className='linkSection' key={index}>
+                                                        <span className='linkText'>{link.label}</span> <a href={link.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>{link.name}</a>
+                                                    </div>);
                                             })}
                                         </div>
                                     </div>
@@ -78,11 +74,8 @@ const Modal = (props) => {
             );
         }
     }
- 
-
- 
+    
     return renderModal();
-
 }
 
 export default Modal;

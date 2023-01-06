@@ -270,7 +270,6 @@ export default class VehicleController extends GameObject {
     }
 
     updateWheels() {
-
         this.wheelsOnGround = false;
         for (let i = 0; i < this.vehicle.getNumWheels(); i++) {
             const grounded = this.wheelInfo[i].get_m_raycastInfo().get_m_isInContact();
@@ -287,7 +286,7 @@ export default class VehicleController extends GameObject {
                 this.wheelModels[i].model.mesh.quaternion.set(q.x(), q.y(), q.z(), q.w());
             }
         }
-        
+
     }
 
     updateRigidBody() {
@@ -398,7 +397,7 @@ export default class VehicleController extends GameObject {
         this.updateRigidBody();
         this.updateSpeed();
     }
-    
+
     destroy() {
         this.tireSquealSound.stop();
         this.engineSound.stop();

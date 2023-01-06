@@ -24,7 +24,6 @@ export default class Player extends GameObject {
         this.isLocal = true;
         this.lastPos = this.position;
         this.netAnimTimer = 0;
-       
         this.netUpdateTimer = 0.0;
     }
 
@@ -36,25 +35,25 @@ export default class Player extends GameObject {
     }
 
     update() {
-
-
         this.lastPos = this.position;
         this.isMoving = false;
 
         if (!this.isLocal) {
             this.netAnimTimer += Time.DeltaTime();
 
-            if (this.netAnimTimer >  Multiplayer.netUpdateRate){
-               
+            if (this.netAnimTimer > Multiplayer.netUpdateRate) {
+
                 this.changeAnimation('Rest');
             }
         }
+
         const ePressed = Input.isKeyPressed('e') || Gamepad.isButtonPressed(Gamepad.Buttons.BUTTON_TOP);
+
         if (this.isLocal) {
             if (ePressed && this.vehicle === null) {
 
                 this.vehicle = Vehicle.getInVehicle();
-                
+
                 if (this.vehicle !== null) {
                     this.setPosition(new Vector3(0.0, -1000, 0.0));
                     super.update();
@@ -68,9 +67,9 @@ export default class Player extends GameObject {
                     Camera.target = this;
                     this.vehicle = null;
                     this.setPosition(pos.set(pos.x + 2, 1, pos.z));
-
                 }
         }
+
         if (this.vehicle !== null && this.vehicle !== 'undefined')
             return;
 
@@ -90,23 +89,15 @@ export default class Player extends GameObject {
                 this.isMoving = true;
             }
 
-
             if (Input.isKeyDown('a') || Input.isKeyDown('ArrowLeft')) {
                 xMove = -1;
                 this.isMoving = true;
             }
 
-
             if (Input.isKeyDown('d') || Input.isKeyDown('ArrowRight')) {
                 xMove = 1;
                 this.isMoving = true;
             }
-
-
-            //    if (Input.isKeyPressed('l')){
-            //        this.model.ragdollActive = !this.model.ragdollActive;
-            //        this.model.SetRagdollActive(this.model.ragdollActive);
-            //    }
 
             let stick = Gamepad.leftStick();
 
@@ -117,47 +108,42 @@ export default class Player extends GameObject {
                 this.isMoving = true;
             }
         }
+
         this.moveDir.x = xMove;
         this.moveDir.z = zMove;
         this.moveDir.normalize();
-      if (this.isLocal) {
 
-        if (!Vector3.Equals(this.moveDir, Vector3.zero)) {
-            this.forward = this.moveDir.normalize();
+        if (this.isLocal) {
 
-            this.moveDir.x = this.forward.x;
-            this.moveDir.z = this.forward.z;
+            if (!Vector3.Equals(this.moveDir, Vector3.zero)) {
+                this.forward = this.moveDir.normalize();
 
-            this.euler.y = Vector3.Angle(Vector3.back, this.forward);
-            this.changeAnimation('Walk');
-        }
-        else {
-            this.changeAnimation('Rest');
-        }
+                this.moveDir.x = this.forward.x;
+                this.moveDir.z = this.forward.z;
 
-  
-            
+                this.euler.y = Vector3.Angle(Vector3.back, this.forward);
+                this.changeAnimation('Walk');
+            }
+            else {
+                this.changeAnimation('Rest');
+            }
+
             this.movePlayer();
         }
-     
-
 
         super.update();
-   
-
     }
 
-    lateUpdate(){
+    lateUpdate() {
         this.netUpdateTimer += Time.deltaTime;
-        if  (this.netUpdateTimer >= Multiplayer.netUpdateRate  && this.isLocal){
+        if (this.netUpdateTimer >= Multiplayer.netUpdateRate && this.isLocal) {
             this.netUpdateTimer = 0;
-        
-            Multiplayer.updateWithServer(this.rigidBody.position, this.rotation);
 
+            Multiplayer.updateWithServer(this.rigidBody.position, this.rotation);
         }
     }
-    movePlayer() {
 
+    movePlayer() {
         if (Camera.controller.fixedCameraMode) {
             this.moveDir.x *= 3;
             this.moveDir.z *= 3;
@@ -176,7 +162,6 @@ export default class Player extends GameObject {
             const quat = Quaternion.FromEuler(rot.x * MathTools.rad2Deg, rot.y * MathTools.rad2Deg, rot.z * MathTools.rad2Deg);
             this.forward.rotate(quat);
 
-
             if (this.moveDir.z < 0.15 && this.moveDir.z > 0.0)
                 this.moveDir.z = 0;
 
@@ -192,22 +177,19 @@ export default class Player extends GameObject {
             this.btMoveVec3.setValue(moveVec.x, moveVec.y, moveVec.z);
             this.rigidBody.body.setLinearVelocity(this.btMoveVec3);
             this.setRotation(rot);
-
         }
     }
 
     netMove(pos, rot) {
-
-      
-        
         this.netAnimTimer = 0.0;
         if (Vector3.Distance(pos, this.position) > 0.01)
             this.changeAnimation('Walk');
         else
             this.changeAnimation('Rest')
-         this.setPosition(pos);
+        this.setPosition(pos);
         this.setRotation(rot);
     }
+
     collision(col) {
         // Need to implement collision callbacks
     }

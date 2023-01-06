@@ -5,7 +5,7 @@ import Quaternion from './Quaternion';
 import Content from './Content';
 import Ammo from 'ammo.js';
 import { v4 as uuidv4 } from 'uuid';
- 
+
 export default class GameObject {
 
     constructor(name = null, meshPath = null, skinnedMesh = false, castShadow = false, recieveShadow = false, flatShading = false, position = Vector3.zero, rotation = Quaternion.Identity()) {
@@ -31,28 +31,26 @@ export default class GameObject {
     }
 
     LoadModel = async (name, meshPath, flatShading = false, culling = true) => {
-
         if (meshPath === null) return;
 
         await Content.LoadMesh(name, meshPath, this.skinnedMesh, this.castShadow, this.recieveShadow, flatShading, culling)
             .then(model => {
                 this.model = model;
-
                 this.setPosition(this.position);
                 this.setRotation(this.rotation);
-             })
+            })
             .catch(e => {
                 console.log(e);
             });
     }
 
     destroyModel() {
-         
         Scene.deleteObject(this.model.scene);
 
         if (this.rigidBody !== null)
             this.rigidBody.removeRigidBody();
     }
+
     setEnabled(value) {
         this.isEnabled = value;
 
@@ -148,6 +146,5 @@ export default class GameObject {
     }
 
     collision(col) {
-        //console.log(col);
     }
 }

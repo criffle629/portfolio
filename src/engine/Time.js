@@ -1,10 +1,10 @@
 import { Clock } from "three";
 import GameEngine from './GameEngine';
-class TimeManager{
- 
+class TimeManager {
+
     static MIN_PHYSICS_RATE = 1.0 / 30.0;
 
-    constructor(){
+    constructor() {
         this.clock = new Clock(true);
         this.smoothAmount = 20;
         this.deltaBuffer = [];
@@ -13,16 +13,14 @@ class TimeManager{
         this.deltaTime = 0;
         this.smoothDelta = 0;
         this.physicsRate = 1.0 / 60.0;
-        for (let i = 0; i < this.deltaBuffer.length; i++){
+        for (let i = 0; i < this.deltaBuffer.length; i++) {
             this.deltaBuffer[i] = this.deltaTime;
         }
-
     }
 
-    Update(){
-        this.deltaTime = this.clock.getDelta();  
+    Update() {
+        this.deltaTime = this.clock.getDelta();
 
-        
         this.deltaBuffer[this.dtBufferIndex] = this.deltaTime;
         this.dtBufferIndex = (this.dtBufferIndex + 1) % this.smoothAmount;
 
@@ -37,17 +35,17 @@ class TimeManager{
             this.physicsRate = this.deltaTime;
     }
 
-    SmoothDelta(){
+    SmoothDelta() {
         let sum = 0;
 
-        for (let i = 0; i < this.smoothAmount; i++){
+        for (let i = 0; i < this.smoothAmount; i++) {
             sum += this.deltaBuffer[i];
         }
 
         return sum / this.smoothAmount;
     }
 
-    DeltaTime(){
+    DeltaTime() {
         return this.deltaTime;
     }
 }

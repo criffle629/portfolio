@@ -10,7 +10,7 @@ export default class Vector3 {
         this.z = z;
     }
 
-    set(x, y, z){
+    set(x, y, z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -26,12 +26,12 @@ export default class Vector3 {
         return this.length();
     }
 
-    rotate(quat){
+    rotate(quat) {
         let v = new Vector3(quat.x, quat.y, quat.z);
 
         const d1 = 2.0 * Vector3.Dot(v, this);
         const d2 = (quat.w * quat.w - Vector3.Dot(v, v));
-        
+
         let vOut = new Vector3();
         vOut = Vector3.MultiplyScalar(v, d1);
         vOut = Vector3.Add(vOut, Vector3.MultiplyScalar(this, d2));
@@ -77,7 +77,7 @@ export default class Vector3 {
     to_btVector3() {
         return new Ammo.btVector3(this.x, this.y, this.z);
     }
-ƒ
+    ƒ
     toString() {
         return '( x: ' + this.x + '  y: ' + this.y + '  z: ' + this.z + ' )';
     }
@@ -181,7 +181,7 @@ export default class Vector3 {
         return distance;
     }
 
-    static Lerp(from, to, dT){
+    static Lerp(from, to, dT) {
         let change = Vector3.Subtract(to, from);
         const clampDt = MathTools.clamp(dT, 0.0, 1.0);
         change = Vector3.MultiplyScalar(change, clampDt);
@@ -189,26 +189,25 @@ export default class Vector3 {
         return Vector3.Add(from, change);
     }
 
-    static LerpUnclamped(from, to, dT){
+    static LerpUnclamped(from, to, dT) {
         let change = Vector3.Subtract(to, from);
         change = Vector3.MultiplyScalar(change, dT);
 
         return Vector3.Add(from, change);
     }
 
-    static MoveTowards(from, to,  dT){
+    static MoveTowards(from, to, dT) {
         let vec = Vector3.Subtract(to, from);
 
         let magnitude = vec.magnitude();
-        if (magnitude <= dT || MathTools.approximate(magnitude, 0.0))
-        {
+        if (magnitude <= dT || MathTools.approximate(magnitude, 0.0)) {
             return to;
         }
 
         vec = Vector3.Add(from, Vector3.MultiplyScalar(vec, dT));
         return vec;
     }
-    
+
     static Dot(v1, v2) {
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }

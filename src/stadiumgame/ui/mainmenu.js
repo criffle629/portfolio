@@ -58,12 +58,11 @@ export default props => {
 
     const classes = useStyles();
 
-    function practiceClicked(){
+    function practiceClicked() {
         closeModal();
     }
 
-    function multiplayerClicked(){}
-
+    function multiplayerClicked() { }
     return (
         <Modal
             open={isOpen}

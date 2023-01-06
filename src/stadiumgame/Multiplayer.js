@@ -35,22 +35,19 @@ const vehicle = {
     frontRightPos: new Vector3(0.38, -0.35, 0.719),
     frontLeftPos: new Vector3(-0.38, -0.35, 0.719),
 };
-
 class MultiplayerManager {
     constructor() {
         this.isHost = false;
         this.server = '127.0.0.1:8000';
         this.uuid = null;
         this.match = null;
-
         this.clients = [];
         this.clientInput = [];
-
         this.players = [];
     }
 
     connect() {
-return;
+        return;
         return new Promise((resolve) => {
             this.socket = socketIOClient(this.server);
 
@@ -107,7 +104,7 @@ return;
             });
 
             this.socket.on('reveiveInput', (input) => {
-             });
+            });
 
             this.socket.on('receiveInput', (data) => {
                 if (data.cliendUUID === this.uuid && this.players[data.cliendUUID] !== undefined) return;
@@ -161,7 +158,7 @@ return;
             this.socket.emit('updateInput', { input: input, cliendUUID: this.uuid, matchUUID: this.match.uuid });
     }
 
-    update() {}
+    update() { }
 }
 
 const Multiplayer = new MultiplayerManager();

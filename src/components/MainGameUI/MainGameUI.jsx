@@ -40,7 +40,6 @@ export default class MainGameUI extends React.Component {
         console.log(e);
     }
 
-
     closeModal = () => {
         this.setState({ currentModal: 'none' });
     }
@@ -53,14 +52,15 @@ export default class MainGameUI extends React.Component {
         return this.state.currentModal !== 'none';
     }
 
-    renderTouchControl () { 
+    renderTouchControl() {
         if (isMobile)
             return (<TouchControls />);
     }
+    
     render() {
         return (
             <div style={{ position: 'absolute', width: '100vw', height: '100vh', padding: 0, margin: 0, overflow: 'hidden', zIndex: 1 }}>
-             
+
                 {this.renderTouchControl()}
                 <GamepadUI />
                 <ControlInfo />

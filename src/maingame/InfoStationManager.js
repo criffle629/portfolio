@@ -3,6 +3,7 @@ import GameEngine from '../engine/GameEngine';
 import Input from '../engine/Input';
 
 class InfoStationsController {
+    
     constructor() {
         this.infoStations = [];
         this.activationDistance = 0.75;

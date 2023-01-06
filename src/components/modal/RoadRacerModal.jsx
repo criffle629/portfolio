@@ -1,5 +1,4 @@
 import React from 'react'
- 
 import roadracerbanner from '../../images/roadracerlogo.png'
 
 const RoadRacerModal = (props) => {
@@ -15,7 +14,6 @@ const RoadRacerModal = (props) => {
       alignContent: 'center',
       zIndex: 20,
       position: 'relative'
-
     },
     modal: {
       display: 'flex',
@@ -29,9 +27,7 @@ const RoadRacerModal = (props) => {
     },
     main: {
       borderRadius: '15px',
-      backgroundColor : '#fbb921'
-
-     
+      backgroundColor: '#fbb921'
     },
     image: {
       display: 'flex',
@@ -41,7 +37,7 @@ const RoadRacerModal = (props) => {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '20%',
       backgroundColor: '#8bc43f',
-             alignItems: 'center',
+      alignItems: 'center',
       minHeight: '20%',
       margin: '0px',
       borderTopLeftRadius: '14px',
@@ -51,16 +47,15 @@ const RoadRacerModal = (props) => {
       display: 'flex',
       flexDirection: 'row',
       marginTop: '10px',
-      backgroundColor : '#fbb921'
+      backgroundColor: '#fbb921'
     },
     bodyInfo: {
-      backgroundColor : '#fbb921',
-
+      backgroundColor: '#fbb921',
       width: '450px',
       height: ' 80%'
     },
     bodyGame: {
-      backgroundColor : '#fbb921',
+      backgroundColor: '#fbb921',
       width: '800px',
       height: '510px',
       border: 0,
@@ -73,7 +68,6 @@ const RoadRacerModal = (props) => {
       paddingLeft: '8px',
       paddingTop: '5px',
       fontSize: '1.25em',
-
     },
     contentText: {
       width: '100%',
@@ -115,15 +109,12 @@ const RoadRacerModal = (props) => {
     },
   };
 
-   
   const close = () => {
     closeModal();
   }
 
   const renderModal = () => {
- 
     if (isOpen) {
-
       return (
         <div style={styles.background} >
           <div style={styles.modal}>
@@ -133,8 +124,7 @@ const RoadRacerModal = (props) => {
               </button></div>
 
               <div style={styles.promoText} >
-
-              Tilt to steer, swipe to jump over obstacles, buy cars to unlock Powerups and collect coins to upgrade them, collect gears for rewinds and see how far you can race!              </div>
+                Tilt to steer, swipe to jump over obstacles, buy cars to unlock Powerups and collect coins to upgrade them, collect gears for rewinds and see how far you can race!              </div>
               <div style={styles.body} >
                 <div style={styles.bodyInfo}>
                   <div style={{ paddingTop: '5px' }}>
@@ -161,7 +151,7 @@ const RoadRacerModal = (props) => {
                           rel="noopener noreferrer"
                           style={styles.links}
                         >
-                         Road Racer iOS
+                          Road Racer iOS
                         </a>
                       </div>
 
@@ -180,12 +170,12 @@ const RoadRacerModal = (props) => {
                       <div style={styles.linkSection}>
                         <span style={styles.linkText}>Website:</span>
                         <a
-                       href="https://www.intoxic8studio.com"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       style={styles.links}
+                          href="https://www.intoxic8studio.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={styles.links}
                         >
-                         www.intoxic8studio.com
+                          www.intoxic8studio.com
                         </a>
                       </div>
                     </div>

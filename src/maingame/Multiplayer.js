@@ -44,11 +44,11 @@ class MultiplayerManager {
   constructor() {
     this.server = 'https://portfolio-server-3pl0.onrender.com';
     //this.server = '127.0.0.1:8000'
-    this.uuid = null
+    this.uuid = null;
     this.netUpdateRate = 1.0 / 10.0;
-    this.netPlayers = new Map()
-    this.vehicles = new Map()
-    this.connect()
+    this.netPlayers = new Map();
+    this.vehicles = new Map();
+    this.connect();
   }
 
   connect() {
@@ -141,7 +141,6 @@ class MultiplayerManager {
   updateInput(input) { }
 
   update() {
-
     for (let [key, netPlayer] of this.netPlayers) {
 
       let dist = Vector3.Distance(netPlayer.position, netPlayer.newPosition);

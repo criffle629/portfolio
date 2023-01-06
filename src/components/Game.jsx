@@ -79,7 +79,7 @@ export default class Game extends React.Component {
   render() {
     return (
       <div
-      id='game'
+        id='game'
         style={{
           width: '100vw',
           height: '100vh',
@@ -132,10 +132,10 @@ export default class Game extends React.Component {
           isOpen={this.state.currentModal === 'portfolio'}
           closeModal={this.closeModal}
         />
-       
-       <video controls={false} id="mightychicken" loop autoPlay muted   style={{display: "none"}}>  <source src="./assets/videos/mightychicken.webm" type="video/mp4" /> </video>
-       <video controls={false} id="roadracer" loop autoPlay muted   style={{display: "none"}}>  <source src="./assets/videos/roadracer.mp4" type="video/mp4" /> </video>
-       <video controls={false} id="skullvalley" loop autoPlay muted   style={{display: "none"}}>  <source src="./assets/videos/skullvalley.mp4" type="video/mp4" /> </video>
+
+        <video controls={false} id="mightychicken" loop autoPlay muted style={{ display: "none" }}>  <source src="./assets/videos/mightychicken.webm" type="video/mp4" /> </video>
+        <video controls={false} id="roadracer" loop autoPlay muted style={{ display: "none" }}>  <source src="./assets/videos/roadracer.mp4" type="video/mp4" /> </video>
+        <video controls={false} id="skullvalley" loop autoPlay muted style={{ display: "none" }}>  <source src="./assets/videos/skullvalley.mp4" type="video/mp4" /> </video>
 
       </div>
     )

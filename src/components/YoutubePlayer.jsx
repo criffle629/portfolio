@@ -11,9 +11,9 @@ const YoutubePlayer = (props) => {
       loop: 1
     }
   };
-  console.log(props)
-  return ( 
-      <YouTube style={props.style} videoId={props.video} opts={videoOptions} />
+
+  return (
+    <YouTube style={props.style} videoId={props.video} opts={videoOptions} />
   );
 }
 

@@ -1,5 +1,5 @@
 import React from 'react'
- 
+
 import skullValleyBanner from '../../images/skullvalleylogo.png'
 
 const SkullValleyModal = (props) => {
@@ -15,7 +15,6 @@ const SkullValleyModal = (props) => {
       alignContent: 'center',
       zIndex: 20,
       position: 'relative'
-
     },
     modal: {
       display: 'flex',
@@ -29,7 +28,6 @@ const SkullValleyModal = (props) => {
     main: {
       backgroundColor: '#e37a00',
       borderRadius: '15px'
-
     },
     image: {
       display: 'flex',
@@ -39,7 +37,7 @@ const SkullValleyModal = (props) => {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '20%',
       backgroundColor: '#ae1209',
-             alignItems: 'center',
+      alignItems: 'center',
       minHeight: '150px',
       margin: '0px',
       borderTopLeftRadius: '14px',
@@ -51,12 +49,10 @@ const SkullValleyModal = (props) => {
       marginTop: '10px'
     },
     bodyInfo: {
-
       width: '450px',
       height: '700px'
     },
     bodyGame: {
-
       width: '800px',
       height: '510px',
       border: 0,
@@ -69,7 +65,6 @@ const SkullValleyModal = (props) => {
       paddingLeft: '8px',
       paddingTop: '5px',
       fontSize: '1.25em',
-
     },
     contentText: {
       width: '100%',
@@ -116,10 +111,7 @@ const SkullValleyModal = (props) => {
   }
 
   const renderModal = () => {
-
-
     if (isOpen) {
-
       return (
         <div style={styles.background} >
           <div style={styles.modal}>
@@ -196,12 +188,12 @@ const SkullValleyModal = (props) => {
                       <div style={styles.linkSection}>
                         <span style={styles.linkText}>Website:</span>
                         <a
-                       href="http://www.skullvalleygame.com"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       style={styles.links}
+                          href="http://www.skullvalleygame.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={styles.links}
                         >
-                         www.skullvalley.com
+                          www.skullvalley.com
                         </a>
                       </div>
                     </div>

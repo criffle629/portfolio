@@ -1,23 +1,15 @@
 import React from 'react';
-import Gamepad from '../engine/Gamepad';
 import Input from '../engine/Input';
-import MathTools from '../engine/MathTools';
-import Vector2 from '../engine/Vector2';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretSquareUp, faCaretSquareDown } from '@fortawesome/free-solid-svg-icons';
 import MainGame from '../maingame/MainGame';
-
 export default class ControlInfo extends React.Component {
 
     constructor(props) {
-        super();    
+        super();
         this.isFaded = false;
         this.fadeValue = 1;
-        this.state = {fade: fadeOut};
+        this.state = { fade: fadeOut };
         this.mounted = false;
         Input.registerEvent(this.fadeEvent);
-
-
     }
 
     componentDidMount() {
@@ -25,14 +17,13 @@ export default class ControlInfo extends React.Component {
     }
 
     stateChange(value) {
-
         if (!this.mounted) return;
 
-        if (value){
-            this.setState({fade: fadeOut});
+        if (value) {
+            this.setState({ fade: fadeOut });
         }
         else
-        this.setState({fade: fadeIn});
+            this.setState({ fade: fadeIn });
     }
 
     fadeEvent = (value) => {
@@ -65,7 +56,6 @@ export default class ControlInfo extends React.Component {
         );
     }
 
-
     render() {
         return (
             <div style={this.state.fade}>
@@ -87,8 +77,6 @@ export default class ControlInfo extends React.Component {
                     </div>        <div style={{ width: '50px', height: '40px', display: 'flex', textAlign: 'center', justifyContent: 'center', color: 'black' }}>
                         {this.drawButton('D')}
                     </div>
-
-
                 </div>
 
                 <div style={{ width: '100%', height: '60px', display: 'flex', flexDirection: 'row', alignItems: "center", justifyContent: 'center' }}>
@@ -98,8 +86,6 @@ export default class ControlInfo extends React.Component {
                     <div style={{ width: '100px', height: '30px', display: 'flex', textAlign: 'center', justifyContent: 'center', color: '#495057' }}>
                         CAMERA
                     </div>
-
-
                 </div>
 
             </div>
@@ -109,31 +95,8 @@ export default class ControlInfo extends React.Component {
         )
     }
 }
+
 const fadeOut = {
-    
-        display: 'flex',
-        flexDirection: 'column',
-        borderStyle: 'solid black',
-        borderWidth: '3px',
-        borderRadius: '10px',
-        userSelect: 'none',
-        position: 'fixed',
-        width: '200px',
-        height: '200px',
-
-        color: 'white',
-        outline: 'none',
-        textAlign: 'center',
-
-        alignItems: "center",
-        bottom: 0,
-        right: 0,
-        transition: 'opacity 0.5s',
-        opacity: 0
-    
-}
-const fadeIn = {
-    
     display: 'flex',
     flexDirection: 'column',
     borderStyle: 'solid black',
@@ -143,15 +106,33 @@ const fadeIn = {
     position: 'fixed',
     width: '200px',
     height: '200px',
-
     color: 'white',
     outline: 'none',
     textAlign: 'center',
+    alignItems: "center",
+    bottom: 0,
+    right: 0,
+    transition: 'opacity 0.5s',
+    opacity: 0
 
+}
+
+const fadeIn = {
+    display: 'flex',
+    flexDirection: 'column',
+    borderStyle: 'solid black',
+    borderWidth: '3px',
+    borderRadius: '10px',
+    userSelect: 'none',
+    position: 'fixed',
+    width: '200px',
+    height: '200px',
+    color: 'white',
+    outline: 'none',
+    textAlign: 'center',
     alignItems: "center",
     bottom: 0,
     right: 0,
     transition: 'opacity 0.5s',
     opacity: 1
-
 }

@@ -12,7 +12,6 @@ import Light from '../engine/Light';
 import Ball from '../engine/Ball';
 import CameraController from './CameraController';
 import Multiplayer from './Multiplayer';
-import * as THREE from "three";
 import VideoBillboard from '../engine/VideoBillboard';
 
 export default class MainGame {
@@ -60,10 +59,6 @@ export default class MainGame {
     }
 
     Load = async () => {
-
-
-
-
         return await new Promise((resolve, reject) => {
             this.player = new Player('player', null, true, true, true, new Vector3(0, 1, 0), Quaternion.FromEuler(0, 180, 0));
             this.player.LoadModel('player', './assets/models/chris.glb', true)
@@ -75,7 +70,7 @@ export default class MainGame {
                         mass: 1
                     }, Physics.createCapsuleShape(0.23, 0.3, Vector3.up), new Vector3(0, 1, 0));
                 });
- 
+
             this.ground = new GameObject('ground', './assets/models/ground.glb', false, false, true,);
             this.ground.addRigidBody({
                 friction: 0.5,
@@ -91,9 +86,9 @@ export default class MainGame {
 
             this.road = new GameObject('road', null, false, false, true, true);
             this.road.LoadModel('road', './assets/models/road.glb', true);
-            this.road.setPosition(new Vector3(0,0.0015, -10));
+            this.road.setPosition(new Vector3(0, 0.0015, -10));
             this.parkinglot = new GameObject('parkinglot', null, false, true, true, true);
-            
+
             this.parkinglot.LoadModel('parkinglot', './assets/models/parkinglot.glb', true)
                 .then(() => {
                     Physics.createMeshShape(this.parkinglot.model.mesh)
@@ -111,7 +106,7 @@ export default class MainGame {
 
             this.infostationbase = new GameObject('infostationbase', null, false, false, true, false, new Vector3(0, 0, -10));
             this.infostationbase.LoadModel('infostation', './assets/models/infostationbase.glb', true);
-        
+
 
             this.mightychicken = new GameObject('mightychicken', null, false, true, true, true);
             this.mightychicken.LoadModel('mightychicken', './assets/models/mightychicken.glb', true)
@@ -141,25 +136,25 @@ export default class MainGame {
                         });
                 });
 
-                this.mightychickenphone = new GameObject('phone', null, false, true, true, true);
-                this.mightychickenphone.LoadModel('phone', './assets/models/phone.glb', true)
-                    .then(() => {
-                        Physics.createMeshShape(this.mightychickenphone.model.mesh)
-                            .then(shape => {
-                                this.mightychickenphone.addRigidBody({
-                                    friction: 1,
-                                    rollingFriction: 1,
-                                    restitution: 0.0,
-                                    mass: 0
-                                }, shape, new Vector3(0, 0, -10));
-                            });
-                    });
+            this.mightychickenphone = new GameObject('phone', null, false, true, true, true);
+            this.mightychickenphone.LoadModel('phone', './assets/models/phone.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.mightychickenphone.model.mesh)
+                        .then(shape => {
+                            this.mightychickenphone.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
+                        });
+                });
 
-                    this.mightychickenphonescreen = new GameObject('phonescreen', null, false, true, true, true);
+            this.mightychickenphonescreen = new GameObject('phonescreen', null, false, true, true, true);
 
-                    this.mightychickenphonescreen.LoadModel('phonescreen', './assets/models/phonescreen.glb', true)
-                    .then(() => {
-                        Physics.createMeshShape(this.mightychickenphonescreen.model.mesh)
+            this.mightychickenphonescreen.LoadModel('phonescreen', './assets/models/phonescreen.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.mightychickenphonescreen.model.mesh)
                         .then(shape => {
                             this.mightychickenphonescreen.addRigidBody({
                                 friction: 1,
@@ -168,58 +163,45 @@ export default class MainGame {
                                 mass: 0
                             }, shape, new Vector3(0, 0, -10));
                         });
-                        this.mightyChickenVid = new VideoBillboard('', 'mightychicken',0,0,0,0,0,0,0,0, this.mightychickenphonescreen.model.mesh);
+                    this.mightyChickenVid = new VideoBillboard('', 'mightychicken', 0, 0, 0, 0, 0, 0, 0, 0, this.mightychickenphonescreen.model.mesh);
+                });
 
-                    });
+            this.rrphone = new GameObject('rrphone', './assets/models/rrphone.glb', false, true, true, true, new Vector3(0, 0, -10));
+            this.rrphonescreen = new GameObject('rrphonescreen', null, false, true, true, true, new Vector3(0, 0, -10));
+            this.rrphonescreen.LoadModel('rrphonescreen', './assets/models/rrphonescreen.glb', true)
+                .then(() => {
+                    this.roadRacerVid = new VideoBillboard("", 'roadracer', 0, 0, 0, 0, 0, 0, 0, 0, this.rrphonescreen.model.mesh);
+                });
 
-
-                this.rrphone = new GameObject('rrphone',  './assets/models/rrphone.glb', false, true, true, true, new Vector3(0, 0, -10));
-        
-
-                    this.rrphonescreen = new GameObject('rrphonescreen', null, false, true, true, true, new Vector3(0, 0, -10));
-
-                    this.rrphonescreen.LoadModel('rrphonescreen', './assets/models/rrphonescreen.glb', true)
-                    .then(() => {
-                   
-                        this.roadRacerVid = new VideoBillboard("", 'roadracer',0,0,0,0,0,0,0,0, this.rrphonescreen.model.mesh);
-
- 
-                    });
-
-
-                    this.svphone = new GameObject('svphone', null, false, true, true, true);
-                    this.svphone.LoadModel('svphone', './assets/models/svphone.glb', true)
-                        .then(() => {
-                            Physics.createMeshShape(this.svphone.model.mesh)
-                                .then(shape => {
-                                    this.svphone.addRigidBody({
-                                        friction: 1,
-                                        rollingFriction: 1,
-                                        restitution: 0.0,
-                                        mass: 0
-                                    }, shape, new Vector3(0, 0, -10));
-                                });
+            this.svphone = new GameObject('svphone', null, false, true, true, true);
+            this.svphone.LoadModel('svphone', './assets/models/svphone.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.svphone.model.mesh)
+                        .then(shape => {
+                            this.svphone.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
                         });
-    
-    
-                        this.svphonescreen = new GameObject('svphonescreen', null, false, true, true, true);
-    
-                        this.svphonescreen.LoadModel('svphonescreen', './assets/models/svphonescreen.glb', true)
-                        .then(() => {
-                            Physics.createMeshShape(this.svphonescreen.model.mesh)
-                            .then(shape => {
-                                this.svphonescreen.addRigidBody({
-                                    friction: 1,
-                                    rollingFriction: 1,
-                                    restitution: 0.0,
-                                    mass: 0
-                                }, shape, new Vector3(0, 0, -10));
-                            });
-                            this.skullValleyVid = new VideoBillboard("", 'skullvalley',0,0,0,0,0,0,0,0, this.svphonescreen.model.mesh);
-    
-     
+                });
+
+            this.svphonescreen = new GameObject('svphonescreen', null, false, true, true, true);
+            this.svphonescreen.LoadModel('svphonescreen', './assets/models/svphonescreen.glb', true)
+                .then(() => {
+                    Physics.createMeshShape(this.svphonescreen.model.mesh)
+                        .then(shape => {
+                            this.svphonescreen.addRigidBody({
+                                friction: 1,
+                                rollingFriction: 1,
+                                restitution: 0.0,
+                                mass: 0
+                            }, shape, new Vector3(0, 0, -10));
                         });
- 
+                    this.skullValleyVid = new VideoBillboard("", 'skullvalley', 0, 0, 0, 0, 0, 0, 0, 0, this.svphonescreen.model.mesh);
+                });
+
             InfoStationManager.addInfoStation(new Vector3(-19.921, 0, -7.5799), 'roadracer');
             InfoStationManager.addInfoStation(new Vector3(-41.183, 0, -0.5502), 'mightychicken');
             InfoStationManager.addInfoStation(new Vector3(28.144, 0, -10.426), 'pawsnfind');
@@ -376,8 +358,6 @@ export default class MainGame {
                         });
                 });
 
-        
-                    
             this.racetrackstart = new GameObject('racetrackstart', null, false, true, true, false);
             this.racetrackstart.LoadModel('racetrackstart', './assets/models/racetrackstart.glb', false)
                 .then(() => {
@@ -480,7 +460,6 @@ export default class MainGame {
             Camera.controller = this.cameraController;
             Camera.target = this.player;
 
-
             this.vehicle = new VehicleController({
                 name: 'hotrod',
                 breakForce: 10,
@@ -549,10 +528,10 @@ export default class MainGame {
             });
             Multiplayer.addVehicle('classicbug', this.vehicle2);
 
-           
+
 
             this.vehicle3 = new VehicleController({
-                name:'sportscar',
+                name: 'sportscar',
                 breakForce: 15,
                 accelForceFront: 180,
                 accelForceBack: 250,
@@ -692,11 +671,11 @@ export default class MainGame {
     }
 
     update() {
-
         Multiplayer.vehicles.forEach(vehicle => {
             vehicle.checkVehicleInRange(this.player.position);
 
         });
+
         Multiplayer.update();
         InfoStationManager.update(this.player.position);
     }

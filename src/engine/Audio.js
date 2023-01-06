@@ -3,11 +3,11 @@ import Camera from './Camera';
 
 class AudioManager {
     constructor() {
-        this.InitAudio();   
+        this.InitAudio();
         this.sounds = [];
     }
 
-    InitAudio(){
+    InitAudio() {
         this.listener = new THREE.AudioListener();
         Camera.mainCamera.add(this.listener);
     }
@@ -27,7 +27,7 @@ class AudioManager {
                     sound.setVolume(volume);
                     sound.setRefDistance(20);
 
-                    this.sounds.push({audio: sound, volume: volume});
+                    this.sounds.push({ audio: sound, volume: volume });
                     resolve(sound);
                 });
             }
@@ -37,8 +37,8 @@ class AudioManager {
         });
     }
 
-    PlaySoundsMuted(){
-        for (let i = 0; i < this.sounds.length; i++){
+    PlaySoundsMuted() {
+        for (let i = 0; i < this.sounds.length; i++) {
             this.sounds[i].audio.setVolume(0);
             this.sounds[i].audio.play();
             this.sounds[i].audio.stop();

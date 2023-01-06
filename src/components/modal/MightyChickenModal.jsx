@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import mightychickenbanner from '../../images/mightychickenlogo.png';
 
 const MightyChickenModal = (props) => {
@@ -15,7 +14,6 @@ const MightyChickenModal = (props) => {
             justifyContent: 'center',
             alignContent: 'center',
             zIndex: 20,
-
         },
         modal: {
             display: 'flex',
@@ -26,13 +24,10 @@ const MightyChickenModal = (props) => {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             borderRadius: '15px'
-            
-    
         },
         main: {
             backgroundColor: '#ffc60b',
             borderRadius: '15px'
-
         },
         image: {
             display: 'flex',
@@ -42,14 +37,12 @@ const MightyChickenModal = (props) => {
             backgroundRepeat: 'no-repeat',
             backgroundSize: '15%',
             backgroundColor: '#ff3703',
-       
             minHeight: '130px',
             margin: '0px',
             padding: 0,
             alignItems: 'center',
             borderTopLeftRadius: '14px',
             borderTopRightRadius: '14px'
-
         },
         body: {
             display: 'flex',
@@ -57,26 +50,22 @@ const MightyChickenModal = (props) => {
             marginTop: '10px'
         },
         bodyInfo: {
-            
             width: '450px',
             height: '600px'
         },
         bodyGame: {
-
             width: '450px',
             height: '600px',
             border: 0,
             borderRadius: '25px'
-         },
+        },
         promoText: {
             width: '100%',
             margin: '0px',
             color: 'black',
-            paddingLeft: '8px', 
-            paddingTop: '5px', 
+            paddingLeft: '8px',
+            paddingTop: '5px',
             fontSize: '1.25em',
-     
-
         },
         contentText: {
             width: '100%',
@@ -123,22 +112,16 @@ const MightyChickenModal = (props) => {
     }
 
     const renderModal = () => {
-
-
         if (isOpen) {
-
             return (
                 <div style={styles.background} >
-                    <div  style={styles.modal}>
+                    <div style={styles.modal}>
                         <div style={styles.main}>
                             <div style={styles.image}>  <button style={styles.closeButton} onClick={close}>
                                 Close
                             </button></div>
 
-                            <div
-
-                                style={styles.promoText}
-                            >
+                            <div style={styles.promoText}>
                                 Dodge the mutant robo fish, killer bomb, spinning blades and poisonous arrow! Avoid getting sliced in half in the spear cave.
                             </div>
                             <div style={styles.body} >
@@ -170,7 +153,7 @@ const MightyChickenModal = (props) => {
                                     </div>
                                 </div>
                                 <div style={styles.bodyGame}>
-                                <iframe style={styles.bodyGame} frameBoarder={0} src="./games/mightychicken/index.html" title="Mighty Chicken"></iframe>
+                                    <iframe style={styles.bodyGame} frameBoarder={0} src="./games/mightychicken/index.html" title="Mighty Chicken"></iframe>
                                 </div>
                             </div>
                         </div>
@@ -190,7 +173,6 @@ const MightyChickenModal = (props) => {
         return renderGame();
     else
         return renderModal();
-
 }
 
 export default MightyChickenModal;

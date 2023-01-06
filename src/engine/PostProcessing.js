@@ -19,13 +19,13 @@ class PostProcessingManager {
         this.renderPass = new RenderPass(Scene.getScene(), Camera.mainCamera);
         this.renderPass.clearColor = new THREE.Color('skyblue');
         this.renderPass.clearAlpha = 1;
- 
+
         this.composer.addPass(this.renderPass);
- 
+
         this.bokeh = null;
         this.bloom = null;
         this.ffxa = null;
-        
+
         this.renderer = renderer;
     }
 
@@ -40,7 +40,6 @@ class PostProcessingManager {
     }
 
     addBokeh() {
- 
         this.bokeh = new BokehPass(Scene.scene, Camera.mainCamera, {
             focus: 0.75,
             aperture: 0.04,
@@ -51,8 +50,6 @@ class PostProcessingManager {
         });
         this.composer.addPass(this.bokeh);
     }
-
-   
 
     addBloom() {
         this.bloom = new UnrealBloomPass(

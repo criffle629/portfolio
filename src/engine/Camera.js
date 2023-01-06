@@ -3,14 +3,14 @@ import Quaternion from "./Quaternion";
 import Scene from "./Scene";
 import GameObject from './GameObject';
 import Vector3 from './Vector3';
- class CameraManager extends GameObject {
+class CameraManager extends GameObject {
     constructor() {
         super();
         this.mainCamera = new THREE.PerspectiveCamera(60, 1024 / 600, 0.1, 1000);
         this.target = null;
- 
+
         this.position = Vector3.zero;
-       
+
         this.controller = null;
         Scene.addGameObject(this);
     }
@@ -19,7 +19,7 @@ import Vector3 from './Vector3';
         this.mainCamera = new THREE.PerspectiveCamera(fov, aspect, zNear, zFar);
     }
 
-    SetController(controller){
+    SetController(controller) {
         this.controller = controller;
     }
 
@@ -46,18 +46,17 @@ import Vector3 from './Vector3';
         this.mainCamera.position.set(x, y, z);
     }
 
-
     GetCamera() {
         return this.mainCamera;
     }
 
-    update(){
+    update() {
         if (this.controller !== null)
             this.controller.update();
     }
 
     lateUpdate() {
-         if (this.controller !== null)
+        if (this.controller !== null)
             this.controller.lateUpdate();
     }
 }

@@ -48,9 +48,9 @@ class SceneManager {
         }
     }
 
-    deleteObject(obj){
+    deleteObject(obj) {
         this.scene.remove(obj);
-       // const object = this.scene.getObjectByProperty( 'uuid', obj.objID );
+        // const object = this.scene.getObjectByProperty( 'uuid', obj.objID );
     }
 
     update() {
@@ -64,7 +64,7 @@ class SceneManager {
         for (let obj in this.enabledObjects) {
             this.enabledObjects[obj].lateUpdate();
         }
-        
+
         for (let obj in this.enabledObjects) {
             this.enabledObjects[obj].render();
         }
@@ -85,7 +85,7 @@ class SceneManager {
         this.scene.fog = new THREE.FogExp2(color, density);
     }
 
-    isLoaded(){
+    isLoaded() {
         return this.objectLoaded === this.objectLoading && this.objectLoading !== 0;
     }
 }

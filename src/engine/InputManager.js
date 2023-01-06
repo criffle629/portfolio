@@ -5,12 +5,12 @@ export default class InputManager {
         this.keyPressed = new Map();
     }
 
-    registerEvent(callback){
-        this.inputEvent.push({function: callback});
+    registerEvent(callback) {
+        this.inputEvent.push({ function: callback });
     }
 
-    emitEvent(){
-        for (let i = 0; i < this.inputEvent.length; i++){
+    emitEvent() {
+        for (let i = 0; i < this.inputEvent.length; i++) {
             this.inputEvent[i].function(this.keyDown.size > 0 || this.keyPressed.size > 0 ? true : false);
         }
     }
@@ -50,7 +50,7 @@ export default class InputManager {
         this.emitEvent();
     }
 
-    json(){
+    json() {
         return {
             keyDown: this.keyDown,
             keyPressed: this.keyPressed

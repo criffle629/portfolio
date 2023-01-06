@@ -65,7 +65,7 @@ export default class Loading extends React.Component {
 
     enterClicked = (e) => {
         e.stopPropagation();
- 
+
         if (this.enterWasClicked) return;
         this.enterWasClicked = true;
         this.playSound(); // Must play sound muted on user interaction to prevent browser from blocking audio.
@@ -106,16 +106,15 @@ export default class Loading extends React.Component {
             border: 4px solid black;
             border-radius: 20px;
             box-shadow: '0 0 5px 5px white',
-
             outline: none;
         `;
 
-        if (!this.state.fade){
-        return (
-            <Fade onAnimationEnd={this.onAnimationEnd}>
-                <Button onClick={(e) => {this.enterClicked(e)}}> Enter </Button>
-            </Fade>
-        );
+        if (!this.state.fade) {
+            return (
+                <Fade onAnimationEnd={this.onAnimationEnd}>
+                    <Button onClick={(e) => { this.enterClicked(e) }}> Enter </Button>
+                </Fade>
+            );
         }
     }
 

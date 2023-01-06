@@ -4,8 +4,8 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 
 export default props => {
-    const { isOpen, closeModal } = props;
 
+    const { isOpen, closeModal } = props;
     const top = 50;
     const left = 50;
 

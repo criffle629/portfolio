@@ -4,8 +4,6 @@ import Input from '../engine/Input';
 import MathTools from '../engine/MathTools';
 import Quaternion from '../engine/Quaternion';
 import Vector3 from '../engine/Vector3';
-import Time from '../engine/Time';
-
 export default class CameraController {
     constructor(offset) {
         this.offset = offset;
@@ -16,7 +14,7 @@ export default class CameraController {
         this.minDistance = 1;
         this.followHeight = 1;
         this.newTargetPos = new Vector3();
-    } 
+    }
 
     update() {
         if (Input.isKeyPressed('c') || Gamepad.isButtonPressed(Gamepad.Buttons.BUMPER_LEFT))
@@ -36,17 +34,17 @@ export default class CameraController {
         const newPos = Vector3.Add(Camera.target.position, this.offset);
 
         if (Vector3.Distance(Camera.position, newPos) > 0.2 && !this.locked)
-            Camera.position = Vector3.MoveTowards(Camera.position, newPos,   0.1);
-        else{
+            Camera.position = Vector3.MoveTowards(Camera.position, newPos, 0.1);
+        else {
             this.locked = true;
             Camera.position = newPos;
         }
-        let camPos = Vector3.LerpUnclamped(Camera.position, newPos, 0.1);
-       
-        Camera.SetPosition(camPos);
- 
-        Camera.mainCamera.lookAt(Camera.target.position.x, Camera.target.position.y, Camera.target.position.z);
 
+        let camPos = Vector3.LerpUnclamped(Camera.position, newPos, 0.1);
+
+        Camera.SetPosition(camPos);
+
+        Camera.mainCamera.lookAt(Camera.target.position.x, Camera.target.position.y, Camera.target.position.z);
     }
 
     followCamera() {
@@ -58,27 +56,27 @@ export default class CameraController {
 
         const quat = Quaternion.FromEulerRad(euler.x, euler.y, euler.z);
         let forward = new Vector3(0, 1, -4);
-        forward.rotate(quat);   
- 
+        forward.rotate(quat);
+
         let newPos = Vector3.Add(Camera.target.position, forward);
         let camPos = Vector3.Lerp(Camera.position, newPos, 5.0 * 0.0125);
 
         let dist = Vector3.Distance(Camera.target.position, camPos);
         dist = MathTools.clamp(dist, this.minDistance, this.maxDistance);
 
-        if (dist < this.minDistance){
+        if (dist < this.minDistance) {
             forward = new Vector3(0, 1, -this.minDistance);
-            forward.rotate(quat);  
+            forward.rotate(quat);
             newPos = Vector3.Add(Camera.target.position, forward);
             camPos = newPos;
         }
         else
-        if (dist > this.maxDistance){
-            forward = new Vector3(0, 1, -this.maxDistance);
-            forward.rotate(quat);  
-            newPos = Vector3.Add(Camera.target.position, forward);
-            camPos = newPos;
-        }
+            if (dist > this.maxDistance) {
+                forward = new Vector3(0, 1, -this.maxDistance);
+                forward.rotate(quat);
+                newPos = Vector3.Add(Camera.target.position, forward);
+                camPos = newPos;
+            }
 
         if (camPos.y < 1.0)
             camPos.y = 1.0;

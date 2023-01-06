@@ -33,7 +33,6 @@ class Vehicle_Controller {
     }
 
     getInVehicle(player) {
-
         if (this.inRangeVehicle === null || this.inRangeVehicle.inNetUse) return null;
 
         this.inRangeVehicle.inUse = true;
@@ -47,13 +46,11 @@ class Vehicle_Controller {
     }
 
     useVehicle(vehicle) {
-
- 
         this.vehicle.inUse = true;
         Camera.target = vehicle;
 
         this.vehicleInUse = vehicle;
- 
+
         this.vehicleInUse.playerControlled = true;
         return vehicle;
     }
@@ -72,13 +69,10 @@ class Vehicle_Controller {
         this.vehicleInUse.inUse = false;
         Multiplayer.exitVehicle(this.vehicleInUse.name);
         this.vehicleInUse = null;
-
-
     }
 
     updateEKey() {
         if (this.inRangeVehicle !== null && !this.inRangeVehicle.inNetUse) {
-
             let vehiclePos = this.inRangeVehicle.position;
             this.ekey.setPosition(new Vector3(vehiclePos.x, vehiclePos.y + 1, vehiclePos.z));
             this.ekey.model.mesh.visible = true;
@@ -96,10 +90,7 @@ class Vehicle_Controller {
     }
 
     updateRKey() {
-
         if (this.vehicleInUse !== null) {
-
-
             if (this.vehicleInUse.inUse && this.vehicleInUse.isUpsideDown()) {
                 let vehiclePos = this.vehicleInUse.position;
 
@@ -109,18 +100,13 @@ class Vehicle_Controller {
                 let rKeyPos = new Vector3(this.rkey.position.x, 0, this.rkey.position.z);
                 let lookAt = Quaternion.LookRotation(Vector3.Subtract(camPos, rKeyPos), Vector3.up);
                 this.rkey.setRotation(Vector3.MultiplyScalar(lookAt.Euler(), MathTools.deg2Rad));
-
             }
             else {
                 this.rkey.model.mesh.visible = false;
-
-
             }
         }
         else {
             this.rkey.model.mesh.visible = false;
-
-
         }
     }
 

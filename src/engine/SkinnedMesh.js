@@ -113,7 +113,7 @@ export default class SkinnedMesh {
             this.scene = gltf.scene;
             this.meshData = gltf.scene.children;
             this.mesh = gltf.scene;
-   
+
             this.anim = gltf;
             Scene.objectLoaded++;
             Scene.add(gltf.scene);

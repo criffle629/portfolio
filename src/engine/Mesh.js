@@ -16,7 +16,7 @@ export default class Mesh {
         this.castShadow = castShadow;
         this.receiveShadow = receiveShadow;
         this.flatShading = flatShading;
-     
+
         if (path !== null)
             this.LoadMesh(path);
     }
@@ -37,14 +37,14 @@ export default class Mesh {
     receiveShadow(value) {
         this.receiveShadow = value;
     }
- 
+
     LoadMesh(path) {
         Scene.objectLoading++;
 
         return new Promise((resolve, reject) => {
             let loader = new GLTFLoader();
             loader.load(path, (gltf) => {
-              
+
                 gltf.scene.traverse(child => {
                     if (child.isMesh) {
                         child.castShadow = this.castShadow;
@@ -53,17 +53,17 @@ export default class Mesh {
                             child.material.side = THREE.FrontSide;
                         if (this.flatShading)
                             child.material.flatShading = this.flatShading;
- 
-                        if (child.material.map && !isMobile){
+
+                        if (child.material.map && !isMobile) {
                             child.material.map.anisotropy = 16
                         }
                         else
-                        if (child.material.map && isMobile){
-                            
-                            child.material.map.anisotropy = 1;
-                            child.material.map.minFilter = THREE.NearestFilter;
-                            child.material.map.magFilter = THREE.NearestFilter;
-                        }
+                            if (child.material.map && isMobile) {
+
+                                child.material.map.anisotropy = 1;
+                                child.material.map.minFilter = THREE.NearestFilter;
+                                child.material.map.magFilter = THREE.NearestFilter;
+                            }
                     }
                 });
 
@@ -81,10 +81,9 @@ export default class Mesh {
                 reject('error');
             });
         });
-
     }
 
-    isLoaded(){
+    isLoaded() {
         return this.mesh === null;
     }
 }

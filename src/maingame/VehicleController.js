@@ -58,12 +58,10 @@ export default class VehicleController extends GameObject {
                         this.engineSound.parrent = this.model;
                         this.setPosition(this.position);
                         this.setRotation(this.rotation);
-
                     })
                     .catch(e => {
                         console.log(e);
                     });
-
             })
             .catch(e => {
                 console.log(e)
@@ -83,18 +81,22 @@ export default class VehicleController extends GameObject {
         transform.setIdentity();
         transform.setOrigin(new Ammo.btVector3(options.position.x, options.position.y, options.position.z));
         transform.setRotation(new Ammo.btQuaternion(options.rotation.x, options.rotation.y, options.rotation.z, options.rotation.w));
+        
         let motionState = new Ammo.btDefaultMotionState(transform);
         let localInertia = new Ammo.btVector3(0, 0, 0);
+       
         this.bodyShape.calculateLocalInertia(options.mass, localInertia);
+       
         this.body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(options.mass, motionState, this.bodyShape, localInertia));
         this.body.setActivationState(4);
         this.body.setRestitution(0.5);
+       
         Physics.world.addRigidBody(this.body);
+        
         this.tuning = new Ammo.btVehicleTuning();
-
         this.raycaster = new Ammo.btDefaultVehicleRaycaster(Physics.world);
+        
         this.vehicle = new Ammo.btRaycastVehicle(this.tuning, this.body, this.raycaster);
-
         this.vehicle.setCoordinateSystem(0, 1, 2);
 
         Physics.world.addAction(this.vehicle);
@@ -171,7 +173,6 @@ export default class VehicleController extends GameObject {
         let axis = Vector2.zero;
         if (Gamepad.isConnected()) {
             axis = Gamepad.leftStick();
-
             this.steeringAngle += (-25 * axis.x) * this.steeringRate * Time.deltaTime;
         }
 
@@ -181,7 +182,6 @@ export default class VehicleController extends GameObject {
         this.reverse = false;
 
         if ((Input.isKeyDown('w') || Input.isKeyDown('ArrowUp') || Gamepad.rightTrigger() > 0) && this.speed <= this.topSpeed) {
-
             const accel = (Gamepad.rightTrigger() > 0) ? Gamepad.rightTrigger() : 1;
             this.currentBrakingFront = 0;
             this.currentBrakingBack = 0;
@@ -224,12 +224,10 @@ export default class VehicleController extends GameObject {
 
         const maxAngle = 25.0 - (20.0 * (this.speed / this.topSpeed));
         this.steeringAngle = MathTools.clamp(this.steeringAngle, -maxAngle, maxAngle);
-
     }
 
     updateSound() {
         if (Math.abs(this.body.getAngularVelocity().y()) > 1) {
-
             if (this.tireSquealSound !== null && this.model !== null) {
 
                 if (!this.tireSquealSound.isPlaying)
@@ -253,7 +251,6 @@ export default class VehicleController extends GameObject {
                 this.engineSound.setDetune((Math.abs(this.speed) + this.enginePitch) * 10);
                 this.engineSound.panner.setPosition(this.model.mesh.position.x, this.model.mesh.position.y, this.model.mesh.position.z);
             }
-
         }
     }
 
@@ -337,19 +334,15 @@ export default class VehicleController extends GameObject {
     }
 
     netUpdate(vehicleUpdate) {
-
-
         this.body.setLinearVelocity(new Ammo.btVector3(vehicleUpdate.linearVelocity.x, vehicleUpdate.linearVelocity.y, vehicleUpdate.linearVelocity.z));
         this.body.setAngularVelocity(new Ammo.btVector3(vehicleUpdate.angularVelocity.x, vehicleUpdate.angularVelocity.y, vehicleUpdate.angularVelocity.z));
 
         this.btQuat.setValue(vehicleUpdate.rotation.x, vehicleUpdate.rotation.y, vehicleUpdate.rotation.z, vehicleUpdate.rotation.w);
         this.body.getWorldTransform().setRotation(this.btQuat);
-      //  this.body.getMotionState().setWorldTransform(this.body.getWorldTransform());
-        
+
         let newPos = vehicleUpdate.position;
         this.body.getWorldTransform().setOrigin(new Ammo.btVector3(newPos.x, newPos.y, newPos.z));
         this.steeringAngle = vehicleUpdate.steeringAngle;
-
 
         this.rotation = Quaternion.FromEuler(vehicleUpdate.rotation.x, vehicleUpdate.rotation.y, vehicleUpdate.rotation.z);
         this.vehicle.setSteeringValue(0, 3);
@@ -357,20 +350,19 @@ export default class VehicleController extends GameObject {
         this.vehicle.setSteeringValue(vehicleUpdate.steeringAngle * MathTools.deg2Rad, 0);
         this.vehicle.setSteeringValue(vehicleUpdate.steeringAngle * MathTools.deg2Rad, 1);
     }
+
     netVehicleEnter() {
         this.inNetUse = true;
         this.inUse = true;
         this.body.mass
-        
-
     }
+
     netVehicleExit() {
         this.inNetUse = false;
         this.inUse = false;
-
     }
-    update() {
 
+    update() {
         Camera.mainCamera.add(Audio.listener);
         this.applyDownforce();
         this.resetMovementWhenNotInUse();
@@ -396,14 +388,10 @@ export default class VehicleController extends GameObject {
             let btPos = this.body.getWorldTransform().getOrigin();
             let currentPos = new Vector3(btPos.x(), btPos.y(), btPos.z());
             this.lastPosition = currentPos;
-
-       
         }
-
     }
 
     lateUpdate() {
-
         if (!this.inUse) return;
         this.netUpdateTimer += Time.deltaTime;
 
@@ -421,8 +409,6 @@ export default class VehicleController extends GameObject {
                 rotation: new Quaternion(quat.x(), quat.y(), quat.z(), quat.w()),
                 steeringAngle: this.steeringAngle
             });
-
-
         }
     }
 

@@ -7,7 +7,6 @@ const isMobile = false;
 export default class GamepadManager {
 
     constructor(noListener = false) {
-
         this.Buttons = {
             BUTTON_BOTTOM: 0,
             BUTTON_RIGHT: 1,
@@ -46,14 +45,14 @@ export default class GamepadManager {
         this.leftTriggerValue = 0.0;
 
         this.gamepad = null;
-       
+
         if (!noListener) {
             Gamepads.start();
             Gamepads.addEventListener('connect', e => {
                 this.connected = true;
                 this.gamepad = e.gamepad;
-     
-                if (this.statusCallback !== null){
+
+                if (this.statusCallback !== null) {
                     this.statusCallback('connected');
                 }
 
@@ -61,24 +60,20 @@ export default class GamepadManager {
                     // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
                     this.leftAxis.x = e.horizontalValue * 1.12;
                     this.leftAxis.y = e.verticalValue * 1.12;
-                   
-          
                 }, [0, 1]);
 
                 e.gamepad.addEventListener('joystickmove', e => {
                     // Multiply by 1.12 because axis values only reaching +/- 0.9 instead of 1.0
-                    this.rightAxis.x = e.horizontalValue *  1.12;
+                    this.rightAxis.x = e.horizontalValue * 1.12;
                     this.rightAxis.y = e.verticalValue * 1.12;
                 }, [2, 3]);
 
                 e.gamepad.addEventListener('buttonpress', e => {
-
                     this.addButton(e.index);
                 });
 
                 e.gamepad.addEventListener('buttonvaluechange', e => {
                     this.rightTriggerValue = e.value;
-
                 }, 7);
 
                 e.gamepad.addEventListener('buttonvaluechange', e => {
@@ -95,26 +90,25 @@ export default class GamepadManager {
 
             Gamepads.addEventListener('disconnect', e => {
                 this.connected = false;
-                if (this.statusCallback !== null){
+                if (this.statusCallback !== null) {
                     this.statusCallback('disconnected');
                 }
             });
         }
     }
- 
-    leftStick() {
 
+    leftStick() {
         if (!Vector2.Equals(this.touchAxis, Vector2.zero))
             return this.touchAxis;
 
         if (!this.connected) return Vector2.zero;
-      
+
         return this.leftAxis;
     }
 
     rightStick() {
         if (!this.connected) return Vector2.zero;
-    
+
         return this.rightAxis;
     }
 
@@ -154,14 +148,13 @@ export default class GamepadManager {
     clearButtons() {
         this.buttonsDown.clear();
         this.buttonsPressed.clear();
-    
     }
 
     isConnected() {
         return this.connected || isMobile;
     }
 
-    update() {}
+    update() { }
 
     json() {
         return {

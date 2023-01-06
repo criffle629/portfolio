@@ -50,7 +50,6 @@ export default class TouchControls extends React.Component {
     }
 
     onDrag = (e) => {
-
         if (!this.mouseDown) return;
 
         const xCoord = e.touches[0].clientX;
@@ -74,7 +73,6 @@ export default class TouchControls extends React.Component {
         if (dist <= 75 && this.stickRef) {
 
             this.stickRef.current.style.cssText = `top:${(window.innerHeight - 150) + xVal}; left: ${85 + yVal}; width: '100px'; height: '100px'; position: 'absolute'; zIndex:5;`;
-
         }
     }
 
@@ -123,7 +121,7 @@ export default class TouchControls extends React.Component {
                     </canvas>
 
                 </div>
-                
+
                 <canvas style={{
                     top: window.innerHeight - 150, left: 85,
                     width: '100px', height: '100px', position: 'absolute'
@@ -209,7 +207,6 @@ export default class TouchControls extends React.Component {
 
                 </div>
             </div>
-
         )
     }
 }

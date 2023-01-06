@@ -7,7 +7,7 @@ import MathTools from './MathTools';
 import { v4 as uuidv4 } from 'uuid';
 
 export default class RigidBody {
-   
+
     constructor(position = new Vector3(0, 0, 0), shape, rotation = Quaternion.Identity(), options = { mass: 0, friction: 1, rollingFriction: 1, restitution: 0.8 }) {
         this.isKinematic = false;
         this.active = true;
@@ -23,7 +23,7 @@ export default class RigidBody {
         this.btQuat = new Ammo.btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
 
         this.id = uuidv4();
- 
+
         this.cachedbtVec3 = new Ammo.btVector3(0, 0, 0);
         this.transform = new Ammo.btTransform();
         this.transform.setIdentity();
@@ -36,7 +36,7 @@ export default class RigidBody {
         let ri = new Ammo.btRigidBodyConstructionInfo(this.mass, this.motionState, this.shape, localInertia);
         this.position = position;
         this.rotation = rotation;
-        
+
         this.body = new Ammo.btRigidBody(ri);;
 
         this.body.setFriction(this.friction);
@@ -49,7 +49,7 @@ export default class RigidBody {
         Physics.addRigidBody(this.body);
     }
 
-    removeRigidBody(){
+    removeRigidBody() {
         Physics.removeRigidBody(this.body);
     }
 

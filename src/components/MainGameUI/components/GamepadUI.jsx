@@ -48,7 +48,6 @@ export default class GamepadUI extends React.Component {
     }
 
     renderComponent() {
-
         const popin = keyframes`
             from { left: 50%; }
             to { left: 50%; }
