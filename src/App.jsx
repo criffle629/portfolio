@@ -6,13 +6,13 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA7G--IO5uEelHLSnZrN_OLnyDSvLmwa-o",
-  authDomain: "portfolio-site-d5126.firebaseapp.com",
-  projectId: "portfolio-site-d5126",
-  storageBucket: "portfolio-site-d5126.appspot.com",
-  messagingSenderId: "107771788914",
-  appId: "1:107771788914:web:d6634958b88532c2f88ceb",
-  measurementId: "G-WTPHGH8XYM"
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: ""
 };
 
 class App extends React.Component {
